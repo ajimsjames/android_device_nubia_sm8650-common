@@ -6,6 +6,7 @@
 #pragma once
 
 #include <V2_1/SubHal.h>
+#include <unordered_set>
 
 namespace android {
 namespace hardware {
@@ -60,6 +61,8 @@ class SensorsSubHal : public ISensorsSubHal, public IHalProxyCallback {
     std::unique_ptr<void, std::function<void(void*)>> lib_handle_;
     V2_1::implementation::ISensorsSubHal* impl_;
     sp<IHalProxyCallback> hal_proxy_callback_;
+
+    std::unordered_set<int32_t> pickup_sensor_handles_;
 };
 
 }  // namespace qsh_wrapper

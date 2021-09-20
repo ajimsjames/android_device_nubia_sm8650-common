@@ -7,7 +7,9 @@
 
 #include <android-base/logging.h>
 #include <dlfcn.h>
+#include <hardware/sensors.h>
 
+using ::android::hardware::sensors::V1_0::SensorFlagBits;
 using ::android::hardware::sensors::V2_0::implementation::ScopedWakelock;
 using ::android::hardware::sensors::V2_1::implementation::ISensorsSubHal;
 
@@ -21,6 +23,24 @@ namespace qsh_wrapper {
 
 namespace {
 constexpr auto kLibName = "sensors.qsh.so";
+constexpr auto kTypePickUpSensor = 33181000;
+
+bool patchZtePickupSensor(SensorInfo& sensor) {
+    if (static_cast<int32_t>(sensor.type) != kTypePickUpSensor) {
+        return true;
+    }
+
+    // Implement only the wake-up version of this sensor.
+    if (!(sensor.flags & static_cast<uint32_t>(SensorFlagBits::WAKE_UP))) {
+        return false;
+    }
+
+    sensor.type = SensorType::PICK_UP_GESTURE;
+    sensor.typeAsString = SENSOR_STRING_TYPE_PICK_UP_GESTURE;
+    sensor.maxRange = 1;
+
+    return true;
+}
 };  // anonymous namespace
 
 SensorsSubHal::SensorsSubHal()
@@ -70,7 +90,24 @@ Return<void> SensorsSubHal::configDirectReport(int32_t sensor_handle, int32_t ch
 }
 
 Return<void> SensorsSubHal::getSensorsList_2_1(ISensors::getSensorsList_2_1_cb _hidl_cb) {
-    return impl_->getSensorsList_2_1(_hidl_cb);
+    return impl_->getSensorsList_2_1([&](const auto& _hidl_out_list) {
+        std::vector<SensorInfo> sensors;
+
+        for (auto sensor : _hidl_out_list) {
+            bool keep = patchZtePickupSensor(sensor);
+            if (!keep) {
+                continue;
+            }
+
+            if (sensor.type == SensorType::PICK_UP_GESTURE) {
+                pickup_sensor_handles_.insert(sensor.sensorHandle);
+            }
+
+            sensors.push_back(sensor);
+        }
+
+        _hidl_cb(sensors);
+    });
 }
 
 Return<Result> SensorsSubHal::injectSensorData_2_1(const Event& event) {
@@ -105,7 +142,18 @@ Return<void> SensorsSubHal::onDynamicSensorsConnected_2_1(
 }
 
 void SensorsSubHal::postEvents(const std::vector<Event>& events, ScopedWakelock wakelock) {
-    hal_proxy_callback_->postEvents(events, std::move(wakelock));
+    std::vector<Event> filtered_events;
+
+    for (const auto& e : events) {
+        if (pickup_sensor_handles_.count(e.sensorHandle) > 0
+            && e.u.scalar != 1) {
+            continue;
+        }
+
+        filtered_events.push_back(e);
+    }
+
+    hal_proxy_callback_->postEvents(filtered_events, std::move(wakelock));
 }
 
 ScopedWakelock SensorsSubHal::createScopedWakelock(bool lock) {
