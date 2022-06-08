@@ -1067,7 +1067,6 @@ vendor/etc/gps.conf
 vendor/etc/izat.conf
 vendor/etc/lowi.conf
 vendor/etc/sap.conf
-vendor/etc/sec_config
 vendor/etc/xtwifi.conf
 
 # IMS
@@ -1358,7 +1357,6 @@ vendor/lib64/vendor.qti.qesdsys-V4-ndk.so
 # QMI
 system/etc/sysconfig/qti_whitelist.xml
 vendor/bin/init.qti.write.sh
-vendor/bin/irsc_util
 vendor/bin/qlm-service
 vendor/bin/qmipriod
 vendor/bin/qrtr-cfg
