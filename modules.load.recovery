@@ -275,3 +275,9 @@ zte_fingerprint.ko
 zte_led.ko
 zte_misc.ko
 zte_power_supply.ko
+spf_core_dlkm.ko
+gpr_dlkm.ko
+snd_event_dlkm.ko
+q6_notifier_dlkm.ko
+q6_pdr_dlkm.ko
+adsp_loader_dlkm.ko
