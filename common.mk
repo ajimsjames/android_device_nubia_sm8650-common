@@ -190,6 +190,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     CarrierConfigResCommon_Sys \
     FrameworksResTarget_Vendor \
+    NcmTetheringOverlay \
     SystemUIResCommon_Sys \
     TelephonyResCommon_Sys \
     WifiResCommon_Sys \
