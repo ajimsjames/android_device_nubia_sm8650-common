@@ -4,25 +4,6 @@
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- NOTE: The telephony module is no longer reading the configuration below for available
-         APN types.  The set of APN types and relevant settings are specified within the telephony
-         module and are non-configurable.  Whether or not data connectivity over a cellular network
-         is available at all is controlled by the flag: config_moble_data_capable. -->
-    <string-array name="networkAttributes" translatable="false">
-        <item>wifi,1,1,1,-1,true</item>
-        <item>mobile,0,0,0,-1,true</item>
-        <item>mobile_mms,2,0,4,60000,true</item>
-        <item>mobile_supl,3,0,2,60000,true</item>
-        <item>mobile_dun,4,0,2,60000,true</item>
-        <item>mobile_hipri,5,0,3,60000,true</item>
-        <item>mobile_fota,10,0,2,60000,true</item>
-        <item>mobile_ims,11,0,2,60000,true</item>
-        <item>mobile_cbs,12,0,2,60000,true</item>
-        <item>bluetooth,7,7,2,-1,true</item>
-        <item>mobile_emergency,15,0,5,-1,true</item>
-        <item>ethernet,9,9,9,-1,true</item>
-    </string-array>
-
     <!-- An Array of "[ConnectivityManager connectionType],
                       [# simultaneous connection types]"  -->
     <string-array name="radioAttributes" translatable="false">
