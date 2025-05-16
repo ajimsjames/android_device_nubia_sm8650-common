@@ -64,8 +64,6 @@ vendor/lib64/rfs/dsp/libworker_pool.so
 vendor/lib64/hw/com.dsi.ant@1.0-impl.so
 
 # Audio
-vendor/bin/qsap_voiceui
-vendor/etc/seccomp_policy/qsap_voiceui.policy
 vendor/lib64/libAlacSwDec.so
 vendor/lib64/libApeSwDec.so
 vendor/lib64/libEvrcSwCodec.so
@@ -893,15 +891,6 @@ vendor/lib64/vendor.qti.hardware.dpmaidlservice-V1-ndk.so;MODULE_SUFFIX=_vendor
 vendor/lib64/vendor.qti.hardware.dpmservice@1.0.so;MODULE_SUFFIX=_vendor
 vendor/lib64/vendor.qti.hardware.dpmservice@1.1.so
 
-# DCF
-vendor/bin/qsap_dcfd
-vendor/etc/init/dcfd.rc
-vendor/etc/seccomp_policy/qsap_dcfd.policy
-vendor/lib64/libDcfHalFramework.so
-vendor/lib64/libDcfHalLogger.so
-vendor/lib64/libDcfHalQtiMutex.so
-vendor/lib64/libqsh_ble_pb.so
-
 # DSP
 vendor/bin/dspservice
 vendor/etc/init/vendor.qti.hardware.dsp@1.0-service.rc
@@ -996,10 +985,8 @@ vendor/bin/edgnss-daemon
 vendor/bin/loc_launcher
 vendor/bin/lowi-server
 vendor/bin/mlid
-vendor/bin/qsap_location
 vendor/bin/xtra-daemon
 vendor/etc/init/loc-launcher.rc
-vendor/etc/init/vendor.qsap.location.rc
 vendor/etc/vintf/manifest/vendor.qti.gnss-service.xml
 vendor/lib64/libcdfw.so
 vendor/lib64/libcdfw_remote_api.so
@@ -1620,15 +1607,11 @@ vendor/lib64/libsubsystem_control.so
 
 # Sensors
 vendor/bin/init.qcom.sensors.sh
-vendor/bin/qsap_sensors
 vendor/bin/sensors.qti
 vendor/bin/sscrpcd
 vendor/etc/init/init.vendor.sensors.rc
-vendor/etc/init/vendor.qsap.sensors.rc
 vendor/etc/init/vendor.sensors.qti.rc
 vendor/etc/init/vendor.sensors.sscrpcd.rc
-vendor/etc/seccomp_policy/qsap_sensors.policy
-vendor/lib64/libSensorsInterface.so
 vendor/lib64/libqsh.so
 vendor/lib64/libsensor_calibration.so
 vendor/lib64/libsensorcal.so
