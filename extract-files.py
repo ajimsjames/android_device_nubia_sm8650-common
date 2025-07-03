@@ -124,8 +124,18 @@ blob_fixups: blob_fixups_user_type = {
         .add_line_if_missing('sched_get_priority_max: 1'),
     'vendor/lib64/libqcodec2_core.so': blob_fixup()
         .add_needed('libcodec2_shim.so'),
+    (
+        'vendor/bin/qcc-vendor',
+        'vendor/bin/qms',
+        'vendor/bin/xtra-daemon',
+        'vendor/lib64/libcne.so',
+        'vendor/lib64/libqcc_sdk.so',
+        'vendor/lib64/libqms_client.so',
+    ): blob_fixup()
+        .add_needed('libbinder_shim.so'),
     'vendor/lib64/vendor.libdpmframework.so': blob_fixup()
-        .add_needed('libhidlbase_shim.so'),
+        .add_needed('libhidlbase_shim.so')
+        .add_needed('libbinder_shim.so'),
     'vendor/lib64/libril-db.so': blob_fixup()
         .binary_regex_replace(rb'persist\.vendor\.radio\.poweron_opt', rb'persist.vendor.radio.poweron_ign'),
     'vendor/lib64/libNubiaImageAlgorithmVD.so': blob_fixup()
