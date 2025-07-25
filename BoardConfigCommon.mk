@@ -97,7 +97,8 @@ BOARD_RAMDISK_USE_LZ4 := true
 BOARD_USES_GENERIC_KERNEL_IMAGE := true
 
 BOARD_KERNEL_CMDLINE := \
-    ignore_loglevel
+    ignore_loglevel \
+    sysctl.kernel.firmware_config.force_sysfs_fallback=1
 
 BOARD_BOOTCONFIG := \
     androidboot.hardware=qcom \
