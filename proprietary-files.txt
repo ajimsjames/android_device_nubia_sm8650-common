@@ -1238,8 +1238,8 @@ vendor/lib64/vendor.qti.hardware.limits@1.2.so
 # Media configs
 vendor/etc/media_pineapple/video_system_specs.json
 vendor/etc/media_codecs_c2_audio.xml
-vendor/etc/media_codecs_performance_pineapple_vendor.xml:vendor/etc/media_codecs_performance_pineapple.xml
-vendor/etc/media_codecs_pineapple_vendor.xml:vendor/etc/media_codecs_pineapple.xml
+vendor/etc/media_codecs_performance_pineapple_vendor.xml:vendor/etc/media_codecs_performance_pineapple.xml;TRYSRCFIRST
+vendor/etc/media_codecs_pineapple_vendor.xml:vendor/etc/media_codecs_pineapple.xml;TRYSRCFIRST
 vendor/etc/media_codecs_vendor_audio.xml
 
 # Media
