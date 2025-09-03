@@ -565,10 +565,8 @@ vendor/etc/camera/vlog_app/vlog_demo_soothing.mp4
 vendor/etc/camera/VNSConfig.xml
 vendor/etc/camera/blush_gloss_lut.cng
 vendor/etc/camera/cameraaiconfig
-vendor/etc/camera/camxoverridesettings.txt
 vendor/etc/camera/defg_data.txt
 vendor/etc/camera/fonts.xml
-vendor/etc/camera/mfnr_network_denoise_config_underdisplay.xml
 vendor/etc/camera/remosaic_cali_ov16a1q.bin
 vendor/etc/camera/remosaic_cali_s5kjn1sq03.bin
 vendor/etc/camera/sat_config.xml
