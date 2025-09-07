@@ -250,7 +250,7 @@ persist.vendor.radio.signalDelay=5
 persist.vendor.radio.testTimerA=30
 persist.vendor.radio.testTimerB=30
 persist.vendor.radio.voice_on_lte=1
-ro.telephony.default_network=33,33
+ro.telephony.default_network=26,26
 
 # SoC
 ro.soc.manufacturer=QTI
