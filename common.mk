@@ -257,7 +257,8 @@ PRODUCT_COPY_FILES += \
 
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power-service-qti
+    android.hardware.power-service-qti \
+    libqti-perfd-client
 
 PRODUCT_COPY_FILES += \
     vendor/qcom/opensource/power/config/pineapple/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
@@ -295,6 +296,7 @@ PRODUCT_COPY_FILES += \
 # Soong
 PRODUCT_SOONG_NAMESPACES += \
     $(COMMON_PATH) \
+    hardware/qcom-caf/common/libqti-perfd-client \
     vendor/qcom/opensource/usb/etc
 
 # Telephony
