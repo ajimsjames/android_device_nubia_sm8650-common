@@ -2,7 +2,8 @@
 /mnt/vendor/persist/smartpa_cali_data(/.*)?    u:object_r:vendor_persist_audio_file:s0
 
 # Camera
-/mnt/vendor/persist/laser(/.*)?                            u:object_r:vendor_persist_laser_file:s0
+/mnt/vendor/persist/laser(/.*)?                            u:object_r:vendor_persist_camera_file:s0
+/mnt/vendor/persist/camera(/.*)?                           u:object_r:vendor_persist_camera_file:s0
 /sys/devices/virtual/input/input[0-9]+/enable_ps_sensor    u:object_r:vendor_sysfs_laser:s0
 /sys/devices/virtual/input/input[0-9]+/do_flush            u:object_r:vendor_sysfs_laser:s0
 /sys/devices/virtual/input/input[0-9]+/timing_budget       u:object_r:vendor_sysfs_laser:s0

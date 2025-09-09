@@ -1,5 +1,5 @@
 # Camera
-type vendor_persist_laser_file, file_type;
+type vendor_persist_camera_file, file_type;
 
 # Fingerprint
 type vendor_persist_fingerprint_file, file_type;
