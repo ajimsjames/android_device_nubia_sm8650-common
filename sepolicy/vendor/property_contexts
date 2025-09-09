@@ -1,4 +1,6 @@
-ro.vendor.product.ztename                       u:object_r:vendor_zte_prop:s0
-ro.vendor.feature.                              u:object_r:vendor_zte_prop:s0
+# Thermal
+vendor.thermal.    u:object_r:vendor_thermal_prop:s0
 
-vendor.thermal.                                 u:object_r:vendor_thermal_prop:s0
+# ZTE
+ro.vendor.product.ztename    u:object_r:vendor_zte_prop:s0
+ro.vendor.feature.           u:object_r:vendor_zte_prop:s0
