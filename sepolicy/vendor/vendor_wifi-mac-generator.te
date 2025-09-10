@@ -1,0 +1,12 @@
+type vendor_wifi-mac-generator, domain;
+type vendor_wifi-mac-generator_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(vendor_wifi-mac-generator)
+
+allow vendor_wifi-mac-generator {
+    vendor_toolbox_exec
+    vendor_shell_exec
+}:file rx_file_perms;
+
+allow vendor_wifi-mac-generator mnt_vendor_file:dir rw_dir_perms;
+allow vendor_wifi-mac-generator mnt_vendor_file:file create_file_perms;
