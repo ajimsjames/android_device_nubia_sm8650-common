@@ -1,0 +1,26 @@
+/*
+ * SPDX-FileCopyrightText: 2025 The LineageOS Project
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+package org.lineageos.settings.fan
+
+import android.os.Bundle
+import androidx.preference.PreferenceFragmentCompat
+import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
+import com.android.settingslib.collapsingtoolbar.R
+
+class FanActivity : CollapsingToolbarBaseActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.content_frame, FanFragment(), TAG)
+            .commit()
+    }
+
+    companion object {
+        private const val TAG = "fan"
+    }
+}

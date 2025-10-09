@@ -1,0 +1,2 @@
+# Fan control
+type sysfs_fan, fs_type, sysfs_type;

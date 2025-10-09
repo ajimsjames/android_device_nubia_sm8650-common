@@ -1,0 +1,26 @@
+//
+// SPDX-FileCopyrightText: 2025 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+android_app {
+    name: "NubiaParts",
+    platform_apis: true,
+    certificate: "platform",
+    privileged: true,
+    system_ext_specific: true,
+
+    srcs: [
+        "src/**/*.kt",
+    ],
+
+    resource_dirs: ["res"],
+
+    static_libs: [
+        "org.lineageos.settings.resources",
+    ],
+
+    optimize: {
+        proguard_flags_files: ["proguard.flags"],
+    },
+}

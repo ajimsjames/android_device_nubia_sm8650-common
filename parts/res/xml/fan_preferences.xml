@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2025 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.android.settingslib.widget.MainSwitchPreference
+        android:key="fan_enable"
+        android:title="@string/fan_enable_title"
+        android:summary="@string/fan_enable_summary"
+        android:icon="@drawable/ic_fan"
+        android:defaultValue="false" />
+
+    <SeekBarPreference
+        android:key="fan_speed_level"
+        android:title="@string/fan_speed_title"
+        android:summary="@string/fan_speed_summary"
+        android:defaultValue="3"
+        android:max="5"
+        android:min="1"
+        app:showSeekBarValue="true" />
+</PreferenceScreen>

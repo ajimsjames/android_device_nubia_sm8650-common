@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2025 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Fan Control -->
+    <string name="fan_control_title">Fan Control</string>
+    <string name="fan_control_summary">Control the device cooling fan</string>
+    <string name="fan_enable_title">Enable Fan</string>
+    <string name="fan_enable_summary">Turn the cooling fan on or off</string>
+    <string name="fan_speed_title">Fan Speed</string>
+    <string name="fan_speed_summary">Adjust fan speed level</string>
+</resources>

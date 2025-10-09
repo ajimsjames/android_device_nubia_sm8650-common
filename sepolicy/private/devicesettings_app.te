@@ -1,0 +1,8 @@
+type devicesettings_app, domain;
+app_domain(devicesettings_app)
+
+allow devicesettings_app {
+    app_api_service
+}:service_manager find;
+
+rw_dir_file(devicesettings_app, sysfs_fan)
