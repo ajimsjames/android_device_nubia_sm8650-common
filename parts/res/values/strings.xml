@@ -11,4 +11,8 @@
     <string name="fan_enable_summary">Turn the cooling fan on or off</string>
     <string name="fan_speed_title">Fan Speed</string>
     <string name="fan_speed_summary">Adjust fan speed level</string>
+
+    <!-- QS Settings -->
+    <string name="qs_tile_on">On</string>
+    <string name="qs_tile_off">Off</string>
 </resources>
