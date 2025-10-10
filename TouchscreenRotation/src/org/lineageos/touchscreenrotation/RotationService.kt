@@ -12,6 +12,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
 import android.util.Log
+import android.view.Display
 import android.view.Surface
 import android.view.WindowManager
 import java.io.FileWriter
@@ -67,8 +68,8 @@ class RotationService : Service() {
 
         @JvmStatic
         fun getRotation(context: Context): Int {
-            val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            val rotation = wm.defaultDisplay.rotation
+            val display = context.getSystemService(Context.DISPLAY_SERVICE) as android.hardware.display.DisplayManager
+            val rotation = display.getDisplay(Display.DEFAULT_DISPLAY).rotation
 
             return when (rotation) {
                 Surface.ROTATION_0 -> 0
