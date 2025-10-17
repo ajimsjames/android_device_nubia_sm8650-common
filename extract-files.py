@@ -19,6 +19,7 @@ from extract_utils.main import (
 )
 
 namespace_imports = [
+    'device/nubia/sm8650-common',
     'hardware/qcom-caf/sm8650',
     'hardware/qcom-caf/wlan',
     'vendor/qcom/opensource/commonsys/display',
@@ -111,9 +112,6 @@ blob_fixups: blob_fixups_user_type = {
         'android.hardware.graphics.allocator-V1-ndk.so',
         'android.hardware.graphics.allocator-V2-ndk.so',
     ),
-    'vendor/etc/seccomp_policy/gnss@2.0-qsap-location.policy': blob_fixup()
-        .add_line_if_missing('sched_get_priority_min: 1')
-        .add_line_if_missing('sched_get_priority_max: 1'),
     'vendor/lib64/libqcodec2_core.so': blob_fixup()
         .add_needed('libcodec2_shim.so'),
     (

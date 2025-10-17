@@ -995,51 +995,31 @@ vendor/gpu/kbc/unified_ksqs.bin
 vendor/lib64/hw/vulkan.adreno.so
 
 # GNSS
-vendor/bin/hw/android.hardware.gnss-aidl-service-qti
 vendor/bin/edgnss-daemon
-vendor/bin/engine-service
 vendor/bin/loc_launcher
 vendor/bin/lowi-server
 vendor/bin/mlid
 vendor/bin/qsap_location
-vendor/bin/slim_daemon
 vendor/bin/xtra-daemon
-vendor/bin/xtwifi-client
-vendor/etc/init/android.hardware.gnss-aidl-service-qti.rc
 vendor/etc/init/loc-launcher.rc
 vendor/etc/init/vendor.qsap.location.rc
-vendor/etc/seccomp_policy/gnss@2.0-base.policy
-vendor/etc/seccomp_policy/gnss@2.0-edgnss-daemon.policy
-vendor/etc/seccomp_policy/gnss@2.0-qsap-location.policy
-vendor/etc/seccomp_policy/gnss@2.0-xtra-daemon.policy
-vendor/etc/seccomp_policy/gnss@2.0-xtwifi-client.policy
-vendor/etc/vintf/manifest/android.hardware.gnss-aidl-service-qti.xml
 vendor/etc/vintf/manifest/vendor.qti.gnss-service.xml
-vendor/lib64/hw/android.hardware.gnss-aidl-impl-qti.so
-vendor/lib64/libbatching.so
 vendor/lib64/libcdfw.so
 vendor/lib64/libcdfw_remote_api.so
 vendor/lib64/libdataitems.so
-vendor/lib64/libengineplugin.so
-vendor/lib64/libgdtap.so
-vendor/lib64/libgeofencing.so
-vendor/lib64/libgnss.so
 vendor/lib64/libgnsspps.so
-vendor/lib64/libgps.utils.so
 vendor/lib64/libizat_client_api.so
 vendor/lib64/libizat_core.so
 vendor/lib64/liblbs_core.so
 vendor/lib64/libloc_api_v02.so
 vendor/lib64/libloc_api_wds.so
 vendor/lib64/libloc_base_util.so
-vendor/lib64/libloc_core.so
 vendor/lib64/libloc_eng_hub.so
 vendor/lib64/libloc_mq_client.so
 vendor/lib64/libloc_qwes_iface.so
 vendor/lib64/libloc_ril_client.so
 vendor/lib64/libloc_socket.so
 vendor/lib64/libloc_util.so
-vendor/lib64/liblocation_api.so
 vendor/lib64/liblocation_api_msg.so
 vendor/lib64/liblocation_client_api.so
 vendor/lib64/liblocation_integration_api.so
@@ -1061,10 +1041,6 @@ vendor/lib64/vendor.qti.gnss-service.so
 
 # GNSS configs
 vendor/etc/apdr.conf
-vendor/etc/batching.conf
-vendor/etc/gnss_antenna_info.conf
-vendor/etc/gps.conf
-vendor/etc/izat.conf
 vendor/etc/lowi.conf
 vendor/etc/sap.conf
 vendor/etc/xtwifi.conf
