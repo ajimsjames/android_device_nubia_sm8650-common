@@ -6,3 +6,4 @@ allow devicesettings_app {
 }:service_manager find;
 
 rw_dir_file(devicesettings_app, sysfs_fan)
+rw_dir_file(devicesettings_app, proc_touchkey)

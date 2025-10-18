@@ -12,6 +12,12 @@
     <string name="fan_speed_title">Fan Speed</string>
     <string name="fan_speed_summary">Adjust fan speed level</string>
 
+    <!-- Trigger buttons -->
+    <string name="trigger_buttons_title">Trigger buttons</string>
+    <string name="trigger_buttons_summary">Enable or disable trigger buttons</string>
+    <string name="trigger_buttons_enable_title">Enable trigger buttons</string>
+    <string name="trigger_buttons_enable_summary">Allow trigger buttons to function normally</string>
+
     <!-- QS Settings -->
     <string name="qs_tile_on">On</string>
     <string name="qs_tile_off">Off</string>

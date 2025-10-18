@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package org.lineageos.settings.fan
+package org.lineageos.settings.trigger
 
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
@@ -11,7 +11,7 @@ import android.service.quicksettings.TileService
 import org.lineageos.settings.R
 import org.lineageos.settings.utils.*
 
-class FanTileService : TileService() {
+class TriggerTileService : TileService() {
 
     override fun onStartListening() {
         updateQsState()
@@ -19,20 +19,20 @@ class FanTileService : TileService() {
     }
 
     override fun onClick() {
-        val currentState = getInt(this, FanController.KEY_FAN_ENABLE, 0) == 1
+        val currentState = getInt(this, TriggerController.KEY_TRIGGER_ENABLE, 0) == 1
 
-        FanController.setFanEnabled(this, !currentState)
+        TriggerController.setTriggerEnabled(this, !currentState)
 
         updateQsState()
         super.onClick()
     }
 
     private fun updateQsState() {
-        val isFanEnabled = getInt(this, FanController.KEY_FAN_ENABLE, 0) == 1
+        val isTriggerEnabled = getInt(this, TriggerController.KEY_TRIGGER_ENABLE, 0) == 1
 
         qsTile.apply {
-            state = if (isFanEnabled) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
-            subtitle = if (isFanEnabled) getString(R.string.qs_tile_on) else getString(R.string.qs_tile_off)
+            state = if (isTriggerEnabled) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
+            subtitle = if (isTriggerEnabled) getString(R.string.qs_tile_on) else getString(R.string.qs_tile_off)
         }.updateTile()
     }
 }

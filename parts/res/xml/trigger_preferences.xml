@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2025 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/trigger_buttons_title">
+
+    <SwitchPreferenceCompat
+        android:key="trigger_enable"
+        android:title="@string/trigger_buttons_enable_title"
+        android:summary="@string/trigger_buttons_enable_summary" />
+</PreferenceScreen>
