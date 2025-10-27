@@ -1,4 +1,4 @@
-# All unpinned blobs below are extracted from NebulaAIOS1.0.18MR_NX721J_V
+# All unpinned blobs below are extracted from NebulaAIOS1.0.24_NX721J_V
 # dada: dada-user 16 BP2A.250605.015 OS2.0.217.0.WOCMIXM release-keys
 
 # ACDB
