@@ -198,7 +198,6 @@ debug.sf.earlyGl.sf.duration=10500000
 debug.sf.early.sf.duration=10500000
 debug.sf.enable_advanced_sf_phase_offset=1
 debug.sf.enable_gl_backpressure=false
-debug.sf.latch_unsignaled=1
 debug.sf.late.app.duration=13666666
 debug.sf.late.sf.duration=10500000
 debug.sf.predict_hwc_composition_strategy=0
