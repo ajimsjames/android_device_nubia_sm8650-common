@@ -140,6 +140,7 @@ camera.disable_zsl_mode=true
 persist.vendor.camera.flickerdetect.enable=1
 persist.vendor.camera.privapp.list=com.android.camera
 persist.vendor.camera.videoflicker.optimize=1
+ro.camera.disableJpegR=true
 ro.camera.enableCamera1MaxZsl=1
 ro.vendor.feature.camera_under_screen_sensor=true
 vendor.camera.aux.packagelist=com.android.camera,org.lineageos.aperture
