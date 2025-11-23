@@ -102,7 +102,7 @@ PRODUCT_PACKAGES += \
     android.hardware.boot-service.qti.recovery
 
 # Camera
-$(call soong_config_set,camera,override_format_from_reserved,true)
+$(call soong_config_set_bool,camera,override_format_from_reserved,true)
 
 # Display
 PRODUCT_PACKAGES += \
@@ -181,7 +181,7 @@ $(call soong_config_set,lineage_health,charging_control_charging_path,/sys/class
 PRODUCT_PACKAGES += \
     vendor.lineage.livedisplay-service.sysfs
 
-$(call soong_config_set,livedisplay_sysfs,enable_se,true)
+$(call soong_config_set_bool,livedisplay_sysfs,enable_se,true)
 
 # Memtrack
 PRODUCT_PACKAGES += \
@@ -377,7 +377,7 @@ PRODUCT_COPY_FILES += \
     vendor/qcom/opensource/vibrator/excluded-input-devices.xml:$(TARGET_COPY_OUT_VENDOR)/etc/excluded-input-devices.xml
 
 $(call soong_config_set,qti_vibrator,effect_lib,libqtivibratoreffect.nubia_sm8650-richtap)
-$(call soong_config_set,qti_vibrator,use_effect_stream,true)
+$(call soong_config_set_bool,qti_vibrator,use_effect_stream,true)
 
 # WiFi
 PRODUCT_PACKAGES += \
