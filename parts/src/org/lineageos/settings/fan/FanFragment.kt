@@ -7,14 +7,14 @@ package org.lineageos.settings.fan
 
 import android.os.Bundle
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
 import com.android.settingslib.widget.MainSwitchPreference
+import com.android.settingslib.widget.SettingsBasePreferenceFragment
 
 import org.lineageos.settings.R
 import org.lineageos.settings.utils.*
 
-class FanFragment : PreferenceFragmentCompat(),
+class FanFragment : SettingsBasePreferenceFragment(),
     Preference.OnPreferenceChangeListener {
 
     private lateinit var mSwitchBar: MainSwitchPreference

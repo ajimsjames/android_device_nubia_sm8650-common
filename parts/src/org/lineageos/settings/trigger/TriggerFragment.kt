@@ -7,13 +7,13 @@ package org.lineageos.settings.trigger
 
 import android.os.Bundle
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
+import com.android.settingslib.widget.SettingsBasePreferenceFragment
 
 import org.lineageos.settings.R
 import org.lineageos.settings.utils.*
 
-class TriggerFragment : PreferenceFragmentCompat(),
+class TriggerFragment : SettingsBasePreferenceFragment(),
     Preference.OnPreferenceChangeListener {
 
     private lateinit var mSwitchBar: SwitchPreferenceCompat
