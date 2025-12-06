@@ -1,4 +1,4 @@
-# All unpinned blobs below are extracted from NebulaAIOS1.0.24_NX721J_V
+# All unpinned blobs below are extracted from REDMAGICOS10.0.6MR1_GB
 # dada: dada-user 16 BP2A.250605.015 OS2.0.217.0.WOCMIXM release-keys
 
 # ACDB
@@ -254,7 +254,6 @@ vendor/lib64/libQnnHtpV75.so
 vendor/lib64/libQnnHtpV75Stub.so
 vendor/lib64/libQnnSaver.so
 vendor/lib64/libQnnSystem.so
-vendor/lib64/libVNSDenoise.so;FIX_SONAME
 vendor/lib64/libadaptive_shutter.so
 vendor/lib64/libaicudnativeprocessclient.so
 vendor/lib64/libainativeprocessclient.so
@@ -444,10 +443,8 @@ vendor/etc/camera/icon/colorfilter_au3.png
 vendor/etc/camera/icon/colorfilter_av800.png
 vendor/etc/camera/icon/colorfilter_bleach.png
 vendor/etc/camera/icon/colorfilter_blue_crush.png
-vendor/etc/camera/icon/colorfilter_building.png
 vendor/etc/camera/icon/colorfilter_bw_contrast.png
 vendor/etc/camera/icon/colorfilter_candy.png
-vendor/etc/camera/icon/colorfilter_cloud.png
 vendor/etc/camera/icon/colorfilter_color_master.png
 vendor/etc/camera/icon/colorfilter_comic_cloud.png
 vendor/etc/camera/icon/colorfilter_dt2.png
@@ -460,7 +457,6 @@ vendor/etc/camera/icon/colorfilter_fj160s.png
 vendor/etc/camera/icon/colorfilter_fj2.png
 vendor/etc/camera/icon/colorfilter_fj4.png
 vendor/etc/camera/icon/colorfilter_fj8.png
-vendor/etc/camera/icon/colorfilter_food.png
 vendor/etc/camera/icon/colorfilter_heijin.png
 vendor/etc/camera/icon/colorfilter_inspiration.png
 vendor/etc/camera/icon/colorfilter_instant.png
@@ -473,7 +469,6 @@ vendor/etc/camera/icon/colorfilter_mono1.png
 vendor/etc/camera/icon/colorfilter_mono2.png
 vendor/etc/camera/icon/colorfilter_mono3.png
 vendor/etc/camera/icon/colorfilter_mono4.png
-vendor/etc/camera/icon/colorfilter_mountain.png
 vendor/etc/camera/icon/colorfilter_newyear.png
 vendor/etc/camera/icon/colorfilter_passion.png
 vendor/etc/camera/icon/colorfilter_pt160.png
@@ -481,11 +476,9 @@ vendor/etc/camera/icon/colorfilter_punch.png
 vendor/etc/camera/icon/colorfilter_qingxin.png
 vendor/etc/camera/icon/colorfilter_renwen.png
 vendor/etc/camera/icon/colorfilter_retro.png
-vendor/etc/camera/icon/colorfilter_sun.png
 vendor/etc/camera/icon/colorfilter_vintage.png
 vendor/etc/camera/icon/colorfilter_washout.png
 vendor/etc/camera/icon/colorfilter_washout_color.png
-vendor/etc/camera/icon/colorfilter_water.png
 vendor/etc/camera/icon/colorfilter_x_process.png
 vendor/etc/camera/icon/fish_eye_fs2.c
 vendor/etc/camera/icon/frag_shader_negative_film.c
