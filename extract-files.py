@@ -123,6 +123,12 @@ blob_fixups: blob_fixups_user_type = {
         .clear_symbol_version('AHardwareBuffer_lock')
         .clear_symbol_version('AHardwareBuffer_release')
         .clear_symbol_version('AHardwareBuffer_unlock'),
+    (
+        'vendor/lib64/libVoiceSdk.so',
+        'vendor/lib64/libcapiv2uvvendor.so',
+        'vendor/lib64/liblistensoundmodel2vendor.so',
+    ): blob_fixup()
+        .replace_needed('libtensorflowlite_c.so', 'libtensorflowlite_c_vendor.so'),
 }  # fmt: skip
 
 module = ExtractUtilsModule(
