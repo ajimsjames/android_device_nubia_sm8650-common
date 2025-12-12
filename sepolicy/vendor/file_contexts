@@ -17,6 +17,3 @@
 
 # Secure Element
 /vendor/bin/hw/android\.hardware\.secure_element-service-aidl    u:object_r:hal_secure_element_default_exec:s0
-
-# WiFi
-/vendor/bin/wifi-mac-generator    u:object_r:vendor_wifi-mac-generator_exec:s0
