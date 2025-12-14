@@ -13,12 +13,9 @@
         android:icon="@drawable/ic_fan"
         android:defaultValue="false" />
 
-    <SeekBarPreference
+    <com.android.settingslib.widget.SliderPreference
         android:key="fan_speed_level"
         android:title="@string/fan_speed_title"
         android:summary="@string/fan_speed_summary"
-        android:defaultValue="3"
-        android:max="5"
-        android:min="1"
-        app:showSeekBarValue="true" />
+        android:defaultValue="3" />
 </PreferenceScreen>
