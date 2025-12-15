@@ -17,8 +17,4 @@
     <string name="trigger_buttons_summary">Enable or disable trigger buttons</string>
     <string name="trigger_buttons_enable_title">Enable trigger buttons</string>
     <string name="trigger_buttons_enable_summary">Allow trigger buttons to function normally</string>
-
-    <!-- QS Settings -->
-    <string name="qs_tile_on">On</string>
-    <string name="qs_tile_off">Off</string>
 </resources>

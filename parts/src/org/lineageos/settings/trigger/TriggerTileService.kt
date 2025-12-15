@@ -14,17 +14,17 @@ import org.lineageos.settings.utils.*
 class TriggerTileService : TileService() {
 
     override fun onStartListening() {
-        updateQsState()
         super.onStartListening()
+        updateQsState()
     }
 
     override fun onClick() {
+        super.onClick()
         val currentState = getInt(this, TriggerController.KEY_TRIGGER_ENABLE, 0) == 1
 
         TriggerController.setTriggerEnabled(this, !currentState)
 
         updateQsState()
-        super.onClick()
     }
 
     private fun updateQsState() {
@@ -32,7 +32,6 @@ class TriggerTileService : TileService() {
 
         qsTile.apply {
             state = if (isTriggerEnabled) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
-            subtitle = if (isTriggerEnabled) getString(R.string.qs_tile_on) else getString(R.string.qs_tile_off)
         }.updateTile()
     }
 }
