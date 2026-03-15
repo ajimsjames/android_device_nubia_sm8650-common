@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     SPDX-FileCopyrightText: 2025 The LineageOS Project
+     SPDX-FileCopyrightText: The LineageOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- boolean indicating whether or not to reset auto shotdown configuration during cloud configuration restore -->
-    <bool name="config_wifiSoftapResetAutoShutdownTimerConfig" translatable="false">false</bool>
+<resources>
+    <!-- Integer indicating maximum hardware supported client number of soft ap -->
+    <integer name="config_wifiHardwareSoftapMaxClientCount" translatable="false">10</integer>
 
     <!-- boolean indicating whether or not to reset channel configuration during cloud configuration restore -->
     <bool name="config_wifiSoftapResetChannelConfig" translatable="false">false</bool>
@@ -13,14 +13,14 @@
     <!-- boolean indicating whether or not to reset hiddenSsid configuration during cloud configuration restore -->
     <bool name="config_wifiSoftapResetHiddenConfig" translatable="false">false</bool>
 
-    <!-- boolean indicating whether or not to reset max client setting configuration during cloud configuration restore -->
-    <bool name="config_wifiSoftapResetMaxClientSettingConfig" translatable="false">false</bool>
-
     <!-- boolean indicating whether or not to reset user control configuration during cloud configuration restore -->
     <bool name="config_wifiSoftapResetUserControlConfig" translatable="false">false</bool>
 
-    <!-- Integer indicating maximum hardware supported client number of soft ap -->
-    <integer name="config_wifiHardwareSoftapMaxClientCount" translatable="false">10</integer>
+    <!-- boolean indicating whether or not to reset auto shotdown configuration during cloud configuration restore -->
+    <bool name="config_wifiSoftapResetAutoShutdownTimerConfig" translatable="false">false</bool>
+
+    <!-- boolean indicating whether or not to reset max client setting configuration during cloud configuration restore -->
+    <bool name="config_wifiSoftapResetMaxClientSettingConfig" translatable="false">false</bool>
 
     <!-- Defines the minimum period between scans triggered due to low score.
     This is used together with config_wifiConnectedScoreThresholdToTriggerScanForMbb.-->
@@ -91,11 +91,17 @@
         <item>100</item>
         <item>160</item>
     </integer-array>
+
+    <!-- List of constants to indicate how many failures are needed to temporarily disable a network
+    from auto-connect -->
     <integer name="config_wifiDisableReasonNoInternetTemporaryThreshold" translatable="false">2</integer>
     <integer name="config_wifiDisableReasonNoInternetPermanentThreshold" translatable="false">2</integer>
     <integer name="config_wifiDisableReasonByWrongPasswordThreshold" translatable="false">2</integer>
     <integer name="config_wifiDisableReasonAuthenticationNoSubscriptionThreshold" translatable="false">2</integer>
     <integer name="config_wifiDisableReasonConsecutiveFailuresThreshold" translatable="false">2</integer>
+
+    <!-- List of constants that indicate the number of consecutive failures per type needed to block a BSSID.
+    A blocked BSSID will not be considered in network selection and firmware roaming.-->
     <integer name="config_wifiBssidBlocklistMonitorNetworkValidationFailureThreshold" translatable="false">3</integer>
     <integer name="config_wifiBssidBlocklistMonitorWrongPasswordThreshold" translatable="false">6</integer>
     <integer name="config_wifiBssidBlocklistMonitorEapFailureThreshold" translatable="false">6</integer>

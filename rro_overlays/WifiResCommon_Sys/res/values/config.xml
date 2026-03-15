@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     SPDX-FileCopyrightText: 2025 The LineageOS Project
+     SPDX-FileCopyrightText: The LineageOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
     <!-- boolean indicating whether the WiFi chipset has 5GHz band support.
          Note: This config is replacing the config_wifi_dual_band_support
          since more bands may now be supported (such as 6GHz), the naming dual_band
@@ -13,9 +13,6 @@
     <!-- boolean indicating whether the WiFi chipset has 6GHz band support -->
     <bool name="config_wifi6ghzSupport" translatable="false">true</bool>
 
-    <!-- boolean indicating whether or not to auto-upgrade band setting configuration to dual bands during cloud configuration restore when device supported -->
-    <bool name="config_wifiSoftapAutoUpgradeToBridgedConfigWhenSupported" translatable="false">false</bool>
-
     <!-- Boolean indicating whether the wifi chipset supports background scanning mechanism.
          This mechanism allows the host to remain in suspend state and the dongle to actively
          scan and wake the host when a configured SSID is detected by the dongle. This chipset
@@ -24,6 +21,9 @@
 
     <!-- Integer indicating maximum hardware supported client number of soft ap -->
     <integer name="config_wifiHardwareSoftapMaxClientCount" translatable="false">32</integer>
+
+    <!-- boolean indicating whether or not to auto-upgrade band setting configuration to dual bands during cloud configuration restore when device supported -->
+    <bool name="config_wifiSoftapAutoUpgradeToBridgedConfigWhenSupported" translatable="false">false</bool>
 
     <!-- Boolean indicating performing a partial initial scan is enabled -->
     <bool name="config_wifiEnablePartialInitialScan" translatable="false">true</bool>
@@ -67,6 +67,9 @@
     <!-- Configure wifi tcp buffersizes in the form:
          rmem_min,rmem_def,rmem_max,wmem_min,wmem_def,wmem_max -->
     <string name="config_wifi_tcp_buffers" translatable="false">524288,1048576,2097152,524288,1048576,4194304</string>
+
+    <!-- List of constants to indicate how many failures are needed to temporarily disable a network
+    from auto-connect -->
     <integer name="config_wifiDisableReasonByWrongPasswordThreshold" translatable="false">2</integer>
 
     <!-- Enable WPA2 to WPA3 auto-upgrade offload to capable Driver/Firmware -->

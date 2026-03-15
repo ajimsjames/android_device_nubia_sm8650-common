@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     SPDX-FileCopyrightText: 2025 The LineageOS Project
+     SPDX-FileCopyrightText: The LineageOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources>
     <!-- Doze: does this device support STATE_DOZE?  -->
     <bool name="doze_display_state_supported">true</bool>
 
-    <!--  Flag to turn on the rendering of the above path or not  -->
-    <bool name="config_enableDisplayCutoutProtection">true</bool>
+    <!-- Should we vibrate on an icon animation of the shelf. This should only be active if the
+     vibrator is capable of subtle vibrations -->
+    <bool name="config_vibrateOnIconAnimation">true</bool>
+
+    <!-- Preferred max refresh rate at keyguard, if supported by the display. -->
+    <integer name="config_keyguardMaxRefreshRate">60</integer>
 
     <!-- A path similar to frameworks/base/core/res/res/values/config.xml
-      config_mainBuiltInDisplayCutout that describes a path larger than the exact path of a display
-      cutout. If present as well as config_enableDisplayCutoutProtection is set to true, then
-      SystemUI will draw this "protection path" instead of the display cutout path that is normally
-      used for anti-aliasing.
+      config_mainBuiltInDisplayCutout that describes a path larger than the exact path of a outer
+      display cutout. If present as well as config_enableDisplayCutoutProtection is set to true,
+      then SystemUI will draw this "protection path" instead of the display cutout path that is
+      normally used for anti-aliasing.
 
       This path will only be drawn when the front-facing camera turns on, otherwise the main
       DisplayCutout path will be rendered
@@ -27,27 +31,12 @@
         Z
     </string>
 
-    <!-- Preferred max refresh rate at keyguard, if supported by the display. -->
-    <integer name="config_keyguardMaxRefreshRate">60</integer>
-
-    <!--  ID for the camera that needs extra protection -->
+    <!-- ID for the camera of outer display that needs extra protection -->
     <string name="config_protectedCameraId" translatable="false">1</string>
 
     <!-- Physical ID for the camera of outer display that needs extra protection -->
     <string translatable="false" name="config_protectedPhysicalCameraId">1</string>
 
-    <!-- Microns/ums (1000 um = 1mm) per pixel for the given device. If unspecified, UI that
-        relies on this value will not be sized correctly. -->
-    <item name="pixel_pitch" format="float" type="dimen">59.77</item>
-
-    <!-- Location on the screen of the center of the physical power button. This is a reasonable
-    default that should be overridden by device-specific overlays. -->
-    <dimen name="physical_power_button_center_screen_location_y">1120px</dimen>
-
-    <!-- Should we vibrate on an icon animation of the shelf. This should only be active if the
-    vibrator is capable of subtle vibrations -->
-    <bool name="config_vibrateOnIconAnimation">true</bool>
-
-    <!-- The padding on the start of the statusbar -->
-    <dimen name="status_bar_padding_start">20px</dimen>
+    <!--  Flag to turn on the rendering of the above path or not  -->
+    <bool name="config_enableDisplayCutoutProtection">true</bool>
 </resources>
