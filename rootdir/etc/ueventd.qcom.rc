@@ -613,3 +613,6 @@ subsystem mem_buf_vm
 /sys/devices/platform/goodix_ts.0 gesture/fod_pressed     0660   system     system
 /sys/devices/platform/goodix_ts.0 rotation                0660   system     system
 /sys/devices/platform/goodix_ts.0 rate_boost              0660   system     system
+
+# LiveDisplay
+/sys/devices/platform/soc/soc:qcom,dsi-display-primary hbm  0660   system   system
