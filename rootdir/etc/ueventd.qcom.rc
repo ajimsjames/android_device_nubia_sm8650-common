@@ -603,3 +603,13 @@ subsystem mem_buf_vm
 
 # Battery
 /sys/class/qcom-battery                                 battery_charging_enabled        0660    system  system
+
+# Touchscreen
+/sys/devices/platform/goodix_ts.0 gesture/single_en       0660   system     system
+/sys/devices/platform/goodix_ts.0 gesture/single_pressed  0660   system     system
+/sys/devices/platform/goodix_ts.0 gesture/double_en       0660   system     system
+/sys/devices/platform/goodix_ts.0 gesture/double_pressed  0660   system     system
+/sys/devices/platform/goodix_ts.0 gesture/fod_en          0660   system     system
+/sys/devices/platform/goodix_ts.0 gesture/fod_pressed     0660   system     system
+/sys/devices/platform/goodix_ts.0 rotation                0660   system     system
+/sys/devices/platform/goodix_ts.0 rate_boost              0660   system     system

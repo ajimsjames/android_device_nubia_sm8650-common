@@ -1,6 +1,3 @@
-on boot
-    chown system system /sys/devices/platform/goodix_ts.0/rate_boost
-
 service vendor.touch-hal /vendor/bin/hw/vendor.lineage.touch-service.nubia_sm8650
     class hal
     user system
