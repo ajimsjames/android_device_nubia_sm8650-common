@@ -10,12 +10,10 @@ import androidx.preference.Preference
 import com.android.settingslib.widget.MainSwitchPreference
 import com.android.settingslib.widget.SettingsBasePreferenceFragment
 import com.android.settingslib.widget.SliderPreference
-
 import org.lineageos.settings.R
 import org.lineageos.settings.utils.*
 
-class FanFragment : SettingsBasePreferenceFragment(),
-    Preference.OnPreferenceChangeListener {
+class FanFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceChangeListener {
 
     private lateinit var mSwitchBar: MainSwitchPreference
     private lateinit var mFanSpeedBar: SliderPreference
@@ -24,22 +22,25 @@ class FanFragment : SettingsBasePreferenceFragment(),
         addPreferencesFromResource(R.xml.fan_preferences)
 
         val fanEnabled = getInt(requireContext(), FanController.KEY_FAN_ENABLE, 0) == 1
-        val savedSpeed = getInt(requireContext(), FanController.KEY_FAN_SPEED, FanController.FAN_DEFAULT_SPEED)
+        val savedSpeed =
+            getInt(requireContext(), FanController.KEY_FAN_SPEED, FanController.FAN_DEFAULT_SPEED)
 
-        mSwitchBar = findPreference<MainSwitchPreference>(FanController.KEY_FAN_ENABLE)!!.apply {
-            setChecked(fanEnabled)
-            onPreferenceChangeListener = this@FanFragment
-        }
+        mSwitchBar =
+            findPreference<MainSwitchPreference>(FanController.KEY_FAN_ENABLE)!!.apply {
+                setChecked(fanEnabled)
+                onPreferenceChangeListener = this@FanFragment
+            }
 
-        mFanSpeedBar = findPreference<SliderPreference>(FanController.KEY_FAN_SPEED)!!.apply {
-            setMin(FanController.FAN_MIN_SPEED)
-            setMax(FanController.FAN_MAX_SPEED)
-            setSliderIncrement(1)
-            setValue(savedSpeed)
-            setShowSliderValue(true)
-            isEnabled = fanEnabled
-            onPreferenceChangeListener = this@FanFragment
-        }
+        mFanSpeedBar =
+            findPreference<SliderPreference>(FanController.KEY_FAN_SPEED)!!.apply {
+                setMin(FanController.FAN_MIN_SPEED)
+                setMax(FanController.FAN_MAX_SPEED)
+                setSliderIncrement(1)
+                setValue(savedSpeed)
+                setShowSliderValue(true)
+                isEnabled = fanEnabled
+                onPreferenceChangeListener = this@FanFragment
+            }
 
         FanController.applySettings(requireContext(), fanEnabled, savedSpeed)
     }
@@ -48,7 +49,12 @@ class FanFragment : SettingsBasePreferenceFragment(),
         return when (preference.key) {
             FanController.KEY_FAN_ENABLE -> {
                 val isEnabled = newValue as Boolean
-                val speed = getInt(requireContext(), FanController.KEY_FAN_SPEED, FanController.FAN_DEFAULT_SPEED)
+                val speed =
+                    getInt(
+                        requireContext(),
+                        FanController.KEY_FAN_SPEED,
+                        FanController.FAN_DEFAULT_SPEED,
+                    )
 
                 mFanSpeedBar.isEnabled = isEnabled
                 FanController.applySettings(requireContext(), isEnabled, speed)

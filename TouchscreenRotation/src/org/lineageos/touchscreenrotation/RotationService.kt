@@ -14,7 +14,6 @@ import android.os.IBinder
 import android.util.Log
 import android.view.Display
 import android.view.Surface
-import android.view.WindowManager
 import java.io.FileWriter
 import java.io.IOException
 
@@ -27,15 +26,16 @@ class RotationService : Service() {
 
         Log.i(TAG, "Service created")
 
-        rotationReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                val newRotation = getRotation(context)
-                if (newRotation != rotation) {
-                    rotation = newRotation
-                    writeRotation(newRotation)
+        rotationReceiver =
+            object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    val newRotation = getRotation(context)
+                    if (newRotation != rotation) {
+                        rotation = newRotation
+                        writeRotation(newRotation)
+                    }
                 }
             }
-        }
 
         val filter = IntentFilter(Intent.ACTION_CONFIGURATION_CHANGED)
         registerReceiver(rotationReceiver, filter)
@@ -44,9 +44,7 @@ class RotationService : Service() {
     private fun writeRotation(rotation: Int) {
         Log.i(TAG, "Write rotation: $rotation")
         try {
-            FileWriter(ROTATION_PATH).use { writer ->
-                writer.write(rotation.toString())
-            }
+            FileWriter(ROTATION_PATH).use { writer -> writer.write(rotation.toString()) }
         } catch (e: IOException) {
             Log.e(TAG, "Failed to write to $ROTATION_PATH", e)
         }
@@ -68,7 +66,9 @@ class RotationService : Service() {
 
         @JvmStatic
         fun getRotation(context: Context): Int {
-            val display = context.getSystemService(Context.DISPLAY_SERVICE) as android.hardware.display.DisplayManager
+            val display =
+                context.getSystemService(Context.DISPLAY_SERVICE)
+                    as android.hardware.display.DisplayManager
             val rotation = display.getDisplay(Display.DEFAULT_DISPLAY).rotation
 
             return when (rotation) {

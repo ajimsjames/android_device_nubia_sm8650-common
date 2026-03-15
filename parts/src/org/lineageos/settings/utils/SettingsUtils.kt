@@ -15,11 +15,7 @@ private const val SETTINGS_PREFIX = "nubia_parts_"
  * @return puts the value in place
  */
 fun putInt(context: Context, key: String, value: Int) {
-    Settings.Global.putInt(
-        context.contentResolver,
-        SETTINGS_PREFIX + key,
-        value
-    )
+    Settings.Global.putInt(context.contentResolver, SETTINGS_PREFIX + key, value)
 }
 
 /*
@@ -27,9 +23,5 @@ fun putInt(context: Context, key: String, value: Int) {
  * @return the value
  */
 fun getInt(context: Context, key: String, defaultValue: Int): Int {
-    return Settings.Global.getInt(
-        context.contentResolver,
-        SETTINGS_PREFIX + key,
-        defaultValue
-    )
+    return Settings.Global.getInt(context.contentResolver, SETTINGS_PREFIX + key, defaultValue)
 }

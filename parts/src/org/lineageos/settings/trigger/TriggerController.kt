@@ -24,8 +24,14 @@ object TriggerController {
      */
     fun setTriggerEnabled(context: Context, enabled: Boolean) {
         putInt(context, KEY_TRIGGER_ENABLE, if (enabled) 1 else 0)
-        writeLine(TRIGGER_BUTTON1_ENABLE_NODE, if (enabled) TRIGGER_WAKE_MODE else TRIGGER_SLEEP_MODE)
-        writeLine(TRIGGER_BUTTON2_ENABLE_NODE, if (enabled) TRIGGER_WAKE_MODE else TRIGGER_SLEEP_MODE)
+        writeLine(
+            TRIGGER_BUTTON1_ENABLE_NODE,
+            if (enabled) TRIGGER_WAKE_MODE else TRIGGER_SLEEP_MODE,
+        )
+        writeLine(
+            TRIGGER_BUTTON2_ENABLE_NODE,
+            if (enabled) TRIGGER_WAKE_MODE else TRIGGER_SLEEP_MODE,
+        )
     }
 
     /*

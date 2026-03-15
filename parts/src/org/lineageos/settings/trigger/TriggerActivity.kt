@@ -6,7 +6,6 @@
 package org.lineageos.settings.trigger
 
 import android.os.Bundle
-import androidx.preference.PreferenceFragmentCompat
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
 import com.android.settingslib.collapsingtoolbar.R
 
@@ -15,7 +14,8 @@ class TriggerActivity : CollapsingToolbarBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportFragmentManager.beginTransaction()
+        supportFragmentManager
+            .beginTransaction()
             .replace(R.id.content_frame, TriggerFragment(), TAG)
             .commit()
     }

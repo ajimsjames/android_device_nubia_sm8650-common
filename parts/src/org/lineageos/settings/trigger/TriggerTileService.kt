@@ -7,8 +7,6 @@ package org.lineageos.settings.trigger
 
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
-
-import org.lineageos.settings.R
 import org.lineageos.settings.utils.*
 
 class TriggerTileService : TileService() {
@@ -30,8 +28,8 @@ class TriggerTileService : TileService() {
     private fun updateQsState() {
         val isTriggerEnabled = getInt(this, TriggerController.KEY_TRIGGER_ENABLE, 0) == 1
 
-        qsTile.apply {
-            state = if (isTriggerEnabled) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
-        }.updateTile()
+        qsTile
+            .apply { state = if (isTriggerEnabled) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE }
+            .updateTile()
     }
 }

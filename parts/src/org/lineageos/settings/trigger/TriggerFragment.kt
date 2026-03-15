@@ -9,12 +9,10 @@ import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.SwitchPreferenceCompat
 import com.android.settingslib.widget.SettingsBasePreferenceFragment
-
 import org.lineageos.settings.R
 import org.lineageos.settings.utils.*
 
-class TriggerFragment : SettingsBasePreferenceFragment(),
-    Preference.OnPreferenceChangeListener {
+class TriggerFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceChangeListener {
 
     private lateinit var mSwitchBar: SwitchPreferenceCompat
 
@@ -23,10 +21,11 @@ class TriggerFragment : SettingsBasePreferenceFragment(),
 
         val triggerEnabled = getInt(requireContext(), TriggerController.KEY_TRIGGER_ENABLE, 0) == 1
 
-        mSwitchBar = findPreference<SwitchPreferenceCompat>(TriggerController.KEY_TRIGGER_ENABLE)!!.apply {
-            setChecked(triggerEnabled)
-            onPreferenceChangeListener = this@TriggerFragment
-        }
+        mSwitchBar =
+            findPreference<SwitchPreferenceCompat>(TriggerController.KEY_TRIGGER_ENABLE)!!.apply {
+                setChecked(triggerEnabled)
+                onPreferenceChangeListener = this@TriggerFragment
+            }
 
         TriggerController.setTriggerEnabled(requireContext(), triggerEnabled)
     }
