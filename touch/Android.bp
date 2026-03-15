@@ -1,0 +1,26 @@
+//
+// SPDX-FileCopyrightText: 2025 The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+cc_binary {
+    name: "vendor.lineage.touch-service.nubia_sm8650",
+    init_rc: ["vendor.lineage.touch-service.nubia_sm8650.rc"],
+    vintf_fragments: ["vendor.lineage.touch-service.nubia_sm8650.xml"],
+    relative_install_path: "hw",
+    vendor: true,
+    cflags: [
+        "-DLOG_TAG=\"vendor.lineage.touch-service.nubia_sm8650\"",
+    ],
+    srcs: [
+        "HighTouchPollingRate.cpp",
+        "service.cpp",
+    ],
+    shared_libs: [
+        "libbase",
+        "libbinder_ndk",
+        "liblog",
+        "libutils",
+        "vendor.lineage.touch-V1-ndk",
+    ],
+}

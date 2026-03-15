@@ -350,9 +350,12 @@ PRODUCT_BOOT_JARS += \
 PRODUCT_PACKAGES += \
     android.hardware.thermal-service.qti
 
-# Touchscreen
+# Touch
 PRODUCT_PACKAGES += \
     TouchscreenRotation
+
+PRODUCT_PACKAGES += \
+    vendor.lineage.touch-service.nubia_sm8650
 
 # Update engine
 PRODUCT_PACKAGES += \
