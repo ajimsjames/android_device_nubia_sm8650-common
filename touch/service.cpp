@@ -3,8 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-#define LOG_TAG "vendor.lineage.touch-service.xiaomi"
-
 #include "HighTouchPollingRate.h"
 
 #include <android-base/logging.h>
