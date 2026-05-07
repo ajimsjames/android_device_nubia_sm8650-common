@@ -26,7 +26,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- Tile Activity -->
         <activity
             android:name=".TileActivity"
             android:exported="true">
@@ -35,10 +34,9 @@
             </intent-filter>
         </activity>
 
-        <!-- Fan -->
         <activity
-            android:name=".fan.FanActivity"
-            android:label="@string/fan_control_title"
+            android:name=".nubia.NubiaActivity"
+            android:label="@string/nubia_title"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.android.settings.action.IA_SETTINGS" />
@@ -52,10 +50,30 @@
                 android:value="true" />
             <meta-data
                 android:name="com.android.settings.icon"
-                android:resource="@drawable/ic_fan"/>
+                android:resource="@drawable/ic_nubia"/>
             <meta-data
                 android:name="com.android.settings.summary"
-                android:resource="@string/fan_control_summary" />
+                android:resource="@string/nubia_summary" />
+        </activity>
+
+        <activity
+            android:name=".fan.FanActivity"
+            android:label="@string/fan_control_title"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.lineageos.settings.FAN_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".trigger.TriggerActivity"
+            android:label="@string/trigger_buttons_title"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.lineageos.settings.TRIGGER_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
 
         <service
@@ -68,29 +86,6 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE"/>
             </intent-filter>
         </service>
-
-        <!-- Trigger buttons -->
-        <activity
-            android:name=".trigger.TriggerActivity"
-            android:label="@string/trigger_buttons_title"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.android.settings.action.IA_SETTINGS" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <meta-data
-                android:name="com.android.settings.category"
-                android:value="com.android.settings.category.ia.system" />
-            <meta-data
-                android:name="com.android.settings.icon_tintable"
-                android:value="true" />
-            <meta-data
-                android:name="com.android.settings.icon"
-                android:resource="@drawable/ic_triggers"/>
-            <meta-data
-                android:name="com.android.settings.summary"
-                android:resource="@string/trigger_buttons_summary" />
-        </activity>
 
         <service
             android:name=".trigger.TriggerTileService"
