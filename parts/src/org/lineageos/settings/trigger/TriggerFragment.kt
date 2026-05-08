@@ -41,10 +41,4 @@ class TriggerFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenc
             else -> false
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-        val triggerEnabled = getInt(requireContext(), TriggerController.KEY_TRIGGER_ENABLE, 0) == 1
-        TriggerController.setTriggerEnabled(requireContext(), triggerEnabled)
-    }
 }

@@ -71,10 +71,4 @@ class FanFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceCha
             else -> false
         }
     }
-
-    override fun onResume() {
-        super.onResume()
-
-        FanController.restoreSettings(requireContext())
-    }
 }
