@@ -10,7 +10,6 @@
         android:key="fan_enable"
         android:title="@string/fan_enable_title"
         android:summary="@string/fan_enable_summary"
-        android:icon="@drawable/ic_fan"
         android:defaultValue="false" />
 
     <com.android.settingslib.widget.SliderPreference
