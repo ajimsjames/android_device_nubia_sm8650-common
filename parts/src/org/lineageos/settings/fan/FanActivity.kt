@@ -14,10 +14,12 @@ class FanActivity : CollapsingToolbarBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.content_frame, FanFragment(), TAG)
-            .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.content_frame, FanFragment(), TAG)
+                .commit()
+        }
     }
 
     companion object {

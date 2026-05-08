@@ -14,10 +14,12 @@ class TriggerActivity : CollapsingToolbarBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.content_frame, TriggerFragment(), TAG)
-            .commit()
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.content_frame, TriggerFragment(), TAG)
+                .commit()
+        }
     }
 
     companion object {
