@@ -41,8 +41,6 @@ class FanFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceCha
                 isEnabled = fanEnabled
                 onPreferenceChangeListener = this@FanFragment
             }
-
-        FanController.applySettings(requireContext(), fanEnabled, savedSpeed)
     }
 
     override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {

@@ -26,8 +26,6 @@ class TriggerFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenc
                 setChecked(triggerEnabled)
                 onPreferenceChangeListener = this@TriggerFragment
             }
-
-        TriggerController.setTriggerEnabled(requireContext(), triggerEnabled)
     }
 
     override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
