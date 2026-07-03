@@ -1212,9 +1212,6 @@ vendor/lib64/libvideotxr.so
 vendor/lib64/qti.video.utils.videobufferlayout.so
 vendor/lib64/vendor.qti.hardware.qconfig-V1-ndk.so
 
-# Memory
-vendor/lib64/libvmmem.so
-
 # Native public libraries
 vendor/etc/public.libraries.txt
 
