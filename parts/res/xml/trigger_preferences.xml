@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     SPDX-FileCopyrightText: 2025 The LineageOS Project
+     SPDX-FileCopyrightText: 2025-2026 The LineageOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,4 +11,94 @@
         android:title="@string/trigger_buttons_enable_title"
         android:summary="@string/trigger_buttons_enable_summary"
         android:defaultValue="false" />
+
+    <Preference
+        android:key="trigger_overlay_btn"
+        android:title="@string/trigger_overlay_btn_title"
+        android:summary="@string/trigger_overlay_btn_summary"
+        android:icon="@drawable/ic_crosshair"
+        app:dependency="trigger_enable" />
+
+    <SwitchPreferenceCompat
+        android:key="trigger_feedback_enable"
+        android:title="@string/trigger_feedback_enable_title"
+        android:summary="@string/trigger_feedback_enable_summary"
+        android:defaultValue="true"
+        app:dependency="trigger_enable" />
+
+    <SwitchPreferenceCompat
+        android:key="trigger_haptic_enable"
+        android:title="@string/trigger_haptic_enable_title"
+        android:summary="@string/trigger_haptic_enable_summary"
+        android:defaultValue="true"
+        app:dependency="trigger_enable" />
+
+    <PreferenceCategory
+        android:title="@string/trigger_apps_category_title"
+        app:dependency="trigger_enable">
+
+        <SwitchPreferenceCompat
+            android:key="trigger_app_filter_mode"
+            android:title="@string/trigger_app_filter_title"
+            android:summary="@string/trigger_app_filter_summary"
+            android:defaultValue="false" />
+
+        <Preference
+            android:key="trigger_select_apps"
+            android:title="@string/trigger_select_apps_title"
+            android:summary="@string/trigger_select_apps_summary"
+            app:dependency="trigger_app_filter_mode" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/trigger_left_category_title"
+        app:dependency="trigger_enable">
+
+        <ListPreference
+            android:key="trigger_left_mode"
+            android:title="@string/trigger_left_mode_title"
+            android:entries="@array/trigger_mode_entries"
+            android:entryValues="@array/trigger_mode_values"
+            android:defaultValue="0"
+            android:summary="%s" />
+
+        <ListPreference
+            android:key="trigger_left_cps"
+            android:title="@string/trigger_left_cps_title"
+            android:entries="@array/trigger_cps_entries"
+            android:entryValues="@array/trigger_cps_values"
+            android:defaultValue="12"
+            android:summary="%s" />
+
+        <Preference
+            android:key="trigger_left_coords"
+            android:title="@string/trigger_left_coords_title"
+            android:summary="X: 350, Y: 600" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/trigger_right_category_title"
+        app:dependency="trigger_enable">
+
+        <ListPreference
+            android:key="trigger_right_mode"
+            android:title="@string/trigger_right_mode_title"
+            android:entries="@array/trigger_mode_entries"
+            android:entryValues="@array/trigger_mode_values"
+            android:defaultValue="0"
+            android:summary="%s" />
+
+        <ListPreference
+            android:key="trigger_right_cps"
+            android:title="@string/trigger_right_cps_title"
+            android:entries="@array/trigger_cps_entries"
+            android:entryValues="@array/trigger_cps_values"
+            android:defaultValue="12"
+            android:summary="%s" />
+
+        <Preference
+            android:key="trigger_right_coords"
+            android:title="@string/trigger_right_coords_title"
+            android:summary="X: 2000, Y: 600" />
+    </PreferenceCategory>
 </PreferenceScreen>

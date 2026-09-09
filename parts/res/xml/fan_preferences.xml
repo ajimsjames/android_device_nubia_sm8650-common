@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     SPDX-FileCopyrightText: 2025 The LineageOS Project
+     SPDX-FileCopyrightText: 2025-2026 The LineageOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,9 +12,32 @@
         android:summary="@string/fan_enable_summary"
         android:defaultValue="false" />
 
-    <com.android.settingslib.widget.SliderPreference
+    <Preference
+        android:key="fan_status"
+        android:title="@string/fan_status_title"
+        android:summary="Speed: 0 RPM  |  Battery: 0.0°C"
+        android:selectable="false" />
+
+    <SwitchPreferenceCompat
+        android:key="fan_auto_mode"
+        android:title="@string/fan_auto_mode_title"
+        android:summary="@string/fan_auto_mode_summary"
+        android:defaultValue="true" />
+
+    <ListPreference
+        android:key="fan_profile"
+        android:title="@string/fan_profile_title"
+        android:summary="%s"
+        android:entries="@array/fan_profile_entries"
+        android:entryValues="@array/fan_profile_values"
+        android:defaultValue="1" />
+
+    <SeekBarPreference
         android:key="fan_speed_level"
         android:title="@string/fan_speed_title"
         android:summary="@string/fan_speed_summary"
-        android:defaultValue="3" />
+        android:defaultValue="3"
+        android:max="5"
+        app:min="1"
+        app:showSeekBarValue="true" />
 </PreferenceScreen>

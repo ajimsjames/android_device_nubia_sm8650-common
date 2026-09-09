@@ -1,23 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     SPDX-FileCopyrightText: 2025 The LineageOS Project
+     SPDX-FileCopyrightText: 2025-2026 The LineageOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
 <resources>
-    <string name="nubia_title">Nubia settings</string>
-    <string name="nubia_summary">Additional device specific tweaks</string>
+    <string name="device_settings_app_name">Nubia Parts</string>
+    <string name="nubia_title">Nubia Parts</string>
+    <string name="nubia_summary">Configure shoulder triggers, cooling fan, power profiles, and bypass charging</string>
+
+    <!-- Power Profiles -->
+    <string name="power_profile_title">Performance &amp; Power Profile</string>
+    <string name="power_profile_summary">Select hardware performance modes</string>
+    <string name="power_profile_battery_saver">Battery Saver</string>
+    <string name="power_profile_balanced">Balanced (Default)</string>
+    <string name="power_profile_performance">Performance Gaming</string>
+    <string name="power_profile_diablo">Diablo Mode (Max Overclock)</string>
 
     <!-- Fan Control -->
-    <string name="fan_control_title">Fan Control</string>
-    <string name="fan_control_summary">Control the device cooling fan</string>
+    <string name="fan_control_title">Internal Cooling Fan</string>
+    <string name="fan_control_summary">Configure active turbo fan and smart thermal curves</string>
     <string name="fan_enable_title">Enable Fan</string>
-    <string name="fan_enable_summary">Turn the cooling fan on or off</string>
-    <string name="fan_speed_title">Fan Speed</string>
-    <string name="fan_speed_summary">Adjust fan speed level</string>
+    <string name="fan_enable_summary">Turn on active centrifugal cooling fan</string>
+    <string name="fan_auto_mode_title">Smart Thermal Control</string>
+    <string name="fan_auto_mode_summary">Automatically scale RPM based on battery &amp; SoC temperature</string>
+    <string name="fan_profile_title">Thermal Profile</string>
+    <string name="fan_profile_summary">Choose fan responsiveness curve</string>
+    <string name="fan_speed_title">Manual Fan Speed Level</string>
+    <string name="fan_speed_summary">Set constant speed level (1–5)</string>
+    <string name="fan_status_title">Live Fan Status</string>
+    <string name="fan_speed_rpm_format">Current RPM: %1$d RPM | Battery Temp: %2$.1f°C</string>
 
     <!-- Trigger buttons -->
-    <string name="trigger_buttons_title">Trigger buttons</string>
-    <string name="trigger_buttons_summary">Enable or disable trigger buttons</string>
-    <string name="trigger_buttons_enable_title">Enable trigger buttons</string>
-    <string name="trigger_buttons_enable_summary">Allow trigger buttons to function normally</string>
+    <string name="trigger_buttons_title">Capacitive Shoulder Triggers</string>
+    <string name="trigger_buttons_summary">Configure virtual touch mapping, rapid fire, and gestures</string>
+    <string name="trigger_buttons_enable_title">Enable Shoulder Triggers</string>
+    <string name="trigger_buttons_enable_summary">Activate L1 &amp; R1 520Hz touch triggers</string>
+
+    <string name="trigger_overlay_btn_title">Position Touch Points</string>
+    <string name="trigger_overlay_btn_summary">Open floating draggable target crosshairs over your game</string>
+    <string name="trigger_overlay_hint">Drag L1 (Red) and R1 (Blue) to your game controls and tap Save</string>
+    <string name="trigger_save_coordinates">Save Coordinates</string>
+    <string name="trigger_cancel">Cancel</string>
+    <string name="trigger_service_running">Shoulder triggers active and listening</string>
+
+    <string name="trigger_feedback_enable_title">Visual Touch Indicator</string>
+    <string name="trigger_feedback_enable_summary">Show a blinking circle overlay when touch is detected on trigger buttons</string>
+
+    <string name="trigger_haptic_enable_title">Mechanical Haptic Feedback</string>
+    <string name="trigger_haptic_enable_summary">Vibrate linear motors with crisp tactile click on trigger press</string>
+
+    <string name="trigger_apps_category_title">Target Games &amp; Apps</string>
+    <string name="trigger_app_filter_title">Enable for Selected Games Only</string>
+    <string name="trigger_app_filter_summary">Only activate shoulder triggers when chosen games are open</string>
+    <string name="trigger_select_apps_title">Select Games &amp; Apps</string>
+    <string name="trigger_select_apps_summary">Choose apps where triggers should be active</string>
+
+    <!-- Left Trigger -->
+    <string name="trigger_left_category_title">Left Shoulder Trigger (L1)</string>
+    <string name="trigger_left_mode_title">L1 Action Mode</string>
+    <string name="trigger_left_cps_title">L1 Rapid Fire Speed</string>
+    <string name="trigger_left_coords_title">L1 Target Position</string>
+    <string name="trigger_coords_format">X: %1$d, Y: %2$d</string>
+
+    <!-- Right Trigger -->
+    <string name="trigger_right_category_title">Right Shoulder Trigger (R1)</string>
+    <string name="trigger_right_mode_title">R1 Action Mode</string>
+    <string name="trigger_right_cps_title">R1 Rapid Fire Speed</string>
+    <string name="trigger_right_coords_title">R1 Target Position</string>
+
+    <!-- Charge Bypass / Separation -->
+    <string name="charge_bypass_title">Charge Separation (Bypass Charging)</string>
+    <string name="charge_bypass_summary">Power device directly from USB without charging battery to eliminate heat</string>
+    <string name="charge_bypass_enable_title">Enable Charge Separation</string>
+    <string name="charge_bypass_enable_summary">Pause battery charging while USB is connected</string>
+    <string name="charge_bypass_tile_label">Charge Bypass</string>
+    <string name="charge_bypass_active_title">Charge Separation Active</string>
+    <string name="charge_bypass_active_subtitle">Powered directly by USB</string>
+    <string name="charge_bypass_inactive_subtitle">Charging normally</string>
+    <string name="charge_bypass_notification_text">Device is powered directly from charger. Battery charging is paused.</string>
+    <string name="charge_bypass_disable_action">Turn Off</string>
+
+    <!-- RGB Lighting -->
+    <string name="rgb_lighting_title">RGB Lighting Effects</string>
+    <string name="rgb_lighting_summary">Fan LED &amp; rear light strips illumination</string>
+    <string name="rgb_mode_title">Lighting Mode</string>
+    <string name="rgb_color_title">Accent Color</string>
+    <string name="rgb_brightness_title">LED Brightness</string>
+
+    <!-- Competitive Slider Switch -->
+    <string name="slider_switch_title">Competitive Slider Switch</string>
+    <string name="slider_switch_summary">Configure actions for the physical red game switch</string>
+    <string name="slider_switch_action_title">Slider Action</string>
+
+    <!-- Smart Gaming Battery -->
+    <string name="smart_charging_title">Smart Battery &amp; Auto-Bypass</string>
+    <string name="smart_charging_summary">Auto-bypass on game launch &amp; charge protection limit</string>
+    <string name="smart_charge_auto_bypass_title">Auto-Bypass for Games</string>
+    <string name="smart_charge_auto_bypass_summary">Automatically power device directly via USB when games are open</string>
+    <string name="smart_charge_limit_title">Battery Charge Limit</string>
+    <string name="smart_charge_limit_summary">Stop charging at 80% to preserve battery lifespan during long sessions</string>
+
+    <!-- Touch Sampling & Anti-Mistouch -->
+    <string name="touch_enhancer_title">Touch Response &amp; Mistouch Filter</string>
+    <string name="touch_enhancer_summary">Ultra 2000Hz touch rate &amp; edge palm rejection</string>
+    <string name="touch_high_sampling_title">Ultra Touch Sampling</string>
+    <string name="touch_high_sampling_summary">Maximize touch report rate for instant responsiveness in FPS games</string>
+    <string name="touch_edge_deadzone_title">Edge Palm Rejection</string>
+
+    <!-- Gaming HUD Widget -->
+    <string name="widget_gaming_hud_title">Gaming Performance HUD</string>
+    <string name="widget_gaming_hud_desc">Live CPU, GPU, Fan Speed &amp; Trigger Monitor Widget</string>
+
+    <!-- Game Optimizer (120 FPS & Native Resolution) -->
+    <string name="game_optimizer_title">Game Optimizer (BGMI &amp; PUBG)</string>
+    <string name="game_optimizer_summary">Unlock 120 FPS Extreme+, Native 2480x1116 resolution, and HD Graphics for BGMI &amp; PUBG</string>
+    <string name="game_optimizer_actions_category">Optimization Actions</string>
+    <string name="game_opt_apply_now_title">⚡ Patch BGMI / PUBG (120 FPS &amp; HD Graphics)</string>
+    <string name="game_opt_apply_now_summary">Injects 120 FPS Extreme+ &amp; HD Graphics directly into Active.sav and locks 120Hz display refresh rate</string>
+    <string name="game_optimizer_info_category">Optimization Profiles Included</string>
+    <string name="game_opt_info_fps_title">Frame Rate Target: 120 FPS Extreme+</string>
+    <string name="game_opt_info_fps_summary">Overrides internal 40/60 FPS limits in BattleFPS, LobbyFPS, and MainCityFPS</string>
+    <string name="game_opt_info_res_title">Display &amp; Sharpness: 120Hz Native 1.5K</string>
+    <string name="game_opt_info_res_summary">Locks display to 120.00 Hz and forces full 2480x1116 3D pixel rendering</string>
+    <string name="game_opt_info_quality_title">Texture &amp; Lighting: HD Anti-Aliased</string>
+    <string name="game_opt_info_quality_summary">Applies high dynamic textures with MSAA without Krafton thermal throttling</string>
 </resources>

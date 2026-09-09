@@ -24,3 +24,16 @@ android_app {
         proguard_flags_files: ["proguard.flags"],
     },
 }
+
+cc_binary {
+    name: "nubia_trigger_daemon",
+    srcs: ["trigger_daemon/nubia_trigger_daemon.cpp"],
+    shared_libs: [
+        "liblog",
+    ],
+    cflags: [
+        "-Wall",
+        "-Werror",
+    ],
+    system_ext_specific: true,
+}

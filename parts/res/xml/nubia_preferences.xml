@@ -1,24 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     SPDX-FileCopyrightText: 2025 The LineageOS Project
+     SPDX-FileCopyrightText: 2025-2026 The LineageOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:settings="http://schemas.android.com/apk/res/com.android.settings">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="nubia_power_profile"
+        android:title="@string/power_profile_title"
+        android:summary="%s"
+        android:icon="@drawable/ic_power_profile"
+        android:entries="@array/power_profile_entries"
+        android:entryValues="@array/power_profile_values"
+        android:defaultValue="1" />
 
     <Preference
-        android:key="fan"
-        android:icon="@drawable/ic_fan"
+        android:key="fan_settings"
+        android:title="@string/fan_control_title"
         android:summary="@string/fan_control_summary"
-        android:title="@string/fan_control_title">
-        <intent android:action="org.lineageos.settings.FAN_SETTINGS" />
-    </Preference>
+        android:icon="@drawable/ic_fan"
+        android:fragment="org.lineageos.settings.fan.FanFragment" />
 
     <Preference
-        android:key="trigger"
-        android:icon="@drawable/ic_triggers"
+        android:key="trigger_settings"
+        android:title="@string/trigger_buttons_title"
         android:summary="@string/trigger_buttons_summary"
-        android:title="@string/trigger_buttons_title">
-        <intent android:action="org.lineageos.settings.TRIGGER_SETTINGS" />
-    </Preference>
+        android:icon="@drawable/ic_triggers"
+        android:fragment="org.lineageos.settings.trigger.TriggerFragment" />
+
+    <Preference
+        android:key="rgb_settings"
+        android:title="@string/rgb_lighting_title"
+        android:summary="@string/rgb_lighting_summary"
+        android:icon="@drawable/ic_rgb"
+        android:fragment="org.lineageos.settings.rgb.RgbFragment" />
+
+    <Preference
+        android:key="game_optimizer_settings"
+        android:title="@string/game_optimizer_title"
+        android:summary="@string/game_optimizer_summary"
+        android:icon="@drawable/ic_power_profile"
+        android:fragment="org.lineageos.settings.optimizer.GameOptimizerFragment" />
+
+    <PreferenceCategory
+        android:title="Hardware Controls">
+
+        <ListPreference
+            android:key="slider_switch_action"
+            android:title="@string/slider_switch_title"
+            android:summary="%s"
+            android:entries="@array/slider_action_entries"
+            android:entryValues="@array/slider_action_values"
+            android:defaultValue="0" />
+
+        <SwitchPreferenceCompat
+            android:key="touch_high_sampling_rate"
+            android:title="@string/touch_high_sampling_title"
+            android:summary="@string/touch_high_sampling_summary"
+            android:defaultValue="true" />
+
+        <ListPreference
+            android:key="touch_edge_deadzone"
+            android:title="@string/touch_edge_deadzone_title"
+            android:summary="%s"
+            android:entries="@array/touch_deadzone_entries"
+            android:entryValues="@array/touch_deadzone_values"
+            android:defaultValue="1" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Battery &amp; Charging">
+
+        <SwitchPreferenceCompat
+            android:key="charge_bypass_enable"
+            android:title="@string/charge_bypass_enable_title"
+            android:summary="@string/charge_bypass_summary"
+            android:icon="@drawable/ic_charge_bypass"
+            android:defaultValue="false" />
+
+        <SwitchPreferenceCompat
+            android:key="smart_charge_auto_bypass_game"
+            android:title="@string/smart_charge_auto_bypass_title"
+            android:summary="@string/smart_charge_auto_bypass_summary"
+            android:defaultValue="false" />
+
+        <SwitchPreferenceCompat
+            android:key="smart_charge_limit_enable"
+            android:title="@string/smart_charge_limit_title"
+            android:summary="@string/smart_charge_limit_summary"
+            android:defaultValue="false" />
+    </PreferenceCategory>
 </PreferenceScreen>

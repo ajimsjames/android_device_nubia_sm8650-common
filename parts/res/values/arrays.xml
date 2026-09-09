@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2026 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Power Profiles -->
+    <string-array name="power_profile_entries">
+        <item>@string/power_profile_battery_saver</item>
+        <item>@string/power_profile_balanced</item>
+        <item>@string/power_profile_performance</item>
+        <item>@string/power_profile_diablo</item>
+    </string-array>
+    <string-array name="power_profile_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <!-- Fan Profiles -->
+    <string-array name="fan_profile_entries">
+        <item>Quiet (Spins up at > 40°C)</item>
+        <item>Balanced (Recommended, scales with temp)</item>
+        <item>Extreme Gaming (Aggressive cooling, max RPM)</item>
+    </string-array>
+    <string-array name="fan_profile_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <!-- Trigger Action Modes -->
+    <string-array name="trigger_mode_entries">
+        <item>Normal Tap / Click</item>
+        <item>Continuous Hold (Press &amp; Hold)</item>
+        <item>Rapid Fire (Macro Auto-Clicker)</item>
+        <item>Dual Action (Press &amp; Release)</item>
+    </string-array>
+    <string-array name="trigger_mode_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <!-- Rapid Fire CPS options -->
+    <string-array name="trigger_cps_entries">
+        <item>5 Clicks / sec</item>
+        <item>8 Clicks / sec</item>
+        <item>12 Clicks / sec (Default)</item>
+        <item>16 Clicks / sec</item>
+        <item>20 Clicks / sec</item>
+        <item>25 Clicks / sec</item>
+        <item>30 Clicks / sec (Ultra Fast)</item>
+    </string-array>
+    <string-array name="trigger_cps_values">
+        <item>5</item>
+        <item>8</item>
+        <item>12</item>
+        <item>16</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+    </string-array>
+
+    <!-- RGB Modes -->
+    <string-array name="rgb_mode_entries">
+        <item>Static Solid Glow</item>
+        <item>Breathing Pulse (Smooth)</item>
+        <item>Rainbow Dynamic Wave</item>
+        <item>Game Combat Flash</item>
+    </string-array>
+    <string-array name="rgb_mode_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <!-- RGB Colors -->
+    <string-array name="rgb_color_entries">
+        <item>RedMagic Crimson Red</item>
+        <item>Cyber Cyan Blue</item>
+        <item>Neon Matrix Green</item>
+        <item>Royal Violet Purple</item>
+        <item>Amber Solar Yellow</item>
+        <item>Pure Ice White</item>
+    </string-array>
+    <string-array name="rgb_color_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <!-- Slider Switch Actions -->
+    <string-array name="slider_action_entries">
+        <item>Gaming Suite (Performance + Fan Auto + Triggers)</item>
+        <item>Stealth Mode (Do Not Disturb + Silent Ringer)</item>
+        <item>Max Cooling Turbo (Force 14,000 RPM)</item>
+        <item>Diablo Mode (Extreme Overclock + Turbo Fan)</item>
+    </string-array>
+    <string-array name="slider_action_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <!-- Touch Deadzone Modes -->
+    <string-array name="touch_deadzone_entries">
+        <item>Disabled (Full screen active)</item>
+        <item>Standard Gaming (Prevents edge mistouch)</item>
+        <item>Wide Anti-Mistouch (For aggressive grip)</item>
+    </string-array>
+    <string-array name="touch_deadzone_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+</resources>

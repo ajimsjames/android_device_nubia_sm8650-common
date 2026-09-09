@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2025 The LineageOS Project
+ * SPDX-FileCopyrightText: 2025-2026 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -10,11 +10,20 @@ import java.io.File
 
 private const val TAG = "FileUtils"
 
-/*
- * Writes the given value into the given file
- * @return true on success, false on failure
- */
-fun writeLine(fileName: String, value: String): Boolean =
-    runCatching { File(fileName).writeText(value) }
-        .onFailure { e -> Log.e(TAG, "Could not write to file $fileName", e) }
-        .isSuccess
+object FileUtils {
+    fun fileExists(fileName: String): Boolean = File(fileName).exists()
+
+    fun readOneLine(fileName: String): String? =
+        runCatching { File(fileName).readText().trim() }
+            .onFailure { e -> Log.e(TAG, "Could not read from file $fileName", e) }
+            .getOrNull()
+
+    fun writeLine(fileName: String, value: String): Boolean =
+        runCatching { File(fileName).writeText(value) }
+            .onFailure { e -> Log.e(TAG, "Could not write to file $fileName", e) }
+            .isSuccess
+}
+
+fun fileExists(fileName: String): Boolean = FileUtils.fileExists(fileName)
+fun readOneLine(fileName: String): String? = FileUtils.readOneLine(fileName)
+fun writeLine(fileName: String, value: String): Boolean = FileUtils.writeLine(fileName, value)

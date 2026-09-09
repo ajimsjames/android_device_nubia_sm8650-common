@@ -1,72 +1,182 @@
 /*
- * SPDX-FileCopyrightText: 2025 The LineageOS Project
+ * SPDX-FileCopyrightText: 2025-2026 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
 package org.lineageos.settings.fan
 
+import android.database.ContentObserver
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.provider.Settings
+import androidx.preference.ListPreference
 import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SeekBarPreference
+import androidx.preference.SwitchPreferenceCompat
 import com.android.settingslib.widget.MainSwitchPreference
-import com.android.settingslib.widget.SettingsBasePreferenceFragment
-import com.android.settingslib.widget.SliderPreference
 import org.lineageos.settings.R
-import org.lineageos.settings.utils.*
+import org.lineageos.settings.power.PowerProfileController
+import org.lineageos.settings.utils.SettingsUtils
 
-class FanFragment : SettingsBasePreferenceFragment(), Preference.OnPreferenceChangeListener {
+class FanFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
 
-    private lateinit var mSwitchBar: MainSwitchPreference
-    private lateinit var mFanSpeedBar: SliderPreference
+    private var fanSwitch: MainSwitchPreference? = null
+    private var fanAutoPref: SwitchPreferenceCompat? = null
+    private var fanProfilePref: ListPreference? = null
+    private var fanSpeedPref: SeekBarPreference? = null
+    private var fanStatusPref: Preference? = null
+
+    private val handler = Handler(Looper.getMainLooper())
+    private val statusUpdateRunnable = object : Runnable {
+        override fun run() {
+            updateStatus()
+            handler.postDelayed(this, 1000)
+        }
+    }
+
+    private val settingsObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
+        override fun onChange(selfChange: Boolean) {
+            val context = context ?: return
+            val isEnabled = FanController.isFanEnabled(context)
+            fanSwitch?.isChecked = isEnabled
+            val speed = FanController.getFanSpeed(context)
+            fanSpeedPref?.value = speed
+            val isAuto = FanController.isAutoMode(context)
+            fanAutoPref?.isChecked = isAuto
+            updateControlsState(isEnabled, isAuto)
+            updateStatus()
+        }
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        addPreferencesFromResource(R.xml.fan_preferences)
+        setPreferencesFromResource(R.xml.fan_preferences, rootKey)
 
-        val fanEnabled = getInt(requireContext(), FanController.KEY_FAN_ENABLE, 0) == 1
-        val savedSpeed =
-            getInt(requireContext(), FanController.KEY_FAN_SPEED, FanController.FAN_DEFAULT_SPEED)
+        val context = requireContext()
 
-        mSwitchBar =
-            findPreference<MainSwitchPreference>(FanController.KEY_FAN_ENABLE)!!.apply {
-                setChecked(fanEnabled)
-                onPreferenceChangeListener = this@FanFragment
-            }
+        fanSwitch = findPreference(FanController.KEY_FAN_ENABLE)
+        val isEnabled = FanController.isFanEnabled(context)
+        fanSwitch?.isChecked = isEnabled
+        fanSwitch?.onPreferenceChangeListener = this
 
-        mFanSpeedBar =
-            findPreference<SliderPreference>(FanController.KEY_FAN_SPEED)!!.apply {
-                setMin(FanController.FAN_MIN_SPEED)
-                setMax(FanController.FAN_MAX_SPEED)
-                setSliderIncrement(1)
-                setValue(savedSpeed)
-                setShowSliderValue(true)
-                isEnabled = fanEnabled
-                onPreferenceChangeListener = this@FanFragment
-            }
+        fanStatusPref = findPreference("fan_status")
+
+        fanAutoPref = findPreference(FanController.KEY_FAN_AUTO_MODE)
+        val isAuto = FanController.isAutoMode(context)
+        fanAutoPref?.isChecked = isAuto
+        fanAutoPref?.onPreferenceChangeListener = this
+
+        fanProfilePref = findPreference(FanController.KEY_FAN_PROFILE)
+        fanProfilePref?.value = FanController.getProfile(context).toString()
+        fanProfilePref?.onPreferenceChangeListener = this
+
+        fanSpeedPref = findPreference(FanController.KEY_FAN_SPEED)
+        fanSpeedPref?.value = FanController.getFanSpeed(context)
+        fanSpeedPref?.onPreferenceChangeListener = this
+
+        updateControlsState(isEnabled, isAuto)
+        updateStatus()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val context = context ?: return
+        context.contentResolver.registerContentObserver(
+            Settings.Global.getUriFor("nubia_parts_" + FanController.KEY_FAN_ENABLE),
+            false,
+            settingsObserver
+        )
+        context.contentResolver.registerContentObserver(
+            Settings.Global.getUriFor("nubia_parts_" + FanController.KEY_FAN_SPEED),
+            false,
+            settingsObserver
+        )
+        context.contentResolver.registerContentObserver(
+            Settings.Global.getUriFor("nubia_parts_" + FanController.KEY_FAN_AUTO_MODE),
+            false,
+            settingsObserver
+        )
+        context.contentResolver.registerContentObserver(
+            Settings.Global.getUriFor("nubia_parts_" + PowerProfileController.KEY_POWER_PROFILE),
+            false,
+            settingsObserver
+        )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        context?.contentResolver?.unregisterContentObserver(settingsObserver)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        handler.post(statusUpdateRunnable)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        handler.removeCallbacks(statusUpdateRunnable)
+    }
+
+    private fun updateStatus() {
+        val context = context ?: return
+        val rpm = FanController.getFanRpm(context)
+        val battTemp = FanController.getBatteryTemp(context)
+        val cpuTemp = FanController.getCpuTemp()
+        val isEnabled = FanController.isFanEnabled(context)
+        val currentSpeed = FanController.getFanSpeed(context)
+
+        // Live reflect on controls
+        fanSwitch?.isChecked = isEnabled
+        fanSpeedPref?.value = currentSpeed
+
+        if (isEnabled && rpm > 0) {
+            fanStatusPref?.summary = "Speed: $rpm RPM (Level $currentSpeed)  |  CPU: " + String.format("%.1f", cpuTemp) + "°C  |  Battery: " + String.format("%.1f", battTemp) + "°C"
+        } else if (isEnabled) {
+            fanStatusPref?.summary = "Spinning Up (Level $currentSpeed)...  |  CPU: " + String.format("%.1f", cpuTemp) + "°C  |  Battery: " + String.format("%.1f", battTemp) + "°C"
+        } else {
+            fanStatusPref?.summary = "Fan Stopped (0 RPM)  |  CPU: " + String.format("%.1f", cpuTemp) + "°C  |  Battery: " + String.format("%.1f", battTemp) + "°C"
+        }
+    }
+
+    private fun updateControlsState(isEnabled: Boolean, isAuto: Boolean) {
+        fanAutoPref?.isEnabled = isEnabled
+        fanProfilePref?.isEnabled = isEnabled
+        fanSpeedPref?.isEnabled = isEnabled
+        fanProfilePref?.isVisible = isAuto
+        fanSpeedPref?.isVisible = !isAuto
     }
 
     override fun onPreferenceChange(preference: Preference, newValue: Any): Boolean {
-        return when (preference.key) {
+        val context = requireContext()
+        when (preference.key) {
             FanController.KEY_FAN_ENABLE -> {
-                val isEnabled = newValue as Boolean
-                val speed =
-                    getInt(
-                        requireContext(),
-                        FanController.KEY_FAN_SPEED,
-                        FanController.FAN_DEFAULT_SPEED,
-                    )
-
-                mFanSpeedBar.isEnabled = isEnabled
-                FanController.applySettings(requireContext(), isEnabled, speed)
-                true
+                val enabled = newValue as Boolean
+                FanController.setFanEnabled(context, enabled)
+                updateControlsState(enabled, FanController.isAutoMode(context))
+                updateStatus()
+                return true
             }
-
+            FanController.KEY_FAN_AUTO_MODE -> {
+                val auto = newValue as Boolean
+                FanController.setAutoMode(context, auto)
+                updateControlsState(FanController.isFanEnabled(context), auto)
+                updateStatus()
+                return true
+            }
+            FanController.KEY_FAN_PROFILE -> {
+                val profile = (newValue as String).toInt()
+                FanController.setProfile(context, profile)
+                return true
+            }
             FanController.KEY_FAN_SPEED -> {
                 val speed = newValue as Int
-
-                FanController.setFanSpeed(requireContext(), speed)
-                true
+                FanController.setFanSpeed(context, speed)
+                updateStatus()
+                return true
             }
-
-            else -> false
         }
+        return false
     }
 }

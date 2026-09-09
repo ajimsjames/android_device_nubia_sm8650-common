@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2026 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/game_optimizer_title">
+
+    <PreferenceCategory
+        android:title="@string/game_optimizer_actions_category">
+
+        <Preference
+            android:key="game_opt_apply_now"
+            android:title="@string/game_opt_apply_now_title"
+            android:summary="@string/game_opt_apply_now_summary" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/game_optimizer_info_category">
+
+        <Preference
+            android:key="game_opt_info_fps"
+            android:title="@string/game_opt_info_fps_title"
+            android:summary="@string/game_opt_info_fps_summary"
+            android:selectable="false" />
+
+        <Preference
+            android:key="game_opt_info_res"
+            android:title="@string/game_opt_info_res_title"
+            android:summary="@string/game_opt_info_res_summary"
+            android:selectable="false" />
+
+        <Preference
+            android:key="game_opt_info_quality"
+            android:title="@string/game_opt_info_quality_title"
+            android:summary="@string/game_opt_info_quality_summary"
+            android:selectable="false" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
