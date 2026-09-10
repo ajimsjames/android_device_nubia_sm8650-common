@@ -224,6 +224,21 @@
             </intent-filter>
         </service>
 
+        <!-- Crosshair Aim Assist Overlay & QS Tile -->
+        <service
+            android:name=".crosshair.CrosshairOverlayService"
+            android:exported="false" />
+
+        <service
+            android:name=".crosshair.CrosshairTileService"
+            android:exported="true"
+            android:label="Aim Assist"
+            android:icon="@drawable/ic_triggers"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE"/>
+            </intent-filter>
+        </service>
 
         <!-- Home Screen Gaming HUD Widget -->
         <receiver

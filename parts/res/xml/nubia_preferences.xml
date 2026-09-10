@@ -122,6 +122,35 @@
     </PreferenceCategory>
 
     <PreferenceCategory
+        android:title="Aim Assist &amp; Tactical Crosshair">
+
+        <SwitchPreferenceCompat
+            android:key="crosshair_overlay_enable"
+            android:title="Tactical Crosshair Overlay"
+            android:summary="Render center crosshair with draggable up to 8x scope zoom slider"
+            android:icon="@drawable/ic_crosshair"
+            android:defaultValue="false" />
+
+        <ListPreference
+            android:key="crosshair_style"
+            android:title="Reticle Style"
+            android:summary="%s"
+            android:entries="@array/crosshair_style_entries"
+            android:entryValues="@array/crosshair_style_values"
+            android:defaultValue="0"
+            app:dependency="crosshair_overlay_enable" />
+
+        <ListPreference
+            android:key="crosshair_color"
+            android:title="Reticle Color"
+            android:summary="%s"
+            android:entries="@array/crosshair_color_entries"
+            android:entryValues="@array/crosshair_color_values"
+            android:defaultValue="0"
+            app:dependency="crosshair_overlay_enable" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="Battery &amp; Charging">
 
         <SwitchPreferenceCompat

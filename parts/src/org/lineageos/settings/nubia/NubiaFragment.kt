@@ -84,6 +84,18 @@ class NubiaFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeL
             pref?.onPreferenceChangeListener = this
         }
 
+        val crosshairSwitch: SwitchPreferenceCompat? = findPreference("crosshair_overlay_enable")
+        crosshairSwitch?.isChecked = org.lineageos.settings.utils.SettingsUtils.getInt(context, "crosshair_overlay_enable", 0) == 1
+        crosshairSwitch?.onPreferenceChangeListener = this
+
+        val crosshairStylePref: ListPreference? = findPreference("crosshair_style")
+        crosshairStylePref?.value = org.lineageos.settings.utils.SettingsUtils.getInt(context, "crosshair_style", 0).toString()
+        crosshairStylePref?.onPreferenceChangeListener = this
+
+        val crosshairColorPref: ListPreference? = findPreference("crosshair_color")
+        crosshairColorPref?.value = org.lineageos.settings.utils.SettingsUtils.getInt(context, "crosshair_color", 0).toString()
+        crosshairColorPref?.onPreferenceChangeListener = this
+
         touchDeadzonePref = findPreference("touch_edge_deadzone")
         touchDeadzonePref?.value = TouchEnhancer.getEdgeDeadzone(context).toString()
         touchDeadzonePref?.onPreferenceChangeListener = this
@@ -167,6 +179,27 @@ class NubiaFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeL
             org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_PROFILE -> {
                 val enabled = newValue as Boolean
                 org.lineageos.settings.utils.SettingsUtils.putInt(context, preference.key, if (enabled) 1 else 0)
+                return true
+            }
+            "crosshair_overlay_enable" -> {
+                val enabled = newValue as Boolean
+                org.lineageos.settings.utils.SettingsUtils.putInt(context, "crosshair_overlay_enable", if (enabled) 1 else 0)
+                val intent = Intent(context, org.lineageos.settings.crosshair.CrosshairOverlayService::class.java)
+                if (enabled) {
+                    context.startService(intent)
+                } else {
+                    context.stopService(intent)
+                }
+                return true
+            }
+            "crosshair_style" -> {
+                val style = (newValue as String).toInt()
+                org.lineageos.settings.utils.SettingsUtils.putInt(context, "crosshair_style", style)
+                return true
+            }
+            "crosshair_color" -> {
+                val color = (newValue as String).toInt()
+                org.lineageos.settings.utils.SettingsUtils.putInt(context, "crosshair_color", color)
                 return true
             }
             "touch_edge_deadzone" -> {
