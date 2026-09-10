@@ -69,10 +69,13 @@ class NubiaFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeL
         hudSwitch?.onPreferenceChangeListener = this
 
         val hudKeys = arrayOf(
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_FPS,
             org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_TEMPS,
             org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_CPU,
             org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_GPU,
             org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_FAN,
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_POWER,
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_RAM,
             org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_PROFILE
         )
         for (key in hudKeys) {
@@ -154,10 +157,13 @@ class NubiaFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeL
                 }
                 return true
             }
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_FPS,
             org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_TEMPS,
             org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_CPU,
             org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_GPU,
             org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_FAN,
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_POWER,
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_RAM,
             org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_PROFILE -> {
                 val enabled = newValue as Boolean
                 org.lineageos.settings.utils.SettingsUtils.putInt(context, preference.key, if (enabled) 1 else 0)

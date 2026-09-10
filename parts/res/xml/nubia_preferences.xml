@@ -72,6 +72,11 @@
             app:dependency="gaming_hud_overlay_enable">
 
             <SwitchPreferenceCompat
+                android:key="hud_show_fps"
+                android:title="Real-Time FPS / Refresh Rate"
+                android:defaultValue="true" />
+
+            <SwitchPreferenceCompat
                 android:key="hud_show_temps"
                 android:title="SoC &amp; Battery Temperature"
                 android:defaultValue="true" />
@@ -89,6 +94,16 @@
             <SwitchPreferenceCompat
                 android:key="hud_show_fan"
                 android:title="Internal Fan RPM &amp; Level"
+                android:defaultValue="true" />
+
+            <SwitchPreferenceCompat
+                android:key="hud_show_power"
+                android:title="Live Battery Wattage &amp; Power Draw"
+                android:defaultValue="true" />
+
+            <SwitchPreferenceCompat
+                android:key="hud_show_ram"
+                android:title="RAM &amp; Memory Pool Usage"
                 android:defaultValue="true" />
 
             <SwitchPreferenceCompat

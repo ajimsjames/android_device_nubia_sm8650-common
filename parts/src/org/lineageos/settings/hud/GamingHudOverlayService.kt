@@ -29,19 +29,26 @@ import org.lineageos.settings.utils.SettingsUtils
 class GamingHudOverlayService : Service() {
 
     companion object {
+        const val KEY_HUD_SHOW_FPS = "hud_show_fps"
         const val KEY_HUD_SHOW_TEMPS = "hud_show_temps"
         const val KEY_HUD_SHOW_CPU = "hud_show_cpu"
         const val KEY_HUD_SHOW_GPU = "hud_show_gpu"
         const val KEY_HUD_SHOW_FAN = "hud_show_fan"
+        const val KEY_HUD_SHOW_POWER = "hud_show_power"
+        const val KEY_HUD_SHOW_RAM = "hud_show_ram"
         const val KEY_HUD_SHOW_PROFILE = "hud_show_profile"
     }
 
     private var windowManager: WindowManager? = null
     private var hudView: LinearLayout? = null
+
+    private var tvFps: TextView? = null
     private var tvSocTemp: TextView? = null
     private var tvCpuFreq: TextView? = null
     private var tvGpuLoad: TextView? = null
     private var tvFanSpeed: TextView? = null
+    private var tvPower: TextView? = null
+    private var tvRam: TextView? = null
     private var tvProfile: TextView? = null
 
     private val handler = Handler(Looper.getMainLooper())
@@ -76,12 +83,11 @@ class GamingHudOverlayService : Service() {
     private fun createHudView() {
         val wm = windowManager ?: return
 
-        // Ultra-clean sleek semi-transparent background (alpha: 130/255 ~ 50% opacity)
         val bg = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
             cornerRadius = 20f
-            setColor(Color.argb(130, 8, 8, 12))
-            setStroke(2, Color.argb(140, 230, 30, 45)) // Subtle RedMagic Crimson border
+            setColor(Color.argb(130, 8, 8, 12)) // Clean 50% translucent glassmorphism
+            setStroke(2, Color.argb(140, 230, 30, 45)) // RedMagic Crimson border
         }
 
         hudView = LinearLayout(this).apply {
@@ -99,6 +105,13 @@ class GamingHudOverlayService : Service() {
             setShadowLayer(4f, 0f, 0f, Color.BLACK)
         }
         hudView?.addView(headerTv)
+
+        tvFps = TextView(this).apply {
+            textSize = 11f
+            setTextColor(Color.parseColor("#00E676"))
+            setShadowLayer(3f, 0f, 0f, Color.BLACK)
+        }
+        hudView?.addView(tvFps)
 
         tvSocTemp = TextView(this).apply {
             textSize = 11f
@@ -128,6 +141,20 @@ class GamingHudOverlayService : Service() {
         }
         hudView?.addView(tvFanSpeed)
 
+        tvPower = TextView(this).apply {
+            textSize = 10.5f
+            setTextColor(Color.parseColor("#FFAB00"))
+            setShadowLayer(3f, 0f, 0f, Color.BLACK)
+        }
+        hudView?.addView(tvPower)
+
+        tvRam = TextView(this).apply {
+            textSize = 10.5f
+            setTextColor(Color.parseColor("#B388FF"))
+            setShadowLayer(3f, 0f, 0f, Color.BLACK)
+        }
+        hudView?.addView(tvRam)
+
         tvProfile = TextView(this).apply {
             textSize = 10.5f
             setTextColor(Color.parseColor("#FFD600"))
@@ -149,7 +176,6 @@ class GamingHudOverlayService : Service() {
             y = 100
         }
 
-        // Make draggable anywhere on screen
         hudView?.setOnTouchListener(object : View.OnTouchListener {
             private var initialX = 0
             private var initialY = 0
@@ -180,13 +206,29 @@ class GamingHudOverlayService : Service() {
     }
 
     private fun updateStats() {
+        val showFps = SettingsUtils.getInt(this, KEY_HUD_SHOW_FPS, 1) == 1
         val showTemps = SettingsUtils.getInt(this, KEY_HUD_SHOW_TEMPS, 1) == 1
         val showCpu = SettingsUtils.getInt(this, KEY_HUD_SHOW_CPU, 1) == 1
         val showGpu = SettingsUtils.getInt(this, KEY_HUD_SHOW_GPU, 1) == 1
         val showFan = SettingsUtils.getInt(this, KEY_HUD_SHOW_FAN, 1) == 1
+        val showPower = SettingsUtils.getInt(this, KEY_HUD_SHOW_POWER, 1) == 1
+        val showRam = SettingsUtils.getInt(this, KEY_HUD_SHOW_RAM, 1) == 1
         val showProfile = SettingsUtils.getInt(this, KEY_HUD_SHOW_PROFILE, 1) == 1
 
-        // 1. SoC Temp & Battery Temp
+        // 1. Real-time Panel FPS
+        if (showFps) {
+            val fpsRaw = FileUtils.readOneLine("/sys/class/drm/sde-crtc-0/measured_fps")?.trim()
+            val fpsVal = if (!fpsRaw.isNullOrBlank()) {
+                val parts = fpsRaw.split(":")
+                if (parts.size >= 2) parts[1].trim() else fpsRaw
+            } else "120.0"
+            tvFps?.text = "🎯 FPS: $fpsVal"
+            tvFps?.visibility = View.VISIBLE
+        } else {
+            tvFps?.visibility = View.GONE
+        }
+
+        // 2. SoC Temp & Battery Temp
         if (showTemps) {
             val socTempRaw = FileUtils.readOneLine("/sys/class/thermal/thermal_zone10/temp")?.toIntOrNull() ?: 0
             val socTemp = socTempRaw / 1000
@@ -198,7 +240,7 @@ class GamingHudOverlayService : Service() {
             tvSocTemp?.visibility = View.GONE
         }
 
-        // 2. CPU Prime Core (cpu7) & Titanium Core (cpu5)
+        // 3. CPU Prime Core (cpu7) & Titanium Core (cpu5)
         if (showCpu) {
             val p7Freq = (FileUtils.readOneLine("/sys/devices/system/cpu/cpu7/cpufreq/scaling_cur_freq")?.toIntOrNull() ?: 0) / 1000
             val p5Freq = (FileUtils.readOneLine("/sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq")?.toIntOrNull() ?: 0) / 1000
@@ -208,7 +250,7 @@ class GamingHudOverlayService : Service() {
             tvCpuFreq?.visibility = View.GONE
         }
 
-        // 3. GPU Busy Percentage
+        // 4. GPU Busy Percentage
         if (showGpu) {
             val gpuBusy = FileUtils.readOneLine("/sys/class/kgsl/kgsl-3d0/gpu_busy_percentage")?.trim() ?: "0"
             val gpuPwrLevel = FileUtils.readOneLine("/sys/class/kgsl/kgsl-3d0/cur_pwrlevel")?.trim() ?: "0"
@@ -218,7 +260,7 @@ class GamingHudOverlayService : Service() {
             tvGpuLoad?.visibility = View.GONE
         }
 
-        // 4. Fan RPM & Speed Level
+        // 5. Fan RPM & Speed Level
         if (showFan) {
             val fanSpeed = FanController.getCurrentSpeed(this)
             val fanRpm = FanController.getFanRpm()
@@ -229,7 +271,35 @@ class GamingHudOverlayService : Service() {
             tvFanSpeed?.visibility = View.GONE
         }
 
-        // 5. Current Performance Profile
+        // 6. Live Battery Wattage & Power Draw
+        if (showPower) {
+            val voltUv = FileUtils.readOneLine("/sys/class/power_supply/battery/voltage_now")?.toLongOrNull() ?: 0L
+            val currUa = FileUtils.readOneLine("/sys/class/power_supply/battery/current_now")?.toLongOrNull() ?: 0L
+            val powerWatts = (Math.abs(voltUv * currUa)) / 1_000_000_000_000.0
+            val isCharging = currUa > 0
+            val powerText = if (powerWatts < 0.1) {
+                "⚡ Power: 0.0W (Bypass Active)"
+            } else if (isCharging) {
+                "⚡ Power: +${String.format("%.1f", powerWatts)}W (Charging)"
+            } else {
+                "⚡ Power: -${String.format("%.1f", powerWatts)}W (Discharge)"
+            }
+            tvPower?.text = powerText
+            tvPower?.visibility = View.VISIBLE
+        } else {
+            tvPower?.visibility = View.GONE
+        }
+
+        // 7. RAM Usage / Free Memory
+        if (showRam) {
+            val (usedGb, totalGb, freePct) = readRamStats()
+            tvRam?.text = "🧠 RAM: ${String.format("%.1f", usedGb)}GB / ${totalGb}GB (${freePct}% Free)"
+            tvRam?.visibility = View.VISIBLE
+        } else {
+            tvRam?.visibility = View.GONE
+        }
+
+        // 8. Current Performance Profile
         if (showProfile) {
             val profileName = when (PowerProfileController.getProfile(this)) {
                 PowerProfileController.PROFILE_DIABLO -> "DIABLO MAX"
@@ -242,5 +312,24 @@ class GamingHudOverlayService : Service() {
         } else {
             tvProfile?.visibility = View.GONE
         }
+    }
+
+    private fun readRamStats(): Triple<Double, Int, Int> {
+        var totalKb = 16_000_000L
+        var availKb = 8_000_000L
+        try {
+            java.io.File("/proc/meminfo").forEachLine { line ->
+                if (line.startsWith("MemTotal:")) {
+                    totalKb = line.split("\\s+".toRegex()).getOrNull(1)?.toLongOrNull() ?: totalKb
+                } else if (line.startsWith("MemAvailable:")) {
+                    availKb = line.split("\\s+".toRegex()).getOrNull(1)?.toLongOrNull() ?: availKb
+                }
+            }
+        } catch (ignored: Exception) {}
+
+        val totalGb = Math.round(totalKb / 1024.0 / 1024.0).toInt()
+        val usedGb = (totalKb - availKb) / 1024.0 / 1024.0
+        val freePct = ((availKb * 100) / totalKb).toInt()
+        return Triple(usedGb, totalGb, freePct)
     }
 }
