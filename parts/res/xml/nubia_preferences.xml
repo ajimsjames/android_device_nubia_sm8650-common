@@ -59,6 +59,12 @@
             android:summary="@string/touch_high_sampling_summary"
             android:defaultValue="true" />
 
+        <SwitchPreferenceCompat
+            android:key="gaming_hud_overlay_enable"
+            android:title="Gaming Performance Overlay"
+            android:summary="Display live floating HUD with CPU, GPU, Fan RPM, and Temps"
+            android:defaultValue="false" />
+
         <ListPreference
             android:key="touch_edge_deadzone"
             android:title="@string/touch_edge_deadzone_title"

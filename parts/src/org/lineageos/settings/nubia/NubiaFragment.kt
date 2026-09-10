@@ -64,6 +64,10 @@ class NubiaFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeL
         touchRateSwitch?.isChecked = TouchEnhancer.isHighSamplingRateEnabled(context)
         touchRateSwitch?.onPreferenceChangeListener = this
 
+        val hudSwitch: SwitchPreferenceCompat? = findPreference("gaming_hud_overlay_enable")
+        hudSwitch?.isChecked = org.lineageos.settings.utils.SettingsUtils.getInt(context, "gaming_hud_overlay_enable", 0) == 1
+        hudSwitch?.onPreferenceChangeListener = this
+
         touchDeadzonePref = findPreference("touch_edge_deadzone")
         touchDeadzonePref?.value = TouchEnhancer.getEdgeDeadzone(context).toString()
         touchDeadzonePref?.onPreferenceChangeListener = this
@@ -124,6 +128,17 @@ class NubiaFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeL
             "touch_high_sampling_rate" -> {
                 val enabled = newValue as Boolean
                 TouchEnhancer.setHighSamplingRateEnabled(context, enabled)
+                return true
+            }
+            "gaming_hud_overlay_enable" -> {
+                val enabled = newValue as Boolean
+                org.lineageos.settings.utils.SettingsUtils.putInt(context, "gaming_hud_overlay_enable", if (enabled) 1 else 0)
+                val intent = Intent(context, org.lineageos.settings.hud.GamingHudOverlayService::class.java)
+                if (enabled) {
+                    context.startService(intent)
+                } else {
+                    context.stopService(intent)
+                }
                 return true
             }
             "touch_edge_deadzone" -> {
