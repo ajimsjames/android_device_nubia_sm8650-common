@@ -2,8 +2,45 @@ type devicesettings_app, domain;
 app_domain(devicesettings_app)
 
 allow devicesettings_app {
+    activity_service
+    activity_task_service
     app_api_service
+    audio_service
+    audioserver_service
+    autofill_service
+    batteryproperties_service
+    batterystats_service
+    cameraserver_service
+    game_service
+    gpu_service
+    media_session_service
+    mediaextractor_service
+    mediametricstransaction_service
+    mediaserver_service
+    power_service
+    sensorservice_service
+    surfaceflinger_service
+    thermal_service
+    tethering_service
+    uimode_service
+    vendor_perf_service
 }:service_manager find;
 
+# Fan & RGB sysfs
 rw_dir_file(devicesettings_app, sysfs_fan)
+
+# Trigger buttons
 rw_dir_file(devicesettings_app, proc_touchkey)
+
+# CPU & Thermal & CGroup controls
+allow devicesettings_app {
+    sysfs_devices_system_cpu
+    sysfs_thermal
+    cgroup
+}:file rw_file_perms;
+
+allow devicesettings_app {
+    sysfs_devices_system_cpu
+    sysfs_thermal
+    cgroup
+}:dir r_dir_perms;

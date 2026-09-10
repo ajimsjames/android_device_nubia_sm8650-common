@@ -498,7 +498,34 @@ on post-fs-data
 
     # Touchkey end
 	
-	# Nubia add start
+    # CPU governors, scaling freqs, uclamp, hispeed
+    chown system system /dev/cpuctl/top-app/cpu.uclamp.min
+    chmod 0664 /dev/cpuctl/top-app/cpu.uclamp.min
+    chown system system /proc/sys/walt/sched_boost
+    chmod 0664 /proc/sys/walt/sched_boost
+
+    chown system system /sys/devices/system/cpu/cpufreq/policy0/walt/hispeed_freq
+    chown system system /sys/devices/system/cpu/cpufreq/policy2/walt/hispeed_freq
+    chown system system /sys/devices/system/cpu/cpufreq/policy5/walt/hispeed_freq
+    chown system system /sys/devices/system/cpu/cpufreq/policy7/walt/hispeed_freq
+    chmod 0664 /sys/devices/system/cpu/cpufreq/policy0/walt/hispeed_freq
+    chmod 0664 /sys/devices/system/cpu/cpufreq/policy2/walt/hispeed_freq
+    chmod 0664 /sys/devices/system/cpu/cpufreq/policy5/walt/hispeed_freq
+    chmod 0664 /sys/devices/system/cpu/cpufreq/policy7/walt/hispeed_freq
+
+    # KGSL (GPU)
+    chown system system /sys/class/kgsl/kgsl-3d0/max_pwrlevel
+    chown system system /sys/class/kgsl/kgsl-3d0/min_pwrlevel
+    chown system system /sys/class/kgsl/kgsl-3d0/force_bus_on
+    chown system system /sys/class/kgsl/kgsl-3d0/force_clk_on
+    chown system system /sys/class/kgsl/kgsl-3d0/force_rail_on
+    chmod 0664 /sys/class/kgsl/kgsl-3d0/max_pwrlevel
+    chmod 0664 /sys/class/kgsl/kgsl-3d0/min_pwrlevel
+    chmod 0664 /sys/class/kgsl/kgsl-3d0/force_bus_on
+    chmod 0664 /sys/class/kgsl/kgsl-3d0/force_clk_on
+    chmod 0664 /sys/class/kgsl/kgsl-3d0/force_rail_on
+
+    # Fan & RGB
     chown system system /sys/class/leds/fan/fan_current
     chown system system /sys/class/leds/fan/fan_enable
     chown system system /sys/class/leds/fan/fan_speed_count
@@ -509,17 +536,31 @@ on post-fs-data
     chown system system /sys/kernel/fan/fan_enable
     chown system system /sys/kernel/fan/fan_speed_count
     chown system system /sys/kernel/fan/fan_speed_level
+    chown system system /sys/kernel/fan/fan_speed_pwm
+    chown system system /sys/kernel/fan/led_enable
+    chown system system /sys/kernel/fan/led_id
+    chown system system /sys/kernel/fan/led_on_ms
+    chown system system /sys/kernel/fan/led_off_ms
+    chown system system /sys/kernel/fan/led_fade_ms
+    chown system system /sys/kernel/fan/led_brightness
 
-    chmod 664 /sys/class/leds/fan/fan_current
-    chmod 664 /sys/class/leds/fan/fan_enable
-    chmod 664 /sys/class/leds/fan/fan_speed_count
-    chmod 664 /sys/class/leds/fan/fan_speed_level
-    chmod 664 /sys/class/leds/fan/fan_temp
-    chmod 664 /sys/class/leds/fan/fan_thermal_engine_level 
+    chmod 0664 /sys/class/leds/fan/fan_current
+    chmod 0664 /sys/class/leds/fan/fan_enable
+    chmod 0664 /sys/class/leds/fan/fan_speed_count
+    chmod 0664 /sys/class/leds/fan/fan_speed_level
+    chmod 0664 /sys/class/leds/fan/fan_temp
+    chmod 0664 /sys/class/leds/fan/fan_thermal_engine_level 
 
-    chmod 664 /sys/kernel/fan/fan_enable
-    chmod 664 /sys/kernel/fan/fan_speed_count
-    chmod 664 /sys/kernel/fan/fan_speed_level
+    chmod 0664 /sys/kernel/fan/fan_enable
+    chmod 0664 /sys/kernel/fan/fan_speed_count
+    chmod 0664 /sys/kernel/fan/fan_speed_level
+    chmod 0664 /sys/kernel/fan/fan_speed_pwm
+    chmod 0664 /sys/kernel/fan/led_enable
+    chmod 0664 /sys/kernel/fan/led_id
+    chmod 0664 /sys/kernel/fan/led_on_ms
+    chmod 0664 /sys/kernel/fan/led_off_ms
+    chmod 0664 /sys/kernel/fan/led_fade_ms
+    chmod 0664 /sys/kernel/fan/led_brightness
     # Nubia add end
 	
 

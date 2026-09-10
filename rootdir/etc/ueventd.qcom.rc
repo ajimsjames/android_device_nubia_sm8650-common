@@ -603,6 +603,21 @@ subsystem mem_buf_vm
 
 # Battery
 /sys/class/qcom-battery                                 battery_charging_enabled        0660    system  system
+/sys/class/power_supply/battery                         charging_enabled                0660    system  system
+/sys/class/power_supply/battery                         charge_control_limit            0660    system  system
+/sys/class/power_supply/battery                         charge_control_limit_max        0660    system  system
+/sys/class/power_supply/battery                         temp                            0664    system  system
+/sys/class/power_supply/usb                             online                          0664    system  system
+
+# CPU walt hispeed
+/sys/devices/system/cpu/cpufreq/policy*/walt            hispeed_freq                    0664    system  system
+
+# KGSL GPU
+/sys/class/kgsl/kgsl-3d0                                max_pwrlevel                    0664    system  system
+/sys/class/kgsl/kgsl-3d0                                min_pwrlevel                    0664    system  system
+/sys/class/kgsl/kgsl-3d0                                force_bus_on                    0664    system  system
+/sys/class/kgsl/kgsl-3d0                                force_clk_on                    0664    system  system
+/sys/class/kgsl/kgsl-3d0                                force_rail_on                   0664    system  system
 
 # Touchscreen
 /sys/devices/platform/goodix_ts.0 gesture/single_en       0660   system     system

@@ -55,14 +55,14 @@ object PowerProfileController {
             PROFILE_BATTERY_SAVER -> {
                 // Limit CPU max frequencies for maximum battery endurance
                 FileUtils.writeLine(POLICY0_MAX_FREQ, "1689600")
-                FileUtils.writeLine(POLICY2_MAX_FREQ, "1804800")
-                FileUtils.writeLine(POLICY5_MAX_FREQ, "1804800")
-                FileUtils.writeLine(POLICY7_MAX_FREQ, "1804800")
+                FileUtils.writeLine(POLICY2_MAX_FREQ, "1824000")
+                FileUtils.writeLine(POLICY5_MAX_FREQ, "1824000")
+                FileUtils.writeLine(POLICY7_MAX_FREQ, "1824000")
 
-                FileUtils.writeLine(POLICY0_HISPEED, "768000")
+                FileUtils.writeLine(POLICY0_HISPEED, "787200")
                 FileUtils.writeLine(POLICY2_HISPEED, "960000")
                 FileUtils.writeLine(POLICY5_HISPEED, "960000")
-                FileUtils.writeLine(POLICY7_HISPEED, "960000")
+                FileUtils.writeLine(POLICY7_HISPEED, "902400")
 
                 // Cap GPU
                 FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "8") // Cap to SVS
@@ -74,13 +74,13 @@ object PowerProfileController {
                 // Stock uncapped max frequencies + balanced hispeeds
                 FileUtils.writeLine(POLICY0_MAX_FREQ, "2265600")
                 FileUtils.writeLine(POLICY2_MAX_FREQ, "3148800")
-                FileUtils.writeLine(POLICY5_MAX_FREQ, "3148800")
+                FileUtils.writeLine(POLICY5_MAX_FREQ, "2956800")
                 FileUtils.writeLine(POLICY7_MAX_FREQ, "3398400")
 
-                FileUtils.writeLine(POLICY0_HISPEED, "960000")
-                FileUtils.writeLine(POLICY2_HISPEED, "1113600")
-                FileUtils.writeLine(POLICY5_HISPEED, "1113600")
-                FileUtils.writeLine(POLICY7_HISPEED, "1113600")
+                FileUtils.writeLine(POLICY0_HISPEED, "902400")
+                FileUtils.writeLine(POLICY2_HISPEED, "1075200")
+                FileUtils.writeLine(POLICY5_HISPEED, "1075200")
+                FileUtils.writeLine(POLICY7_HISPEED, "1132800")
 
                 FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "0") // Full GPU access
                 FileUtils.writeLine(GPU_FORCE_BUS_ON_NODE, "0")
@@ -94,13 +94,13 @@ object PowerProfileController {
                 // Full max frequencies + aggressive ramp-up
                 FileUtils.writeLine(POLICY0_MAX_FREQ, "2265600")
                 FileUtils.writeLine(POLICY2_MAX_FREQ, "3148800")
-                FileUtils.writeLine(POLICY5_MAX_FREQ, "3148800")
+                FileUtils.writeLine(POLICY5_MAX_FREQ, "2956800")
                 FileUtils.writeLine(POLICY7_MAX_FREQ, "3398400")
 
-                FileUtils.writeLine(POLICY0_HISPEED, "1440000")
-                FileUtils.writeLine(POLICY2_HISPEED, "1804800")
-                FileUtils.writeLine(POLICY5_HISPEED, "1804800")
-                FileUtils.writeLine(POLICY7_HISPEED, "2150400")
+                FileUtils.writeLine(POLICY0_HISPEED, "1459200")
+                FileUtils.writeLine(POLICY2_HISPEED, "1824000")
+                FileUtils.writeLine(POLICY5_HISPEED, "1824000")
+                FileUtils.writeLine(POLICY7_HISPEED, "2169600")
 
                 FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "0") // Full 1.0 GHz GPU
                 FileUtils.writeLine(SCHED_BOOST_NODE, "1")
@@ -111,12 +111,12 @@ object PowerProfileController {
                 // RedMagic Diablo Mode: Max CPU, Max GPU Overclock, Max DDR, Fan Turbo
                 FileUtils.writeLine(POLICY0_MAX_FREQ, "2265600")
                 FileUtils.writeLine(POLICY2_MAX_FREQ, "3148800")
-                FileUtils.writeLine(POLICY5_MAX_FREQ, "3148800")
+                FileUtils.writeLine(POLICY5_MAX_FREQ, "2956800")
                 FileUtils.writeLine(POLICY7_MAX_FREQ, "3398400")
 
                 FileUtils.writeLine(POLICY0_HISPEED, "1804800")
-                FileUtils.writeLine(POLICY2_HISPEED, "2400000")
-                FileUtils.writeLine(POLICY5_HISPEED, "2400000")
+                FileUtils.writeLine(POLICY2_HISPEED, "2438400")
+                FileUtils.writeLine(POLICY5_HISPEED, "2438400")
                 FileUtils.writeLine(POLICY7_HISPEED, "2803200")
 
                 FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "0")
