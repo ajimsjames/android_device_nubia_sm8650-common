@@ -633,5 +633,10 @@ subsystem mem_buf_vm
 /sys/devices/platform/goodix_ts.0 rotation                0660   system     system
 /sys/devices/platform/goodix_ts.0 rate_boost              0660   system     system
 
+# Shoulder Triggers
+/sys/devices/platform/goodix_ts.1 enable                  0660   system     system
+/sys/devices/platform/goodix_ts.1 rate_boost              0660   system     system
+/sys/devices/platform/goodix_ts.1 touch_sensitivity       0660   system     system
+
 # LiveDisplay
 /sys/devices/platform/soc/soc:qcom,dsi-display-primary hbm  0660   system   system

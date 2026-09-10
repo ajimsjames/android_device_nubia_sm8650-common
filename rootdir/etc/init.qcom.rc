@@ -512,6 +512,8 @@ on post-fs-data
     chmod 0664 /proc/sys/walt/sched_conservative_pl
     chown system system /proc/sys/walt/sched_early_upmigrate
     chmod 0664 /proc/sys/walt/sched_early_upmigrate
+    chown system system /proc/sys/walt/sched_early_downmigrate
+    chmod 0664 /proc/sys/walt/sched_early_downmigrate
 
     chown system system /sys/devices/system/cpu/cpufreq/policy0/walt/hispeed_freq
     chown system system /sys/devices/system/cpu/cpufreq/policy2/walt/hispeed_freq
@@ -522,11 +524,19 @@ on post-fs-data
     chmod 0664 /sys/devices/system/cpu/cpufreq/policy5/walt/hispeed_freq
     chmod 0664 /sys/devices/system/cpu/cpufreq/policy7/walt/hispeed_freq
 
-    # Touchscreen (Goodix Berlin Ultra Sampling Rate)
+    # Touchscreen & Shoulder Triggers
     chown system system /sys/devices/platform/goodix_ts.0/rate_boost
     chown system system /sys/devices/platform/goodix_ts.0/edge_mode
     chmod 0664 /sys/devices/platform/goodix_ts.0/rate_boost
     chmod 0664 /sys/devices/platform/goodix_ts.0/edge_mode
+    chown system system /sys/devices/platform/goodix_ts.1/enable
+    chown system system /sys/devices/platform/goodix_ts.1/rate_boost
+    chown system system /sys/devices/platform/goodix_ts.1/touch_sensitivity
+    chmod 0664 /sys/devices/platform/goodix_ts.1/enable
+    chmod 0664 /sys/devices/platform/goodix_ts.1/rate_boost
+    chmod 0664 /sys/devices/platform/goodix_ts.1/touch_sensitivity
+    chown system system /proc/nubia_key
+    chmod 0664 /proc/nubia_key
 
     # Battery & Charging Control (Charge Separation / Bypass & Limits)
     chown system system /sys/class/power_supply/battery/charge_control_limit
