@@ -11,12 +11,14 @@ allow devicesettings_app {
     batteryproperties_service
     batterystats_service
     cameraserver_service
+    display_service
     game_service
     gpu_service
     media_session_service
     mediaextractor_service
     mediametricstransaction_service
     mediaserver_service
+    notification_service
     power_service
     sensorservice_service
     surfaceflinger_service
@@ -24,6 +26,9 @@ allow devicesettings_app {
     tethering_service
     uimode_service
     vendor_perf_service
+    vibrator_manager_service
+    vibrator_service
+    window_service
 }:service_manager find;
 
 # Fan & RGB sysfs
