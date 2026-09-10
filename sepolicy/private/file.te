@@ -4,6 +4,9 @@ type sysfs_fan, fs_type, sysfs_type;
 # Trigger buttons
 type proc_touchkey, fs_type, proc_type;
 
+# Sched WALT controls
+type proc_walt, fs_type, proc_type;
+
 # Touchscreen & Triggers
 type sysfs_touch, fs_type, sysfs_type;
 

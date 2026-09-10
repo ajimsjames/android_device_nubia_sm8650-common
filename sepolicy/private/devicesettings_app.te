@@ -16,7 +16,6 @@ allow devicesettings_app {
     gpu_service
     media_session_service
     mediaextractor_service
-    mediametricstransaction_service
     mediaserver_service
     notification_service
     power_service
@@ -25,10 +24,8 @@ allow devicesettings_app {
     thermal_service
     tethering_service
     uimode_service
-    vendor_perf_service
     vibrator_manager_service
     vibrator_service
-    window_service
 }:service_manager find;
 
 # Fan & RGB sysfs
@@ -37,19 +34,24 @@ rw_dir_file(devicesettings_app, sysfs_fan)
 # Touchscreen sysfs (sampling rate / rate_boost)
 rw_dir_file(devicesettings_app, sysfs_touch)
 
-# Trigger buttons & input devices
+# Trigger buttons
 rw_dir_file(devicesettings_app, proc_touchkey)
-allow devicesettings_app input_device:dir r_dir_perms;
-allow devicesettings_app input_device:chr_file rw_file_perms;
 
-# CPU & Thermal & LED & CGroup & Battery & KGSL & Graphics controls
+# Sched WALT controls
+rw_dir_file(devicesettings_app, proc_walt)
+
+# Generic proc & sysfs read permissions (for /proc/meminfo, measured_fps, etc.)
+r_dir_file(devicesettings_app, proc)
+r_dir_file(devicesettings_app, sysfs)
+
+# Specific typed sysfs read/write permissions
 allow devicesettings_app {
     sysfs_devices_system_cpu
     sysfs_thermal
     sysfs_leds
     sysfs_batteryinfo
     sysfs_kgsl
-    sysfs_graphics
+    sysfs_gpu
     cgroup
 }:file rw_file_perms;
 
@@ -59,11 +61,6 @@ allow devicesettings_app {
     sysfs_leds
     sysfs_batteryinfo
     sysfs_kgsl
-    sysfs_graphics
+    sysfs_gpu
     cgroup
 }:dir r_dir_perms;
-
-
-# Sched WALT / proc sys controls
-allow devicesettings_app proc:file rw_file_perms;
-
