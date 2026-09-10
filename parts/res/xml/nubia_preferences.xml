@@ -3,7 +3,9 @@
      SPDX-FileCopyrightText: 2025-2026 The LineageOS Project
      SPDX-License-Identifier: Apache-2.0
 -->
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <ListPreference
         android:key="nubia_power_profile"
@@ -62,8 +64,38 @@
         <SwitchPreferenceCompat
             android:key="gaming_hud_overlay_enable"
             android:title="Gaming Performance Overlay"
-            android:summary="Display live floating HUD with CPU, GPU, Fan RPM, and Temps"
+            android:summary="Display live floating HUD with customizable metrics"
             android:defaultValue="false" />
+
+        <PreferenceCategory
+            android:title="HUD Metrics Displayed"
+            app:dependency="gaming_hud_overlay_enable">
+
+            <SwitchPreferenceCompat
+                android:key="hud_show_temps"
+                android:title="SoC &amp; Battery Temperature"
+                android:defaultValue="true" />
+
+            <SwitchPreferenceCompat
+                android:key="hud_show_cpu"
+                android:title="CPU Prime &amp; Performance Clocks"
+                android:defaultValue="true" />
+
+            <SwitchPreferenceCompat
+                android:key="hud_show_gpu"
+                android:title="GPU Usage &amp; Power Level"
+                android:defaultValue="true" />
+
+            <SwitchPreferenceCompat
+                android:key="hud_show_fan"
+                android:title="Internal Fan RPM &amp; Level"
+                android:defaultValue="true" />
+
+            <SwitchPreferenceCompat
+                android:key="hud_show_profile"
+                android:title="Active Performance Profile"
+                android:defaultValue="true" />
+        </PreferenceCategory>
 
         <ListPreference
             android:key="touch_edge_deadzone"

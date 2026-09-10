@@ -68,6 +68,19 @@ class NubiaFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeL
         hudSwitch?.isChecked = org.lineageos.settings.utils.SettingsUtils.getInt(context, "gaming_hud_overlay_enable", 0) == 1
         hudSwitch?.onPreferenceChangeListener = this
 
+        val hudKeys = arrayOf(
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_TEMPS,
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_CPU,
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_GPU,
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_FAN,
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_PROFILE
+        )
+        for (key in hudKeys) {
+            val pref: SwitchPreferenceCompat? = findPreference(key)
+            pref?.isChecked = org.lineageos.settings.utils.SettingsUtils.getInt(context, key, 1) == 1
+            pref?.onPreferenceChangeListener = this
+        }
+
         touchDeadzonePref = findPreference("touch_edge_deadzone")
         touchDeadzonePref?.value = TouchEnhancer.getEdgeDeadzone(context).toString()
         touchDeadzonePref?.onPreferenceChangeListener = this
@@ -139,6 +152,15 @@ class NubiaFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeL
                 } else {
                     context.stopService(intent)
                 }
+                return true
+            }
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_TEMPS,
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_CPU,
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_GPU,
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_FAN,
+            org.lineageos.settings.hud.GamingHudOverlayService.KEY_HUD_SHOW_PROFILE -> {
+                val enabled = newValue as Boolean
+                org.lineageos.settings.utils.SettingsUtils.putInt(context, preference.key, if (enabled) 1 else 0)
                 return true
             }
             "touch_edge_deadzone" -> {
