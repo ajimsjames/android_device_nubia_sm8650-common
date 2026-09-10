@@ -29,8 +29,10 @@ allow devicesettings_app {
 # Fan & RGB sysfs
 rw_dir_file(devicesettings_app, sysfs_fan)
 
-# Trigger buttons
+# Trigger buttons & input devices
 rw_dir_file(devicesettings_app, proc_touchkey)
+allow devicesettings_app input_device:dir r_dir_perms;
+allow devicesettings_app input_device:chr_file rw_file_perms;
 
 # CPU & Thermal & LED & CGroup controls
 allow devicesettings_app {

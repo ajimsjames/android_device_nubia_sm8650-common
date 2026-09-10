@@ -496,6 +496,11 @@ on post-fs-data
     chmod 666 /sys/class/leds/sar1/sensy_config
     chmod 666 /sys/class/leds/sar1/aot_cali
 
+    chown system system /proc/nubia_key/sar0/mode_operation
+    chown system system /proc/nubia_key/sar1/mode_operation
+    chmod 0666 /proc/nubia_key/sar0/mode_operation
+    chmod 0666 /proc/nubia_key/sar1/mode_operation
+
     # Touchkey end
 	
     # CPU governors, scaling freqs, uclamp, hispeed

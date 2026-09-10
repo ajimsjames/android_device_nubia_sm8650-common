@@ -403,7 +403,8 @@ PRODUCT_PACKAGES += \
 # Nubia Parts & No-SIM Stub
 PRODUCT_PACKAGES += \
     NubiaParts \
-    NoSimStub
+    NoSimStub \
+    nubia_trigger_daemon
 
 # Inherit from proprietary targets
 $(call inherit-product, vendor/nubia/sm8650-common/sm8650-common-vendor.mk)

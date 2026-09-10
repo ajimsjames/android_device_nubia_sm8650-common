@@ -27,6 +27,7 @@ android_app {
 
 cc_binary {
     name: "nubia_trigger_daemon",
+    init_rc: ["trigger_daemon/nubia_trigger_daemon.rc"],
     srcs: ["trigger_daemon/nubia_trigger_daemon.cpp"],
     shared_libs: [
         "liblog",

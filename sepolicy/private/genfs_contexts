@@ -2,5 +2,4 @@
 genfscon sysfs /kernel/fan                         u:object_r:sysfs_fan:s0
 
 # Trigger buttons
-genfscon proc /nubia_key/sar0/mode_operation    u:object_r:proc_touchkey:s0
-genfscon proc /nubia_key/sar1/mode_operation    u:object_r:proc_touchkey:s0
+genfscon proc /nubia_key                           u:object_r:proc_touchkey:s0

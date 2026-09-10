@@ -1,0 +1,6 @@
+service nubia_trigger_daemon /system_ext/bin/nubia_trigger_daemon
+    class main
+    user root
+    group root input system
+    capabilities SYS_NICE
+    priority -20
