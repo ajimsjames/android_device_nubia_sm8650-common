@@ -598,6 +598,9 @@ subsystem mem_buf_vm
 # devcoredump data attributes
 /sys/class/devcoredump/devcd*                           data                            0600    system  system
 
+# AW22XXX RGB LED
+/sys/class/leds/aw22xxx_led/*                             0664    system  system
+
 #Virtualization Attributes
 /dev/gunyah                 0666   root     root
 

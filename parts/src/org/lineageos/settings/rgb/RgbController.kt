@@ -16,6 +16,14 @@ object RgbController {
     const val KEY_RGB_COLOR = "rgb_lighting_color"
     const val KEY_RGB_BRIGHTNESS = "rgb_lighting_brightness"
 
+    // AW22XXX RGB Nodes
+    const val AW22XXX_HWEN_NODE = "/sys/class/leds/aw22xxx_led/hwen"
+    const val AW22XXX_EFFECT_NODE = "/sys/class/leds/aw22xxx_led/effect"
+    const val AW22XXX_CFG_NODE = "/sys/class/leds/aw22xxx_led/cfg"
+    const val AW22XXX_RGB_NODE = "/sys/class/leds/aw22xxx_led/rgb"
+    const val AW22XXX_BRIGHTNESS_NODE = "/sys/class/leds/aw22xxx_led/brightness"
+
+    // Fan RGB Fallback Nodes
     const val LED_ENABLE_NODE = "/sys/kernel/fan/led_enable"
     const val LED_BRIGHTNESS_NODE = "/sys/kernel/fan/led_brightness"
     const val LED_ID_NODE = "/sys/kernel/fan/led_id"
@@ -35,12 +43,40 @@ object RgbController {
     const val COLOR_YELLOW = 4
     const val COLOR_WHITE = 5
 
+    private val COLOR_HEX_MAP = mapOf(
+        COLOR_RED to "0xFF0000",
+        COLOR_CYAN to "0x00FFFF",
+        COLOR_GREEN to "0x00FF00",
+        COLOR_VIOLET to "0xFF00FF",
+        COLOR_YELLOW to "0xFFFF00",
+        COLOR_WHITE to "0xFFFFFF"
+    )
+
+    private val COLOR_EFFECT_MAP = mapOf(
+        COLOR_RED to 8,    // nubia_all_rgb_red.bin
+        COLOR_GREEN to 9,  // nubia_all_rgb_green.bin
+        COLOR_CYAN to 10,  // nubia_all_rgb_blue.bin
+        COLOR_VIOLET to 8,
+        COLOR_YELLOW to 9,
+        COLOR_WHITE to 10
+    )
+
     fun isRgbEnabled(context: Context): Boolean {
         return SettingsUtils.getInt(context, KEY_RGB_ENABLE, 1) == 1
     }
 
     fun setRgbEnabled(context: Context, enabled: Boolean) {
         SettingsUtils.putInt(context, KEY_RGB_ENABLE, if (enabled) 1 else 0)
+        
+        if (FileUtils.fileExists(AW22XXX_HWEN_NODE)) {
+            FileUtils.writeLine(AW22XXX_HWEN_NODE, if (enabled) "1" else "0")
+            if (!enabled) {
+                FileUtils.writeLine(AW22XXX_EFFECT_NODE, "0")
+                FileUtils.writeLine(AW22XXX_CFG_NODE, "0")
+                FileUtils.writeLine(AW22XXX_BRIGHTNESS_NODE, "0")
+            }
+        }
+        
         FileUtils.writeLine(LED_ENABLE_NODE, if (enabled) "1" else "0")
         if (enabled) {
             applyCurrentEffect(context)
@@ -76,6 +112,7 @@ object RgbController {
     fun setBrightness(context: Context, brightness: Int) {
         SettingsUtils.putInt(context, KEY_RGB_BRIGHTNESS, brightness)
         if (isRgbEnabled(context)) {
+            FileUtils.writeLine(AW22XXX_BRIGHTNESS_NODE, brightness.toString())
             FileUtils.writeLine(LED_BRIGHTNESS_NODE, brightness.toString())
         }
     }
@@ -87,6 +124,38 @@ object RgbController {
         val color = getColor(context)
         val brightness = getBrightness(context)
 
+        // 1. Control AW22XXX Hardware LED IC
+        if (FileUtils.fileExists(AW22XXX_HWEN_NODE)) {
+            FileUtils.writeLine(AW22XXX_HWEN_NODE, "1")
+            FileUtils.writeLine(AW22XXX_BRIGHTNESS_NODE, brightness.toString())
+
+            when (mode) {
+                MODE_STATIC -> {
+                    val effectId = COLOR_EFFECT_MAP[color] ?: 8
+                    FileUtils.writeLine(AW22XXX_EFFECT_NODE, effectId.toString())
+                    FileUtils.writeLine(AW22XXX_CFG_NODE, "1")
+                    val hex = COLOR_HEX_MAP[color] ?: "0xFF0000"
+                    FileUtils.writeLine(AW22XXX_RGB_NODE, "0 $hex")
+                }
+                MODE_BREATHING -> {
+                    // 0x70 / 0x50 breathing effect
+                    FileUtils.writeLine(AW22XXX_EFFECT_NODE, "0x70")
+                    FileUtils.writeLine(AW22XXX_CFG_NODE, "1")
+                }
+                MODE_RAINBOW -> {
+                    // 0x80 / 0x60 rainbow effect
+                    FileUtils.writeLine(AW22XXX_EFFECT_NODE, "0x80")
+                    FileUtils.writeLine(AW22XXX_CFG_NODE, "1")
+                }
+                MODE_GAME_COMBAT -> {
+                    // touch_game / combat pulse
+                    FileUtils.writeLine(AW22XXX_EFFECT_NODE, "11")
+                    FileUtils.writeLine(AW22XXX_CFG_NODE, "1")
+                }
+            }
+        }
+
+        // 2. Fallback / Synchronize with soc_fan kernel nodes
         FileUtils.writeLine(LED_ENABLE_NODE, "1")
         FileUtils.writeLine(LED_BRIGHTNESS_NODE, brightness.toString())
         FileUtils.writeLine(LED_ID_NODE, color.toString())
@@ -120,3 +189,4 @@ object RgbController {
         setRgbEnabled(context, enabled)
     }
 }
+

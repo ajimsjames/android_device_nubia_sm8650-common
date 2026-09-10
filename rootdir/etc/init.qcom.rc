@@ -561,6 +561,29 @@ on post-fs-data
     chmod 0664 /sys/kernel/fan/led_off_ms
     chmod 0664 /sys/kernel/fan/led_fade_ms
     chmod 0664 /sys/kernel/fan/led_brightness
+
+    # AW22XXX RGB LED
+    chown system system /sys/class/leds/aw22xxx_led/hwen
+    chown system system /sys/class/leds/aw22xxx_led/effect
+    chown system system /sys/class/leds/aw22xxx_led/cfg
+    chown system system /sys/class/leds/aw22xxx_led/rgb
+    chown system system /sys/class/leds/aw22xxx_led/brightness
+    chown system system /sys/class/leds/aw22xxx_led/imax
+    chown system system /sys/class/leds/aw22xxx_led/task0
+    chown system system /sys/class/leds/aw22xxx_led/task1
+    chown system system /sys/class/leds/aw22xxx_led/para
+    chown system system /sys/class/leds/aw22xxx_led/pattern
+
+    chmod 0664 /sys/class/leds/aw22xxx_led/hwen
+    chmod 0664 /sys/class/leds/aw22xxx_led/effect
+    chmod 0664 /sys/class/leds/aw22xxx_led/cfg
+    chmod 0664 /sys/class/leds/aw22xxx_led/rgb
+    chmod 0664 /sys/class/leds/aw22xxx_led/brightness
+    chmod 0664 /sys/class/leds/aw22xxx_led/imax
+    chmod 0664 /sys/class/leds/aw22xxx_led/task0
+    chmod 0664 /sys/class/leds/aw22xxx_led/task1
+    chmod 0664 /sys/class/leds/aw22xxx_led/para
+    chmod 0664 /sys/class/leds/aw22xxx_led/pattern
     # Nubia add end
 	
 

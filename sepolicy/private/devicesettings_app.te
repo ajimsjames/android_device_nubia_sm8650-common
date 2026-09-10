@@ -32,15 +32,17 @@ rw_dir_file(devicesettings_app, sysfs_fan)
 # Trigger buttons
 rw_dir_file(devicesettings_app, proc_touchkey)
 
-# CPU & Thermal & CGroup controls
+# CPU & Thermal & LED & CGroup controls
 allow devicesettings_app {
     sysfs_devices_system_cpu
     sysfs_thermal
+    sysfs_leds
     cgroup
 }:file rw_file_perms;
 
 allow devicesettings_app {
     sysfs_devices_system_cpu
     sysfs_thermal
+    sysfs_leds
     cgroup
 }:dir r_dir_perms;
