@@ -52,6 +52,10 @@ class TriggerFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChang
         hapticSwitch?.isChecked = TriggerHapticManager.isHapticsEnabled(context)
         hapticSwitch?.onPreferenceChangeListener = this
 
+        val hapticProfilePref: ListPreference? = findPreference(TriggerHapticManager.KEY_HAPTIC_PROFILE)
+        hapticProfilePref?.value = TriggerHapticManager.getHapticProfile(context).toString()
+        hapticProfilePref?.onPreferenceChangeListener = this
+
         appFilterSwitch = findPreference("trigger_app_filter_mode")
         appFilterSwitch?.isChecked = TriggerController.isAppFilterEnabled(context)
         appFilterSwitch?.onPreferenceChangeListener = this
@@ -128,6 +132,11 @@ class TriggerFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChang
             "trigger_haptic_enable" -> {
                 val enabled = newValue as Boolean
                 TriggerHapticManager.setHapticsEnabled(context, enabled)
+                return true
+            }
+            TriggerHapticManager.KEY_HAPTIC_PROFILE -> {
+                val profile = (newValue as String).toInt()
+                TriggerHapticManager.setHapticProfile(context, profile)
                 return true
             }
             "trigger_app_filter_mode" -> {

@@ -33,6 +33,16 @@
         android:defaultValue="true"
         app:dependency="trigger_enable" />
 
+    <ListPreference
+        android:key="trigger_haptic_profile"
+        android:title="Haptic Click Style"
+        android:summary="%s"
+        android:entries="@array/trigger_haptic_profile_entries"
+        android:entryValues="@array/trigger_haptic_profile_values"
+        android:defaultValue="0"
+        app:dependency="trigger_haptic_enable" />
+
+
     <PreferenceCategory
         android:title="@string/trigger_apps_category_title"
         app:dependency="trigger_enable">

@@ -27,12 +27,24 @@ object SmartChargingController {
         SettingsUtils.putInt(context, KEY_AUTO_BYPASS_GAME, if (enabled) 1 else 0)
     }
 
+    const val CHARGE_END_THRESHOLD_NODE = "/sys/class/power_supply/battery/charge_control_end_threshold"
+
     fun isChargeLimitEnabled(context: Context): Boolean {
         return SettingsUtils.getInt(context, KEY_CHARGE_LIMIT_ENABLE, 0) == 1
     }
 
     fun setChargeLimitEnabled(context: Context, enabled: Boolean) {
         SettingsUtils.putInt(context, KEY_CHARGE_LIMIT_ENABLE, if (enabled) 1 else 0)
+        if (enabled) {
+            val level = getChargeLimitLevel(context)
+            if (FileUtils.fileExists(CHARGE_END_THRESHOLD_NODE)) {
+                FileUtils.writeLine(CHARGE_END_THRESHOLD_NODE, level.toString())
+            }
+        } else {
+            if (FileUtils.fileExists(CHARGE_END_THRESHOLD_NODE)) {
+                FileUtils.writeLine(CHARGE_END_THRESHOLD_NODE, "100")
+            }
+        }
     }
 
     fun getChargeLimitLevel(context: Context): Int {
@@ -41,6 +53,9 @@ object SmartChargingController {
 
     fun setChargeLimitLevel(context: Context, level: Int) {
         SettingsUtils.putInt(context, KEY_CHARGE_LIMIT_LEVEL, level)
+        if (isChargeLimitEnabled(context) && FileUtils.fileExists(CHARGE_END_THRESHOLD_NODE)) {
+            FileUtils.writeLine(CHARGE_END_THRESHOLD_NODE, level.toString())
+        }
     }
 
     fun checkBatteryLevel(context: Context) {

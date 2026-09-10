@@ -131,4 +131,19 @@
         <item>1</item>
         <item>2</item>
     </string-array>
+
+    <!-- Trigger Haptic Profiles -->
+    <string-array name="trigger_haptic_profile_entries">
+        <item>Crisp Mechanical Click (Default)</item>
+        <item>Heavy Thump (Tactile Feedback)</item>
+        <item>Gentle Tick (Subtle)</item>
+        <item>Double Quick Click</item>
+    </string-array>
+    <string-array name="trigger_haptic_profile_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>
+
