@@ -31,8 +31,8 @@ allow devicesettings_app {
 # Fan & RGB sysfs
 rw_dir_file(devicesettings_app, sysfs_fan)
 
-# Touchscreen sysfs (sampling rate / rate_boost)
-rw_dir_file(devicesettings_app, sysfs_touch)
+# Touchscreen & Shoulder Triggers
+rw_dir_file(devicesettings_app, vendor_sysfs_touchpanel)
 
 # Trigger buttons
 rw_dir_file(devicesettings_app, proc_touchkey)
@@ -50,7 +50,8 @@ allow devicesettings_app {
     sysfs_thermal
     sysfs_leds
     sysfs_batteryinfo
-    sysfs_kgsl
+    vendor_sysfs_kgsl
+    vendor_sysfs_graphics
     sysfs_gpu
     cgroup
 }:file rw_file_perms;
@@ -60,7 +61,8 @@ allow devicesettings_app {
     sysfs_thermal
     sysfs_leds
     sysfs_batteryinfo
-    sysfs_kgsl
+    vendor_sysfs_kgsl
+    vendor_sysfs_graphics
     sysfs_gpu
     cgroup
 }:dir r_dir_perms;

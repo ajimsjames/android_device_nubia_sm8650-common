@@ -6,3 +6,12 @@ type vendor_persist_fingerprint_file, file_type;
 
 # Touchscreen
 type vendor_sysfs_touchpanel, fs_type, sysfs_type;
+
+# Fan control
+type sysfs_fan, fs_type, sysfs_type;
+
+# Trigger buttons
+type proc_touchkey, fs_type, proc_type;
+
+# Sched WALT controls
+type proc_walt, fs_type, proc_type;

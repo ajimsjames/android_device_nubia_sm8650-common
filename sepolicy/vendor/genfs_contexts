@@ -1,8 +1,18 @@
 # Fingerprint
 genfscon sysfs /devices/platform/soc/soc:qcom,dsi-display-primary/fod_ui    u:object_r:vendor_sysfs_fingerprint:s0
 
-# Touchscreen
-genfscon sysfs /devices/platform/goodix_ts.0    u:object_r:vendor_sysfs_touchpanel:s0
+# Touchscreen & Triggers
+genfscon sysfs /devices/platform/goodix_ts.0                               u:object_r:vendor_sysfs_touchpanel:s0
+genfscon sysfs /devices/platform/goodix_ts.1                               u:object_r:vendor_sysfs_touchpanel:s0
+
+# Fan control
+genfscon sysfs /kernel/fan                                                 u:object_r:sysfs_fan:s0
+
+# Trigger buttons
+genfscon proc /nubia_key                                                   u:object_r:proc_touchkey:s0
+
+# Sched WALT controls
+genfscon proc /sys/walt                                                    u:object_r:proc_walt:s0
 
 # USB
 genfscon sysfs /devices/platform/soc/soc:charger_policy_service    u:object_r:vendor_sysfs_usb_supply:s0
