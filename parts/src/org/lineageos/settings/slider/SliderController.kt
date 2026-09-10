@@ -25,6 +25,7 @@ object SliderController {
     const val KEY_SLIDER_ACTION = "slider_switch_action"
     const val KEY_SLIDER_STATE = "slider_switch_state"
 
+    const val ACTION_POPUP_MENU = -1    // Show Quick Action Pop-up Menu
     const val ACTION_DIABLO_MODE = 0    // Diablo Mode + Turbo Fan + Triggers + Live Stats
     const val ACTION_LAUNCH_CAMERA = 1  // Open Default Camera
     const val ACTION_FLASHLIGHT = 2     // Toggle Torch / Flashlight
@@ -35,7 +36,7 @@ object SliderController {
     const val ACTION_DND_SILENT = 7     // Do Not Disturb (Total Silence)
 
     fun getSliderAction(context: Context): Int {
-        return SettingsUtils.getInt(context, KEY_SLIDER_ACTION, ACTION_DIABLO_MODE)
+        return SettingsUtils.getInt(context, KEY_SLIDER_ACTION, ACTION_POPUP_MENU)
     }
 
     fun setSliderAction(context: Context, action: Int) {
@@ -48,17 +49,47 @@ object SliderController {
         Log.i(TAG, "Slider toggled: isCompetitiveOn=$isCompetitiveOn, action=$action")
 
         if (isCompetitiveOn) {
+            if (action == ACTION_POPUP_MENU) {
+                try {
+                    val dialogIntent = Intent(context, SliderDialogActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    }
+                    context.startActivity(dialogIntent)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to launch slider dialog", e)
+                }
+            } else {
+                executeAction(context, action, true)
+            }
+        } else {
+            // Slider OFF: Restore Balanced Power Profile & Smart Fan Control
+            PowerProfileController.setProfile(context, PowerProfileController.PROFILE_BALANCED)
+            FanController.setAutoMode(context, true)
+            DiabloNotificationService.stop(context)
+
+            if (action != ACTION_POPUP_MENU) {
+                executeAction(context, action, false)
+            } else {
+                // Clear any running states
+                TriggerController.setTriggerEnabled(context, false)
+                setTorch(context, false)
+                try {
+                    val am = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                    am.ringerMode = AudioManager.RINGER_MODE_NORMAL
+                } catch (ignored: Exception) {}
+            }
+        }
+    }
+
+    fun executeAction(context: Context, action: Int, enable: Boolean) {
+        if (enable) {
             when (action) {
                 ACTION_DIABLO_MODE -> {
-                    // Engage Extreme Diablo Mode Clocks
                     PowerProfileController.setProfile(context, PowerProfileController.PROFILE_DIABLO)
-                    // Engage Full Turbo Fan (Level 5)
                     FanController.setFanEnabled(context, true)
                     FanController.setAutoMode(context, false)
                     FanController.setFanSpeed(context, 5)
-                    // Turn on capacitive shoulder triggers
                     TriggerController.setTriggerEnabled(context, true)
-                    // Show Silent Ongoing Notification with Live Hardware Stats
                     DiabloNotificationService.start(context)
                 }
                 ACTION_LAUNCH_CAMERA -> {
@@ -75,7 +106,6 @@ object SliderController {
                     setTorch(context, true)
                 }
                 ACTION_GAMING_SUITE -> {
-                    // Performance profile + Smart Auto Fan + Triggers
                     PowerProfileController.setProfile(context, PowerProfileController.PROFILE_PERFORMANCE)
                     FanController.setFanEnabled(context, true)
                     FanController.setAutoMode(context, true)
@@ -112,11 +142,6 @@ object SliderController {
                 }
             }
         } else {
-            // Slider OFF: Restore Balanced Power Profile & Smart Fan Control
-            PowerProfileController.setProfile(context, PowerProfileController.PROFILE_BALANCED)
-            FanController.setAutoMode(context, true)
-            DiabloNotificationService.stop(context)
-
             when (action) {
                 ACTION_DIABLO_MODE, ACTION_GAMING_SUITE -> {
                     TriggerController.setTriggerEnabled(context, false)

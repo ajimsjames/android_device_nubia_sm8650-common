@@ -3,3 +3,7 @@ type sysfs_fan, fs_type, sysfs_type;
 
 # Trigger buttons
 type proc_touchkey, fs_type, proc_type;
+
+# Touchscreen
+type sysfs_touch, fs_type, sysfs_type;
+

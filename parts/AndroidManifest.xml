@@ -125,6 +125,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".slider.SliderDialogActivity"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog.Alert"
+            android:exported="false" />
+
+
         <!-- Services -->
         <service
             android:name=".fan.FanThermalService"

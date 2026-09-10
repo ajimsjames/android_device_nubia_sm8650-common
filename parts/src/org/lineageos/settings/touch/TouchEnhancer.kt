@@ -14,7 +14,7 @@ object TouchEnhancer {
     const val KEY_TOUCH_HIGH_RATE = "touch_high_sampling_rate"
     const val KEY_EDGE_DEADZONE = "touch_edge_deadzone"
 
-    const val TOUCH_GAME_NODE = "/sys/devices/platform/goodix_ts.0/game_mode"
+    const val TOUCH_GAME_NODE = "/sys/devices/platform/goodix_ts.0/rate_boost"
     const val TOUCH_EDGE_NODE = "/sys/devices/platform/goodix_ts.0/edge_mode"
 
     fun isHighSamplingRateEnabled(context: Context): Boolean {

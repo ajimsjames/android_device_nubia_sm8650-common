@@ -3,3 +3,7 @@ genfscon sysfs /kernel/fan                         u:object_r:sysfs_fan:s0
 
 # Trigger buttons
 genfscon proc /nubia_key                           u:object_r:proc_touchkey:s0
+
+# Goodix Touchscreen
+genfscon sysfs /devices/platform/goodix_ts.0       u:object_r:sysfs_touch:s0
+

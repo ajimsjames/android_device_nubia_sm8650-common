@@ -41,6 +41,12 @@ object PowerProfileController {
     private const val POLICY5_HISPEED = "/sys/devices/system/cpu/cpufreq/policy5/walt/hispeed_freq"
     private const val POLICY7_HISPEED = "/sys/devices/system/cpu/cpufreq/policy7/walt/hispeed_freq"
 
+    // Sched conservative & energy saving nodes
+    private const val SCHED_CONSERVATIVE_PL_NODE = "/proc/sys/walt/sched_conservative_pl"
+    private const val SCHED_EARLY_UPMIGRATE_NODE = "/proc/sys/walt/sched_early_upmigrate"
+    private const val CPU7_CORE_CTL_MAX_CPUS = "/sys/devices/system/cpu/cpu7/core_ctl/max_cpus"
+    private const val TOUCH_RATE_BOOST_NODE = "/sys/devices/platform/goodix_ts.0/rate_boost"
+
     fun getProfile(context: Context): Int {
         return SettingsUtils.getInt(context, KEY_POWER_PROFILE, PROFILE_BALANCED)
     }
@@ -53,7 +59,8 @@ object PowerProfileController {
     fun applyProfile(context: Context, profile: Int) {
         when (profile) {
             PROFILE_BATTERY_SAVER -> {
-                // Limit CPU max frequencies for maximum battery endurance
+                // Extreme Battery Preservation for SM8650 & Android 17:
+                // 1. Cap CPU max frequencies to efficient sweet spots
                 FileUtils.writeLine(POLICY0_MAX_FREQ, "1689600")
                 FileUtils.writeLine(POLICY2_MAX_FREQ, "1824000")
                 FileUtils.writeLine(POLICY5_MAX_FREQ, "1824000")
@@ -64,10 +71,23 @@ object PowerProfileController {
                 FileUtils.writeLine(POLICY5_HISPEED, "960000")
                 FileUtils.writeLine(POLICY7_HISPEED, "902400")
 
-                // Cap GPU
-                FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "8") // Cap to SVS
+                // 2. Cap GPU to lowest SVS level & disable boost
+                FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "8")
+                FileUtils.writeLine(GPU_FORCE_BUS_ON_NODE, "0")
+                FileUtils.writeLine(GPU_FORCE_CLK_ON_NODE, "0")
+                FileUtils.writeLine(GPU_FORCE_RAIL_ON_NODE, "0")
                 FileUtils.writeLine(SCHED_BOOST_NODE, "0")
                 FileUtils.writeLine(UCLAMP_TOP_APP_MIN_NODE, "0")
+
+                // 3. WALT Energy-Efficiency Scheduling
+                FileUtils.writeLine(SCHED_CONSERVATIVE_PL_NODE, "1")
+                FileUtils.writeLine(SCHED_EARLY_UPMIGRATE_NODE, "0")
+
+                // 4. Downclock touch digitizer to standard 240Hz to save bus power
+                FileUtils.writeLine(TOUCH_RATE_BOOST_NODE, "0")
+
+                // 5. Complete fan shutdown
+                FanController.setFanEnabled(context, false)
             }
 
             PROFILE_BALANCED -> {
@@ -88,6 +108,8 @@ object PowerProfileController {
                 FileUtils.writeLine(GPU_FORCE_RAIL_ON_NODE, "0")
                 FileUtils.writeLine(SCHED_BOOST_NODE, "0")
                 FileUtils.writeLine(UCLAMP_TOP_APP_MIN_NODE, "0")
+                FileUtils.writeLine(SCHED_CONSERVATIVE_PL_NODE, "0")
+                FileUtils.writeLine(SCHED_EARLY_UPMIGRATE_NODE, "1")
             }
 
             PROFILE_PERFORMANCE -> {

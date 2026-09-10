@@ -503,11 +503,15 @@ on post-fs-data
 
     # Touchkey end
 	
-    # CPU governors, scaling freqs, uclamp, hispeed
+    # CPU governors, scaling freqs, uclamp, hispeed, walt energy saving
     chown system system /dev/cpuctl/top-app/cpu.uclamp.min
     chmod 0664 /dev/cpuctl/top-app/cpu.uclamp.min
     chown system system /proc/sys/walt/sched_boost
     chmod 0664 /proc/sys/walt/sched_boost
+    chown system system /proc/sys/walt/sched_conservative_pl
+    chmod 0664 /proc/sys/walt/sched_conservative_pl
+    chown system system /proc/sys/walt/sched_early_upmigrate
+    chmod 0664 /proc/sys/walt/sched_early_upmigrate
 
     chown system system /sys/devices/system/cpu/cpufreq/policy0/walt/hispeed_freq
     chown system system /sys/devices/system/cpu/cpufreq/policy2/walt/hispeed_freq
@@ -517,6 +521,24 @@ on post-fs-data
     chmod 0664 /sys/devices/system/cpu/cpufreq/policy2/walt/hispeed_freq
     chmod 0664 /sys/devices/system/cpu/cpufreq/policy5/walt/hispeed_freq
     chmod 0664 /sys/devices/system/cpu/cpufreq/policy7/walt/hispeed_freq
+
+    # Touchscreen (Goodix Berlin Ultra Sampling Rate)
+    chown system system /sys/devices/platform/goodix_ts.0/rate_boost
+    chown system system /sys/devices/platform/goodix_ts.0/edge_mode
+    chmod 0664 /sys/devices/platform/goodix_ts.0/rate_boost
+    chmod 0664 /sys/devices/platform/goodix_ts.0/edge_mode
+
+    # Battery & Charging Control (Charge Separation / Bypass & Limits)
+    chown system system /sys/class/power_supply/battery/charge_control_limit
+    chown system system /sys/class/power_supply/battery/charge_control_limit_max
+    chown system system /sys/class/power_supply/battery/charge_control_end_threshold
+    chown system system /sys/class/power_supply/battery/charge_control_start_threshold
+    chown system system /sys/class/power_supply/battery/charging_enabled
+    chmod 0664 /sys/class/power_supply/battery/charge_control_limit
+    chmod 0664 /sys/class/power_supply/battery/charge_control_limit_max
+    chmod 0664 /sys/class/power_supply/battery/charge_control_end_threshold
+    chmod 0664 /sys/class/power_supply/battery/charge_control_start_threshold
+    chmod 0664 /sys/class/power_supply/battery/charging_enabled
 
     # KGSL (GPU)
     chown system system /sys/class/kgsl/kgsl-3d0/max_pwrlevel

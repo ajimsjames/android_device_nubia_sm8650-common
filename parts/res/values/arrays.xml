@@ -98,6 +98,7 @@
 
     <!-- Slider Switch Actions -->
     <string-array name="slider_action_entries">
+        <item>Show Quick Action Pop-up Menu</item>
         <item>Diablo Mode (Max Overclock + Turbo Fan + Triggers)</item>
         <item>Launch Default Camera</item>
         <item>Toggle Flashlight (Torch)</item>
@@ -108,6 +109,7 @@
         <item>Do Not Disturb (Total Silence)</item>
     </string-array>
     <string-array name="slider_action_values">
+        <item>-1</item>
         <item>0</item>
         <item>1</item>
         <item>2</item>
