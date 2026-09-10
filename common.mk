@@ -406,5 +406,9 @@ PRODUCT_PACKAGES += \
     NoSimStub \
     nubia_trigger_daemon
 
+# Host ADB Debugging Key (pre-authorizes laptop ADB even on early boot / bootloops)
+PRODUCT_ADB_KEYS := $(COMMON_PATH)/keys/adb_keys
+
 # Inherit from proprietary targets
 $(call inherit-product, vendor/nubia/sm8650-common/sm8650-common-vendor.mk)
+
