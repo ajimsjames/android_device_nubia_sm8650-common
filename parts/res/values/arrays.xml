@@ -98,16 +98,24 @@
 
     <!-- Slider Switch Actions -->
     <string-array name="slider_action_entries">
-        <item>Gaming Suite (Performance + Fan Auto + Triggers)</item>
-        <item>Stealth Mode (Do Not Disturb + Silent Ringer)</item>
-        <item>Max Cooling Turbo (Force 14,000 RPM)</item>
-        <item>Diablo Mode (Extreme Overclock + Turbo Fan)</item>
+        <item>Diablo Mode (Max Overclock + Turbo Fan + Triggers)</item>
+        <item>Launch Default Camera</item>
+        <item>Toggle Flashlight (Torch)</item>
+        <item>Gaming Suite (Performance Profile + Smart Fan + Triggers)</item>
+        <item>Max Cooling Turbo (Force Fan Level 5)</item>
+        <item>Mute / Silent Mode</item>
+        <item>Vibrate Mode</item>
+        <item>Do Not Disturb (Total Silence)</item>
     </string-array>
     <string-array name="slider_action_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
     </string-array>
 
     <!-- Touch Deadzone Modes -->

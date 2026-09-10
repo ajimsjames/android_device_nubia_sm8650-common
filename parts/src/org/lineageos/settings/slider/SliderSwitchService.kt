@@ -36,8 +36,12 @@ class SliderSwitchService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null
 
+    private const val KEY_RED = 0x18e   // 398
+    private const val KEY_GREEN = 0x18f // 399
+
     private fun startSliderReader() {
-        val sliderDevice = findSliderDevice() ?: "/dev/input/event4"
+        val sliderDevice = findSliderDevice() ?: "/dev/input/event0"
+        Log.i(TAG, "Starting SliderSwitchReader on $sliderDevice")
         sliderThread = thread(start = true, name = "SliderSwitchReader") {
             readSliderDevice(sliderDevice)
         }
@@ -52,7 +56,10 @@ class SliderSwitchService : Service() {
                 val nameFile = File(eventDir, "device/name")
                 if (nameFile.exists()) {
                     val name = nameFile.readText().trim()
-                    if (name.contains("slider", ignoreCase = true) || name.contains("hall", ignoreCase = true) || name.contains("nubia_switch", ignoreCase = true)) {
+                    if (name.contains("gpio-keys_nubia", ignoreCase = true) ||
+                        name.contains("slider", ignoreCase = true) ||
+                        name.contains("nubia_switch", ignoreCase = true) ||
+                        name.contains("hall", ignoreCase = true)) {
                         return "/dev/input/${eventDir.name}"
                     }
                 }
@@ -65,13 +72,17 @@ class SliderSwitchService : Service() {
 
     private fun readSliderDevice(devicePath: String) {
         val file = File(devicePath)
-        if (!file.exists()) return
+        if (!file.exists()) {
+            Log.w(TAG, "Slider device $devicePath does not exist")
+            return
+        }
 
         val buffer = ByteArray(24)
         val byteBuffer = ByteBuffer.wrap(buffer).order(ByteOrder.LITTLE_ENDIAN)
 
         try {
             FileInputStream(file).use { fis ->
+                Log.i(TAG, "Listening to slider switch events on $devicePath")
                 while (isRunning && !Thread.currentThread().isInterrupted) {
                     val bytesRead = fis.read(buffer)
                     if (bytesRead >= 24) {
@@ -80,12 +91,30 @@ class SliderSwitchService : Service() {
                         val code = byteBuffer.short.toInt()
                         val value = byteBuffer.int
 
-                        // SW_LID / SW_GAME / EV_SW (5) or EV_KEY (1)
-                        if (type == 5 || type == 1) {
+                        // EV_KEY (1) or EV_SW (5)
+                        if (type == 1) {
+                            if (code == KEY_RED) {
+                                val isCompetitiveOn = value == 1
+                                if (lastState != (if (isCompetitiveOn) 1 else 0)) {
+                                    lastState = if (isCompetitiveOn) 1 else 0
+                                    Log.i(TAG, "Slider KEY_RED event: value=$value -> ON=$isCompetitiveOn")
+                                    SliderController.onSliderToggled(this@SliderSwitchService, isCompetitiveOn)
+                                }
+                            } else if (code == KEY_GREEN) {
+                                val isCompetitiveOn = value == 0
+                                if (lastState != (if (isCompetitiveOn) 1 else 0)) {
+                                    lastState = if (isCompetitiveOn) 1 else 0
+                                    Log.i(TAG, "Slider KEY_GREEN event: value=$value -> ON=$isCompetitiveOn")
+                                    SliderController.onSliderToggled(this@SliderSwitchService, isCompetitiveOn)
+                                }
+                            }
+                        } else if (type == 5) {
+                            // SW_LID / SW_GAME switch
+                            val isCompetitiveOn = value > 0
                             if (lastState != value) {
                                 lastState = value
-                                val isCompetitiveOn = value > 0
-                                SliderController.onSliderToggled(this, isCompetitiveOn)
+                                Log.i(TAG, "Slider EV_SW event: value=$value -> ON=$isCompetitiveOn")
+                                SliderController.onSliderToggled(this@SliderSwitchService, isCompetitiveOn)
                             }
                         }
                     }
@@ -96,3 +125,4 @@ class SliderSwitchService : Service() {
         }
     }
 }
+
