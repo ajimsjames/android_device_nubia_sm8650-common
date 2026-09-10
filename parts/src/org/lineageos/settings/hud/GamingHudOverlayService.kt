@@ -262,7 +262,7 @@ class GamingHudOverlayService : Service() {
 
         // 5. Fan RPM & Speed Level
         if (showFan) {
-            val fanSpeed = FanController.getCurrentSpeed(this)
+            val fanSpeed = FanController.getFanSpeed(this)
             val fanRpm = FanController.getFanRpm()
             val fanEnabled = FanController.isFanEnabled(this)
             tvFanSpeed?.text = if (fanEnabled) "❄️ Fan: $fanRpm RPM (Lv $fanSpeed)" else "❄️ Fan: OFF"

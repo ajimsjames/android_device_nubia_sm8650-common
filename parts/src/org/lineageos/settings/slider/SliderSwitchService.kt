@@ -36,8 +36,8 @@ class SliderSwitchService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null
 
-    private const val KEY_RED = 0x18e   // 398
-    private const val KEY_GREEN = 0x18f // 399
+    private val KEY_RED = 0x18e   // 398
+    private val KEY_GREEN = 0x18f // 399
 
     private fun startSliderReader() {
         val sliderDevice = findSliderDevice() ?: "/dev/input/event0"
