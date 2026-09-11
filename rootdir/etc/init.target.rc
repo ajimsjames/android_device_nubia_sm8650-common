@@ -224,3 +224,38 @@ on property:sys.temp.level=0
 on property:sys.boot_completed=1
      # Enable PowerHAL hint processing
      setprop vendor.powerhal.init 1
+
+     # CPU scaling min/max freqs and governors
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy2/scaling_min_freq
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy2/scaling_max_freq
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy5/scaling_min_freq
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy5/scaling_max_freq
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy7/scaling_min_freq
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy7/scaling_max_freq
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy2/scaling_governor
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy5/scaling_governor
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy7/scaling_governor
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy0/walt/hispeed_freq
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy2/walt/hispeed_freq
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy5/walt/hispeed_freq
+     chmod 0666 /sys/devices/system/cpu/cpufreq/policy7/walt/hispeed_freq
+
+     # GPU Power Levels
+     chmod 0666 /sys/class/kgsl/kgsl-3d0/min_pwrlevel
+     chmod 0666 /sys/class/kgsl/kgsl-3d0/max_pwrlevel
+     chown system system /sys/class/kgsl/kgsl-3d0/min_pwrlevel
+     chown system system /sys/class/kgsl/kgsl-3d0/max_pwrlevel
+
+     # UCLAMP & Sched
+     chmod 0666 /dev/cpuctl/top-app/cpu.uclamp.min
+     chown system system /dev/cpuctl/top-app/cpu.uclamp.min
+
+     # Fan permissions
+     chown system system /sys/kernel/fan/fan_enable
+     chown system system /sys/kernel/fan/fan_speed
+     chmod 0666 /sys/kernel/fan/fan_enable
+     chmod 0666 /sys/kernel/fan/fan_speed
+

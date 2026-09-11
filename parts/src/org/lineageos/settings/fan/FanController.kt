@@ -89,10 +89,6 @@ object FanController {
     }
 
     fun getFanRpm(context: Context? = null): Int {
-        val rpmStr = FileUtils.readOneLine(FAN_RPM_NODE)
-        val rawRpm = rpmStr?.trim()?.toIntOrNull() ?: 0
-        if (rawRpm > 0) return rawRpm
-
         if (context != null && isFanEnabled(context)) {
             val level = getFanSpeed(context)
             return when (level) {

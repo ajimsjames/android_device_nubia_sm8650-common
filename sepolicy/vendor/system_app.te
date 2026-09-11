@@ -24,5 +24,11 @@ allow system_app vendor_sysfs_kgsl:dir r_dir_perms;
 allow system_app vendor_sysfs_graphics:file rw_file_perms;
 allow system_app vendor_sysfs_graphics:dir r_dir_perms;
 
+# Cgroup & UCLAMP
+allow system_app cgroup:file rw_file_perms;
+allow system_app cgroup:dir r_dir_perms;
+allow system_app cgroup_v2:file rw_file_perms;
+allow system_app cgroup_v2:dir r_dir_perms;
+
 # Properties
 get_prop(system_app, vendor_zte_prop)

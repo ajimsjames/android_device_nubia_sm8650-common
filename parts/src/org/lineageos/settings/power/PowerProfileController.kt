@@ -22,15 +22,17 @@ object PowerProfileController {
     // GPU Control Nodes
     private const val GPU_MAX_PWRLEVEL_NODE = "/sys/class/kgsl/kgsl-3d0/max_pwrlevel"
     private const val GPU_MIN_PWRLEVEL_NODE = "/sys/class/kgsl/kgsl-3d0/min_pwrlevel"
-    private const val GPU_FORCE_BUS_ON_NODE = "/sys/class/kgsl/kgsl-3d0/force_bus_on"
-    private const val GPU_FORCE_CLK_ON_NODE = "/sys/class/kgsl/kgsl-3d0/force_clk_on"
-    private const val GPU_FORCE_RAIL_ON_NODE = "/sys/class/kgsl/kgsl-3d0/force_rail_on"
 
     // CPU Sched Nodes
     private const val SCHED_BOOST_NODE = "/proc/sys/walt/sched_boost"
     private const val UCLAMP_TOP_APP_MIN_NODE = "/dev/cpuctl/top-app/cpu.uclamp.min"
 
-    // CPU Frequency Policies
+    // CPU Frequency Policies - Min / Max / Scaling
+    private const val POLICY0_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq"
+    private const val POLICY2_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy2/scaling_min_freq"
+    private const val POLICY5_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy5/scaling_min_freq"
+    private const val POLICY7_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy7/scaling_min_freq"
+
     private const val POLICY0_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq"
     private const val POLICY2_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy2/scaling_max_freq"
     private const val POLICY5_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy5/scaling_max_freq"
@@ -44,7 +46,6 @@ object PowerProfileController {
     // Sched conservative & energy saving nodes
     private const val SCHED_CONSERVATIVE_PL_NODE = "/proc/sys/walt/sched_conservative_pl"
     private const val SCHED_EARLY_UPMIGRATE_NODE = "/proc/sys/walt/sched_early_upmigrate"
-    private const val CPU7_CORE_CTL_MAX_CPUS = "/sys/devices/system/cpu/cpu7/core_ctl/max_cpus"
     private const val TOUCH_RATE_BOOST_NODE = "/sys/devices/platform/goodix_ts.0/rate_boost"
 
     fun getProfile(context: Context): Int {
@@ -59,9 +60,14 @@ object PowerProfileController {
     fun applyProfile(context: Context, profile: Int) {
         when (profile) {
             PROFILE_BATTERY_SAVER -> {
-                // Extreme Battery Preservation for SM8650 & Android 17:
-                // 1. Cap CPU max frequencies to efficient sweet spots
-                FileUtils.writeLine(POLICY0_MAX_FREQ, "1689600")
+                // Extreme Battery Preservation for SM8650:
+                // 1. Cap CPU min & max frequencies to efficient sweet spots
+                FileUtils.writeLine(POLICY0_MIN_FREQ, "364800")
+                FileUtils.writeLine(POLICY2_MIN_FREQ, "499200")
+                FileUtils.writeLine(POLICY5_MIN_FREQ, "499200")
+                FileUtils.writeLine(POLICY7_MIN_FREQ, "480000")
+
+                FileUtils.writeLine(POLICY0_MAX_FREQ, "1574400")
                 FileUtils.writeLine(POLICY2_MAX_FREQ, "1824000")
                 FileUtils.writeLine(POLICY5_MAX_FREQ, "1824000")
                 FileUtils.writeLine(POLICY7_MAX_FREQ, "1824000")
@@ -72,10 +78,8 @@ object PowerProfileController {
                 FileUtils.writeLine(POLICY7_HISPEED, "902400")
 
                 // 2. Cap GPU to lowest SVS level & disable boost
-                FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "8")
-                FileUtils.writeLine(GPU_FORCE_BUS_ON_NODE, "0")
-                FileUtils.writeLine(GPU_FORCE_CLK_ON_NODE, "0")
-                FileUtils.writeLine(GPU_FORCE_RAIL_ON_NODE, "0")
+                FileUtils.writeLine(GPU_MIN_PWRLEVEL_NODE, "8")
+                FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "6")
                 FileUtils.writeLine(SCHED_BOOST_NODE, "0")
                 FileUtils.writeLine(UCLAMP_TOP_APP_MIN_NODE, "0")
 
@@ -83,7 +87,7 @@ object PowerProfileController {
                 FileUtils.writeLine(SCHED_CONSERVATIVE_PL_NODE, "1")
                 FileUtils.writeLine(SCHED_EARLY_UPMIGRATE_NODE, "0")
 
-                // 4. Downclock touch digitizer to standard 240Hz to save bus power
+                // 4. Standard touch polling
                 FileUtils.writeLine(TOUCH_RATE_BOOST_NODE, "0")
 
                 // 5. Complete fan shutdown
@@ -92,59 +96,80 @@ object PowerProfileController {
 
             PROFILE_BALANCED -> {
                 // Stock uncapped max frequencies + balanced hispeeds
+                FileUtils.writeLine(POLICY0_MIN_FREQ, "556800")
+                FileUtils.writeLine(POLICY2_MIN_FREQ, "614400")
+                FileUtils.writeLine(POLICY5_MIN_FREQ, "499200")
+                FileUtils.writeLine(POLICY7_MIN_FREQ, "672000")
+
                 FileUtils.writeLine(POLICY0_MAX_FREQ, "2265600")
                 FileUtils.writeLine(POLICY2_MAX_FREQ, "3148800")
                 FileUtils.writeLine(POLICY5_MAX_FREQ, "2956800")
-                FileUtils.writeLine(POLICY7_MAX_FREQ, "3052800")
+                FileUtils.writeLine(POLICY7_MAX_FREQ, "3398400")
 
                 FileUtils.writeLine(POLICY0_HISPEED, "902400")
                 FileUtils.writeLine(POLICY2_HISPEED, "1075200")
                 FileUtils.writeLine(POLICY5_HISPEED, "1075200")
                 FileUtils.writeLine(POLICY7_HISPEED, "1132800")
 
-                FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "0") // Full GPU access
-                FileUtils.writeLine(GPU_FORCE_BUS_ON_NODE, "0")
-                FileUtils.writeLine(GPU_FORCE_CLK_ON_NODE, "0")
-                FileUtils.writeLine(GPU_FORCE_RAIL_ON_NODE, "0")
+                FileUtils.writeLine(GPU_MIN_PWRLEVEL_NODE, "8")
+                FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "0") // Full dynamic GPU access
                 FileUtils.writeLine(SCHED_BOOST_NODE, "0")
                 FileUtils.writeLine(UCLAMP_TOP_APP_MIN_NODE, "0")
                 FileUtils.writeLine(SCHED_CONSERVATIVE_PL_NODE, "0")
                 FileUtils.writeLine(SCHED_EARLY_UPMIGRATE_NODE, "1")
+                FileUtils.writeLine(TOUCH_RATE_BOOST_NODE, "0")
             }
 
             PROFILE_PERFORMANCE -> {
-                // Full max frequencies + aggressive ramp-up
+                // High min frequencies + aggressive ramp-up
+                FileUtils.writeLine(POLICY0_MIN_FREQ, "1132800")
+                FileUtils.writeLine(POLICY2_MIN_FREQ, "1497600")
+                FileUtils.writeLine(POLICY5_MIN_FREQ, "1497600")
+                FileUtils.writeLine(POLICY7_MIN_FREQ, "1708800")
+
                 FileUtils.writeLine(POLICY0_MAX_FREQ, "2265600")
                 FileUtils.writeLine(POLICY2_MAX_FREQ, "3148800")
                 FileUtils.writeLine(POLICY5_MAX_FREQ, "2956800")
-                FileUtils.writeLine(POLICY7_MAX_FREQ, "3052800")
+                FileUtils.writeLine(POLICY7_MAX_FREQ, "3398400")
 
                 FileUtils.writeLine(POLICY0_HISPEED, "1459200")
                 FileUtils.writeLine(POLICY2_HISPEED, "1824000")
                 FileUtils.writeLine(POLICY5_HISPEED, "1824000")
                 FileUtils.writeLine(POLICY7_HISPEED, "2169600")
 
-                FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "0") // Full 1.0 GHz GPU
+                FileUtils.writeLine(GPU_MIN_PWRLEVEL_NODE, "4")
+                FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "0")
                 FileUtils.writeLine(SCHED_BOOST_NODE, "1")
                 FileUtils.writeLine(UCLAMP_TOP_APP_MIN_NODE, "20")
+                FileUtils.writeLine(SCHED_CONSERVATIVE_PL_NODE, "0")
+                FileUtils.writeLine(SCHED_EARLY_UPMIGRATE_NODE, "1")
+                FileUtils.writeLine(TOUCH_RATE_BOOST_NODE, "1")
             }
 
             PROFILE_DIABLO -> {
-                // RedMagic Diablo Mode: Max CPU, Max GPU Overclock, Max DDR, Fan Turbo
+                // RedMagic Diablo Mode: Max CPU Clocks, Max GPU 1.0GHz Overclock, High Sched Boost, Fan Turbo
+                FileUtils.writeLine(POLICY0_MIN_FREQ, "1689600")
+                FileUtils.writeLine(POLICY2_MIN_FREQ, "2438400")
+                FileUtils.writeLine(POLICY5_MIN_FREQ, "2438400")
+                FileUtils.writeLine(POLICY7_MIN_FREQ, "2688000")
+
                 FileUtils.writeLine(POLICY0_MAX_FREQ, "2265600")
                 FileUtils.writeLine(POLICY2_MAX_FREQ, "3148800")
                 FileUtils.writeLine(POLICY5_MAX_FREQ, "2956800")
-                FileUtils.writeLine(POLICY7_MAX_FREQ, "3052800")
+                FileUtils.writeLine(POLICY7_MAX_FREQ, "3398400")
 
                 FileUtils.writeLine(POLICY0_HISPEED, "1804800")
                 FileUtils.writeLine(POLICY2_HISPEED, "2438400")
                 FileUtils.writeLine(POLICY5_HISPEED, "2438400")
                 FileUtils.writeLine(POLICY7_HISPEED, "2803200")
 
+                FileUtils.writeLine(GPU_MIN_PWRLEVEL_NODE, "0") // Lock GPU to 1.0 GHz
                 FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "0")
-                FileUtils.writeLine(GPU_FORCE_BUS_ON_NODE, "1") // Force 4224 MHz DDR bus
                 FileUtils.writeLine(SCHED_BOOST_NODE, "2")
-                FileUtils.writeLine(UCLAMP_TOP_APP_MIN_NODE, "40")
+                FileUtils.writeLine(UCLAMP_TOP_APP_MIN_NODE, "50")
+                FileUtils.writeLine(SCHED_CONSERVATIVE_PL_NODE, "0")
+                FileUtils.writeLine(SCHED_EARLY_UPMIGRATE_NODE, "1")
+                FileUtils.writeLine(TOUCH_RATE_BOOST_NODE, "1")
 
                 // Engage Level 5 Turbo Fan to maintain cooling
                 FanController.setFanEnabled(context, true)
