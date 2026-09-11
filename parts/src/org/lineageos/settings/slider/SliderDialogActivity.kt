@@ -27,7 +27,8 @@ class SliderDialogActivity : Activity() {
             "❄️ Max Cooling Turbo (Fan Lv5)",
             "🔕 Mute / Silent Mode",
             "📳 Vibrate Mode",
-            "🛑 Do Not Disturb"
+            "🛑 Do Not Disturb",
+            "⚙️ Nubia Settings & Parts"
         )
 
         val actionValues = intArrayOf(
@@ -38,14 +39,26 @@ class SliderDialogActivity : Activity() {
             SliderController.ACTION_COOLING_TURBO,
             SliderController.ACTION_SILENT_MODE,
             SliderController.ACTION_VIBRATE_MODE,
-            SliderController.ACTION_DND_SILENT
+            SliderController.ACTION_DND_SILENT,
+            99 // Nubia Settings
         )
 
         val dialog = AlertDialog.Builder(this)
             .setTitle("🎮 Game Switch Action")
             .setItems(items) { _, which ->
                 val chosenAction = actionValues[which]
-                SliderController.executeAction(this, chosenAction, true)
+                if (chosenAction == 99) {
+                    openNubiaSettings()
+                } else {
+                    SliderController.executeAction(this, chosenAction, true)
+                }
+                finish()
+            }
+            .setPositiveButton("⚙️ Settings") { _, _ ->
+                openNubiaSettings()
+                finish()
+            }
+            .setNegativeButton("Close") { _, _ ->
                 finish()
             }
             .setOnDismissListener {
@@ -54,5 +67,16 @@ class SliderDialogActivity : Activity() {
             .create()
 
         dialog.show()
+    }
+
+    private fun openNubiaSettings() {
+        try {
+            val intent = Intent(this, org.lineageos.settings.nubia.NubiaActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            startActivity(intent)
+        } catch (e: Exception) {
+            android.util.Log.e("SliderDialogActivity", "Failed to launch Nubia Settings", e)
+        }
     }
 }
