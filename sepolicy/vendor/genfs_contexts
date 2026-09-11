@@ -9,7 +9,7 @@ genfscon sysfs /devices/platform/goodix_ts.1                               u:obj
 genfscon sysfs /kernel/fan                                                 u:object_r:sysfs_fan:s0
 
 # AW22XXX RGB LED
-genfscon sysfs /devices/platform/soc/9c0000.qcom,qupv3_i2c_geni_se/98c000.i2c/i2c-0/0-006a/leds/aw22xxx_led    u:object_r:sysfs_leds:s0
+genfscon sysfs /devices/platform/soc/9c0000.qcom,qupv3_i2c_geni_se/98c000.i2c/i2c-0/0-006a/leds/aw22xxx_led    u:object_r:sysfs_aw22xxx:s0
 
 # KGSL GPU sysfs
 genfscon sysfs /devices/platform/soc/3d00000.qcom,kgsl-3d0                 u:object_r:vendor_sysfs_kgsl:s0

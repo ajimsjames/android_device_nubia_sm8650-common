@@ -1,7 +1,6 @@
 # Fan & RGB sysfs
 rw_dir_file(system_app, sysfs_fan)
-allow system_app sysfs_leds:file rw_file_perms;
-allow system_app sysfs_leds:dir r_dir_perms;
+rw_dir_file(system_app, sysfs_aw22xxx)
 
 # Touchscreen & Shoulder Triggers
 rw_dir_file(system_app, vendor_sysfs_touchpanel)
@@ -14,8 +13,6 @@ rw_dir_file(system_app, proc_walt)
 
 # Battery supply (temps, charge bypass, limits)
 rw_dir_file(system_app, vendor_sysfs_battery_supply)
-allow system_app sysfs_batteryinfo:file rw_file_perms;
-allow system_app sysfs_batteryinfo:dir r_dir_perms;
 
 # Thermal & CPU & GPU & Graphics
 allow system_app sysfs_thermal:file rw_file_perms;
