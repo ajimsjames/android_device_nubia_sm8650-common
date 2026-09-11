@@ -249,7 +249,7 @@ class GamingHudOverlayService : Service() {
         // 4. GPU Busy Percentage
         val gpuText = if (showGpu) {
             val gpuBusy = FileUtils.readOneLine("/sys/class/kgsl/kgsl-3d0/gpu_busy_percentage")?.trim() ?: "0"
-            val gpuPwrLevel = FileUtils.readOneLine("/sys/class/kgsl/kgsl-3d0/cur_pwrlevel")?.trim() ?: "0"
+            val gpuPwrLevel = FileUtils.readOneLine("/sys/class/kgsl/kgsl-3d0/min_pwrlevel")?.trim() ?: "0"
             "🎮 GPU: $gpuBusy | Level $gpuPwrLevel"
         } else null
 

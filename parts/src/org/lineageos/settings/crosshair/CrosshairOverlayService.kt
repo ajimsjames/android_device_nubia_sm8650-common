@@ -9,12 +9,18 @@ import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.database.ContentObserver
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PixelFormat
+import android.graphics.RadialGradient
+import android.graphics.Shader
 import android.graphics.drawable.GradientDrawable
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
+import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.MotionEvent
@@ -48,6 +54,13 @@ class CrosshairOverlayService : Service() {
     private var screenWidth = 1116
     private var screenHeight = 2480
 
+    private val settingsObserver = object : ContentObserver(Handler(Looper.getMainLooper())) {
+        override fun onChange(selfChange: Boolean) {
+            updateCrosshairViewLayout()
+            crosshairView?.updateSettings()
+        }
+    }
+
     override fun onCreate() {
         super.onCreate()
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -55,10 +68,32 @@ class CrosshairOverlayService : Service() {
 
         createCrosshairView()
         createZoomControlView()
+
+        contentResolver.registerContentObserver(
+            Settings.Global.getUriFor("nubia_parts_$KEY_CROSSHAIR_STYLE"),
+            false,
+            settingsObserver
+        )
+        contentResolver.registerContentObserver(
+            Settings.Global.getUriFor("nubia_parts_$KEY_CROSSHAIR_COLOR"),
+            false,
+            settingsObserver
+        )
+        contentResolver.registerContentObserver(
+            Settings.Global.getUriFor("nubia_parts_$KEY_CROSSHAIR_SIZE"),
+            false,
+            settingsObserver
+        )
+        contentResolver.registerContentObserver(
+            Settings.Global.getUriFor("nubia_parts_$KEY_CROSSHAIR_ZOOM"),
+            false,
+            settingsObserver
+        )
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        contentResolver.unregisterContentObserver(settingsObserver)
         crosshairView?.let { windowManager?.removeView(it) }
         zoomControlView?.let { windowManager?.removeView(it) }
     }
@@ -71,6 +106,30 @@ class CrosshairOverlayService : Service() {
         wm.defaultDisplay.getRealMetrics(dm)
         screenWidth = dm.widthPixels
         screenHeight = dm.heightPixels
+    }
+
+    private fun updateCrosshairViewLayout() {
+        val wm = windowManager ?: return
+        val view = crosshairView ?: return
+        val sizeDp = SettingsUtils.getInt(this, KEY_CROSSHAIR_SIZE, 60)
+        val density = resources.displayMetrics.density
+        val sizePx = (sizeDp * density).toInt()
+
+        val params = (view.layoutParams as? WindowManager.LayoutParams) ?: WindowManager.LayoutParams(
+            sizePx,
+            sizePx,
+            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
+                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                    WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+            PixelFormat.TRANSLUCENT
+        ).apply {
+            gravity = Gravity.CENTER
+        }
+        params.width = sizePx
+        params.height = sizePx
+        wm.updateViewLayout(view, params)
     }
 
     private fun createCrosshairView() {
@@ -199,13 +258,22 @@ class CrosshairOverlayService : Service() {
         private val lensPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             style = Paint.Style.STROKE
             strokeWidth = 3f
-            color = Color.argb(120, 255, 255, 255)
+            color = Color.argb(160, 255, 255, 255)
+        }
+
+        private val lensFillPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.FILL
         }
 
         private var zoomLevel = SettingsUtils.getInt(context, KEY_CROSSHAIR_ZOOM, 1)
 
         fun setZoomLevel(zoom: Int) {
             this.zoomLevel = zoom
+            invalidate()
+        }
+
+        fun updateSettings() {
+            this.zoomLevel = SettingsUtils.getInt(context, KEY_CROSSHAIR_ZOOM, 1)
             invalidate()
         }
 
@@ -223,18 +291,32 @@ class CrosshairOverlayService : Service() {
 
             val cx = width / 2f
             val cy = height / 2f
-            val radius = width * 0.4f
+            val radius = width * 0.42f
 
-            // Magnification Scope Ring (Zoom indicator 1x - 8x)
+            // Magnification Scope Ring & Optical Glass HUD effect
             if (zoomLevel > 1) {
-                canvas.drawCircle(cx, cy, radius * (0.5f + (zoomLevel / 16f)), lensPaint)
+                val glassRadius = radius * (0.6f + (zoomLevel / 14f))
+                lensFillPaint.shader = RadialGradient(
+                    cx, cy, glassRadius,
+                    intArrayOf(Color.argb(40, 0, 229, 255), Color.argb(10, 0, 0, 0), Color.argb(120, 20, 20, 30)),
+                    floatArrayOf(0f, 0.7f, 1f),
+                    Shader.TileMode.CLAMP
+                )
+                canvas.drawCircle(cx, cy, glassRadius, lensFillPaint)
+                canvas.drawCircle(cx, cy, glassRadius, lensPaint)
+
+                // Scope cross markers
+                canvas.drawLine(cx - glassRadius, cy, cx - glassRadius + 12f, cy, lensPaint)
+                canvas.drawLine(cx + glassRadius - 12f, cy, cx + glassRadius, cy, lensPaint)
+                canvas.drawLine(cx, cy - glassRadius, cx, cy - glassRadius + 12f, lensPaint)
+                canvas.drawLine(cx, cy + glassRadius - 12f, cx, cy + glassRadius, lensPaint)
             }
 
             val style = SettingsUtils.getInt(context, KEY_CROSSHAIR_STYLE, STYLE_CLASSIC_CROSS)
             when (style) {
                 STYLE_DOT -> {
                     paint.style = Paint.Style.FILL
-                    canvas.drawCircle(cx, cy, 6f * (zoomLevel * 0.5f).coerceAtLeast(1f), paint)
+                    canvas.drawCircle(cx, cy, 6f * (zoomLevel * 0.4f).coerceAtLeast(1f), paint)
                 }
                 STYLE_CIRCLE_DOT -> {
                     paint.style = Paint.Style.STROKE
@@ -244,20 +326,22 @@ class CrosshairOverlayService : Service() {
                 }
                 STYLE_CHEVRON -> {
                     paint.style = Paint.Style.STROKE
-                    canvas.drawLine(cx - 15, cy + 15, cx, cy, paint)
-                    canvas.drawLine(cx, cy, cx + 15, cy + 15, paint)
-                    canvas.drawCircle(cx, cy - 8, 3f, paint)
+                    canvas.drawLine(cx - 16, cy + 16, cx, cy, paint)
+                    canvas.drawLine(cx, cy, cx + 16, cy + 16, paint)
+                    paint.style = Paint.Style.FILL
+                    canvas.drawCircle(cx, cy - 8, 3.5f, paint)
                 }
                 else -> {
                     // Classic Crosshair
-                    val armLength = radius * 0.7f
-                    val gap = 12f
+                    val armLength = radius * 0.75f
+                    val gap = 10f
+                    paint.style = Paint.Style.STROKE
                     canvas.drawLine(cx - armLength, cy, cx - gap, cy, paint)
                     canvas.drawLine(cx + gap, cy, cx + armLength, cy, paint)
                     canvas.drawLine(cx, cy - armLength, cx, cy - gap, paint)
                     canvas.drawLine(cx, cy + gap, cx, cy + armLength, paint)
                     paint.style = Paint.Style.FILL
-                    canvas.drawCircle(cx, cy, 3f, paint)
+                    canvas.drawCircle(cx, cy, 3.5f, paint)
                 }
             }
         }

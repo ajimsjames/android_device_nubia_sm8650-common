@@ -19,15 +19,20 @@ object ChargeBypassController {
 
     const val KEY_CHARGE_BYPASS_ENABLE = "charge_bypass_enable"
 
-    const val CHARGE_CONTROL_LIMIT_NODE = "/sys/class/power_supply/battery/charge_control_limit"
-    const val CHARGE_CONTROL_LIMIT_MAX_NODE = "/sys/class/power_supply/battery/charge_control_limit_max"
-    const val CHARGE_ENABLED_NODE = "/sys/class/power_supply/battery/charging_enabled"
-    const val USB_ONLINE_NODE = "/sys/class/power_supply/usb/online"
+    private val CHARGE_NODES = arrayOf(
+        "/sys/class/qcom-battery/battery_charging_enabled",
+        "/sys/class/qcom-battery/charging_enabled",
+        "/sys/class/zte_power_supply/zte_battery/battery_charging_enabled",
+        "/sys/class/zte_power_supply/zte_battery/charging_enabled",
+        "/sys/class/power_supply/battery/charging_enabled",
+        "/sys/class/power_supply/battery/charge_control_limit"
+    )
 
+    const val USB_ONLINE_NODE = "/sys/class/power_supply/usb/online"
     const val ACTION_DISABLE_BYPASS = "org.lineageos.settings.power.ACTION_DISABLE_BYPASS"
 
     fun isBypassSupported(): Boolean {
-        return FileUtils.fileExists(CHARGE_CONTROL_LIMIT_NODE) || FileUtils.fileExists(CHARGE_ENABLED_NODE)
+        return CHARGE_NODES.any { FileUtils.fileExists(it) }
     }
 
     fun isDeviceCharging(context: Context): Boolean {
@@ -59,13 +64,8 @@ object ChargeBypassController {
         SettingsUtils.putInt(context, KEY_CHARGE_BYPASS_ENABLE, if (enabled) 1 else 0)
 
         if (enabled && isCharging) {
-            // Set charge limit to 0 (bypass direct USB power)
-            if (FileUtils.fileExists(CHARGE_CONTROL_LIMIT_NODE)) {
-                FileUtils.writeLine(CHARGE_CONTROL_LIMIT_NODE, "0")
-            }
-            if (FileUtils.fileExists(CHARGE_ENABLED_NODE)) {
-                FileUtils.writeLine(CHARGE_ENABLED_NODE, "0")
-            }
+            // Disable battery charging -> system runs directly off USB input
+            applyBypassState(bypass = true)
         } else {
             restoreNormalCharging()
         }
@@ -78,27 +78,21 @@ object ChargeBypassController {
             restoreNormalCharging()
         } else if (userWantsBypass) {
             // Charger plugged back in: engage bypass if user setting is active
-            if (FileUtils.fileExists(CHARGE_CONTROL_LIMIT_NODE)) {
-                FileUtils.writeLine(CHARGE_CONTROL_LIMIT_NODE, "0")
-            }
-            if (FileUtils.fileExists(CHARGE_ENABLED_NODE)) {
-                FileUtils.writeLine(CHARGE_ENABLED_NODE, "0")
+            applyBypassState(bypass = true)
+        }
+    }
+
+    private fun applyBypassState(bypass: Boolean) {
+        val valToWrite = if (bypass) "0" else "1"
+        for (node in CHARGE_NODES) {
+            if (FileUtils.fileExists(node)) {
+                FileUtils.writeLine(node, valToWrite)
             }
         }
     }
 
     private fun restoreNormalCharging() {
-        if (FileUtils.fileExists(CHARGE_CONTROL_LIMIT_NODE)) {
-            val maxLimit = if (FileUtils.fileExists(CHARGE_CONTROL_LIMIT_MAX_NODE)) {
-                FileUtils.readOneLine(CHARGE_CONTROL_LIMIT_MAX_NODE)?.trim() ?: ""
-            } else ""
-            if (maxLimit.isNotEmpty()) {
-                FileUtils.writeLine(CHARGE_CONTROL_LIMIT_NODE, maxLimit)
-            }
-        }
-        if (FileUtils.fileExists(CHARGE_ENABLED_NODE)) {
-            FileUtils.writeLine(CHARGE_ENABLED_NODE, "1")
-        }
+        applyBypassState(bypass = false)
     }
 
     fun restoreSettings(context: Context) {

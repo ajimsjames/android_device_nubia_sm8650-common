@@ -12,20 +12,41 @@ private const val TAG = "FileUtils"
 
 object FileUtils {
     fun fileExists(fileName: String): Boolean {
-        if (File(fileName).exists()) return true
-        return runRootCommand("test -e $fileName") == 0
+        val file = File(fileName)
+        if (file.exists()) return true
+        // Only if file cannot be read directly due to permission, check with root test
+        return runCatching {
+            val process = Runtime.getRuntime().exec(arrayOf("su", "-c", "test -e $fileName"))
+            process.waitFor() == 0
+        }.getOrDefault(false)
     }
 
     fun readOneLine(fileName: String): String? {
-        val direct = runCatching { File(fileName).readText().trim() }.getOrNull()
+        val file = File(fileName)
+        if (file.exists() && file.canRead()) {
+            return runCatching { file.readText().trim() }.getOrNull()
+        }
+
+        // Try direct read first
+        val direct = runCatching { file.readText().trim() }.getOrNull()
         if (!direct.isNullOrEmpty()) return direct
+
+        // If file definitely does not exist on filesystem, don't execute root cat
+        if (!file.exists()) {
+            // Check once if parent exists or file is accessible via su
+            val parent = file.parentFile
+            if (parent != null && !parent.exists() && parent.canRead()) {
+                return null
+            }
+        }
 
         return runRootCommandOutput("cat $fileName 2>/dev/null")?.trim()
     }
 
     fun writeLine(fileName: String, value: String): Boolean {
+        val file = File(fileName)
         val directSuccess = runCatching {
-            File(fileName).writeText(value)
+            file.writeText(value)
             true
         }.getOrDefault(false)
 
