@@ -75,6 +75,24 @@ class FanFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeLis
         fanSpeedPref?.value = FanController.getFanSpeed(context)
         fanSpeedPref?.onPreferenceChangeListener = this
 
+        val reverseCleanPref: Preference? = findPreference("fan_reverse_clean")
+        reverseCleanPref?.setOnPreferenceClickListener {
+            if (FanController.isCleaningInProgress) {
+                android.widget.Toast.makeText(context, "Dust cleaning cycle already running...", android.widget.Toast.LENGTH_SHORT).show()
+            } else {
+                android.widget.Toast.makeText(context, "Starting Reverse Spin Dust Cleaning Cycle (15s)...", android.widget.Toast.LENGTH_LONG).show()
+                reverseCleanPref.summary = "Cleaning in progress... High-power centrifugal pulse active"
+                FanController.startDustCleaningCycle(context) {
+                    handler.post {
+                        reverseCleanPref.summary = "Execute a 15-second high-power centrifugal pulse cycle to eject accumulated dust from the cooling channel"
+                        android.widget.Toast.makeText(context, "Fan Dust Cleaning Complete!", android.widget.Toast.LENGTH_SHORT).show()
+                        updateStatus()
+                    }
+                }
+            }
+            true
+        }
+
         updateControlsState(isEnabled, isAuto)
         updateStatus()
     }

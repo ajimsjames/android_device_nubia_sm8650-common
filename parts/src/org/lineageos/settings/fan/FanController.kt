@@ -130,6 +130,53 @@ object FanController {
         return 0f
     }
 
+    @Volatile
+    var isCleaningInProgress: Boolean = false
+        private set
+
+    fun startDustCleaningCycle(context: Context, onComplete: (() -> Unit)? = null) {
+        if (isCleaningInProgress) return
+        isCleaningInProgress = true
+
+        kotlin.concurrent.thread(start = true, name = "FanDustClean") {
+            val wasEnabled = isFanEnabled(context)
+            val prevSpeed = getFanSpeed(context)
+            val prevAuto = isAutoMode(context)
+
+            try {
+                setAutoMode(context, false)
+                setFanEnabled(context, true)
+
+                // 15-second high-power centrifugal pulse cycle
+                for (cycle in 1..5) {
+                    // Maximum speed burst
+                    setFanSpeedRaw(5)
+                    Thread.sleep(1800)
+
+                    // Rapid reverse brake / low speed pulse
+                    setFanSpeedRaw(1)
+                    Thread.sleep(600)
+
+                    // Spike burst
+                    setFanSpeedRaw(5)
+                    Thread.sleep(800)
+                }
+            } catch (ignored: Exception) {
+            } finally {
+                // Restore previous state
+                if (wasEnabled) {
+                    setFanSpeed(context, prevSpeed)
+                    setAutoMode(context, prevAuto)
+                } else {
+                    setFanEnabled(context, false)
+                    setAutoMode(context, prevAuto)
+                }
+                isCleaningInProgress = false
+                onComplete?.invoke()
+            }
+        }
+    }
+
     fun startThermalService(context: Context) {
         val intent = Intent(context, FanThermalService::class.java)
         context.startService(intent)

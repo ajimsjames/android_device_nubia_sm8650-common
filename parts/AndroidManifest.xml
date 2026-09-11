@@ -106,16 +106,6 @@
         </activity>
 
         <activity
-            android:name=".rgb.RgbActivity"
-            android:label="@string/rgb_lighting_title"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="org.lineageos.settings.RGB_SETTINGS" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-        <activity
             android:name=".optimizer.GameOptimizerActivity"
             android:label="@string/game_optimizer_title"
             android:exported="true">
@@ -158,17 +148,6 @@
             android:exported="true"
             android:label="@string/power_profile_title"
             android:icon="@drawable/ic_power_profile"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE"/>
-            </intent-filter>
-        </service>
-
-        <service
-            android:name=".rgb.RgbTileService"
-            android:exported="true"
-            android:label="@string/rgb_lighting_title"
-            android:icon="@drawable/ic_rgb"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE"/>

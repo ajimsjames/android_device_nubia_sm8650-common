@@ -40,4 +40,13 @@
         android:max="5"
         app:min="1"
         app:showSeekBarValue="true" />
+
+    <PreferenceCategory
+        android:title="Fan Maintenance">
+
+        <Preference
+            android:key="fan_reverse_clean"
+            android:title="Reverse Spin Dust Cleaning"
+            android:summary="Execute a 15-second high-power centrifugal pulse cycle to eject accumulated dust from the cooling channel" />
+    </PreferenceCategory>
 </PreferenceScreen>

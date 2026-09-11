@@ -31,13 +31,6 @@
         android:fragment="org.lineageos.settings.trigger.TriggerFragment" />
 
     <Preference
-        android:key="rgb_settings"
-        android:title="@string/rgb_lighting_title"
-        android:summary="@string/rgb_lighting_summary"
-        android:icon="@drawable/ic_rgb"
-        android:fragment="org.lineageos.settings.rgb.RgbFragment" />
-
-    <Preference
         android:key="game_optimizer_settings"
         android:title="@string/game_optimizer_title"
         android:summary="@string/game_optimizer_summary"

@@ -20,7 +20,6 @@ class BootReceiver : BroadcastReceiver() {
             FanController.restoreSettings(context)
             TriggerController.restoreSettings(context)
             ChargeBypassController.restoreSettings(context)
-            org.lineageos.settings.rgb.RgbController.restoreSettings(context)
             val sliderState = org.lineageos.settings.utils.SettingsUtils.getInt(context, org.lineageos.settings.slider.SliderController.KEY_SLIDER_STATE, 0)
             org.lineageos.settings.slider.SliderController.onSliderToggled(context, sliderState == 1)
             org.lineageos.settings.touch.TouchEnhancer.restoreSettings(context)
