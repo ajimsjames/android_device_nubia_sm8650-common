@@ -36,7 +36,7 @@ object SliderController {
     const val ACTION_DND_SILENT = 7     // Do Not Disturb (Total Silence)
 
     fun getSliderAction(context: Context): Int {
-        return SettingsUtils.getInt(context, KEY_SLIDER_ACTION, ACTION_POPUP_MENU)
+        return SettingsUtils.getInt(context, KEY_SLIDER_ACTION, ACTION_DIABLO_MODE)
     }
 
     fun setSliderAction(context: Context, action: Int) {

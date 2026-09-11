@@ -99,19 +99,17 @@ class SliderSwitchService : Service() {
 
                         // EV_KEY (1) or EV_SW (5)
                         if (type == 1) {
-                            if (code == KEY_RED) {
-                                val isCompetitiveOn = value == 1
-                                if (lastState != (if (isCompetitiveOn) 1 else 0)) {
-                                    lastState = if (isCompetitiveOn) 1 else 0
-                                    Log.i(TAG, "Slider KEY_RED event: value=$value -> ON=$isCompetitiveOn")
-                                    SliderController.onSliderToggled(this@SliderSwitchService, isCompetitiveOn)
+                            if (code == KEY_RED && value == 1) {
+                                if (lastState != 1) {
+                                    lastState = 1
+                                    Log.i(TAG, "Slider KEY_RED active (value=1) -> ON=true")
+                                    SliderController.onSliderToggled(this@SliderSwitchService, true)
                                 }
-                            } else if (code == KEY_GREEN) {
-                                val isCompetitiveOn = value == 0
-                                if (lastState != (if (isCompetitiveOn) 1 else 0)) {
-                                    lastState = if (isCompetitiveOn) 1 else 0
-                                    Log.i(TAG, "Slider KEY_GREEN event: value=$value -> ON=$isCompetitiveOn")
-                                    SliderController.onSliderToggled(this@SliderSwitchService, isCompetitiveOn)
+                            } else if (code == KEY_GREEN && value == 1) {
+                                if (lastState != 0) {
+                                    lastState = 0
+                                    Log.i(TAG, "Slider KEY_GREEN active (value=1) -> ON=false")
+                                    SliderController.onSliderToggled(this@SliderSwitchService, false)
                                 }
                             }
                         } else if (type == 5) {
