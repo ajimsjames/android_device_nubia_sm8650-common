@@ -88,12 +88,13 @@ object ChargeBypassController {
     }
 
     private fun restoreNormalCharging() {
-        var maxLimit = "40"
-        if (FileUtils.fileExists(CHARGE_CONTROL_LIMIT_MAX_NODE)) {
-            maxLimit = FileUtils.readOneLine(CHARGE_CONTROL_LIMIT_MAX_NODE) ?: "40"
-        }
         if (FileUtils.fileExists(CHARGE_CONTROL_LIMIT_NODE)) {
-            FileUtils.writeLine(CHARGE_CONTROL_LIMIT_NODE, maxLimit)
+            val maxLimit = if (FileUtils.fileExists(CHARGE_CONTROL_LIMIT_MAX_NODE)) {
+                FileUtils.readOneLine(CHARGE_CONTROL_LIMIT_MAX_NODE)?.trim() ?: ""
+            } else ""
+            if (maxLimit.isNotEmpty()) {
+                FileUtils.writeLine(CHARGE_CONTROL_LIMIT_NODE, maxLimit)
+            }
         }
         if (FileUtils.fileExists(CHARGE_ENABLED_NODE)) {
             FileUtils.writeLine(CHARGE_ENABLED_NODE, "1")

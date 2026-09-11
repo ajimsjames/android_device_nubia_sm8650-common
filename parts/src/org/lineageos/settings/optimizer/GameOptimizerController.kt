@@ -86,7 +86,10 @@ object GameOptimizerController {
 
     fun applyGameOptimizations(context: Context): String {
         try {
-            Runtime.getRuntime().exec(arrayOf("su", "-c", "settings put system peak_refresh_rate 120.0 && settings put system min_refresh_rate 120.0 && settings put system user_refresh_rate 120 && setprop persist.sys.game.fps 120")).waitFor()
+            android.provider.Settings.System.putFloat(context.contentResolver, "peak_refresh_rate", 120.0f)
+            android.provider.Settings.System.putFloat(context.contentResolver, "min_refresh_rate", 120.0f)
+            android.provider.Settings.System.putInt(context.contentResolver, "user_refresh_rate", 120)
+            android.os.SystemProperties.set("persist.sys.game.fps", "120")
         } catch (e: Exception) {
             Log.e(TAG, "Error setting refresh rate", e)
         }
