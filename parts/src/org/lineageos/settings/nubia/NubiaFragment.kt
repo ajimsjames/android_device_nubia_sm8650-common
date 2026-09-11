@@ -19,7 +19,6 @@ import org.lineageos.settings.R
 import org.lineageos.settings.power.ChargeBypassController
 import org.lineageos.settings.power.PowerProfileController
 import org.lineageos.settings.power.SmartChargingController
-import org.lineageos.settings.rgb.RgbActivity
 import org.lineageos.settings.slider.SliderController
 import org.lineageos.settings.touch.TouchEnhancer
 
@@ -49,12 +48,6 @@ class NubiaFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeL
         powerProfilePref = findPreference(PowerProfileController.KEY_POWER_PROFILE)
         powerProfilePref?.value = PowerProfileController.getProfile(context).toString()
         powerProfilePref?.onPreferenceChangeListener = this
-
-        val rgbPref: Preference? = findPreference("rgb_settings")
-        rgbPref?.setOnPreferenceClickListener {
-            startActivity(Intent(context, RgbActivity::class.java))
-            true
-        }
 
         sliderActionPref = findPreference("slider_switch_action")
         sliderActionPref?.value = SliderController.getSliderAction(context).toString()
