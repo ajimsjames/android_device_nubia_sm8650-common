@@ -62,30 +62,30 @@ object PowerProfileController {
         applyProfile(context, profile)
     }
 
+    private fun applyPolicyFreqs(policy: Int, governor: String, minFreq: String, maxFreq: String, hispeedFreq: String? = null) {
+        val basePath = "/sys/devices/system/cpu/cpufreq/policy$policy"
+        // 1. Temporarily drop min_freq to 0 to prevent kernel constraint check failure (min > max)
+        FileUtils.writeLine("$basePath/scaling_min_freq", "0")
+        // 2. Set max freq
+        FileUtils.writeLine("$basePath/scaling_max_freq", maxFreq)
+        // 3. Set desired min freq
+        FileUtils.writeLine("$basePath/scaling_min_freq", minFreq)
+        // 4. Set governor
+        FileUtils.writeLine("$basePath/scaling_governor", governor)
+        // 5. Set hispeed if provided
+        if (hispeedFreq != null) {
+            FileUtils.writeLine("$basePath/walt/hispeed_freq", hispeedFreq)
+        }
+    }
+
     fun applyProfile(context: Context, profile: Int) {
         when (profile) {
             PROFILE_BATTERY_SAVER -> {
                 // Extreme Battery Preservation for SM8650:
-                // 1. Cap CPU min & max frequencies to efficient sweet spots
-                FileUtils.writeLine(POLICY0_GOVERNOR, "walt")
-                FileUtils.writeLine(POLICY2_GOVERNOR, "walt")
-                FileUtils.writeLine(POLICY5_GOVERNOR, "walt")
-                FileUtils.writeLine(POLICY7_GOVERNOR, "walt")
-
-                FileUtils.writeLine(POLICY0_MIN_FREQ, "364800")
-                FileUtils.writeLine(POLICY2_MIN_FREQ, "499200")
-                FileUtils.writeLine(POLICY5_MIN_FREQ, "499200")
-                FileUtils.writeLine(POLICY7_MIN_FREQ, "480000")
-
-                FileUtils.writeLine(POLICY0_MAX_FREQ, "1574400")
-                FileUtils.writeLine(POLICY2_MAX_FREQ, "1824000")
-                FileUtils.writeLine(POLICY5_MAX_FREQ, "1824000")
-                FileUtils.writeLine(POLICY7_MAX_FREQ, "1824000")
-
-                FileUtils.writeLine(POLICY0_HISPEED, "787200")
-                FileUtils.writeLine(POLICY2_HISPEED, "960000")
-                FileUtils.writeLine(POLICY5_HISPEED, "960000")
-                FileUtils.writeLine(POLICY7_HISPEED, "902400")
+                applyPolicyFreqs(0, "walt", "364800", "1574400", "787200")
+                applyPolicyFreqs(2, "walt", "499200", "1824000", "960000")
+                applyPolicyFreqs(5, "walt", "499200", "1824000", "960000")
+                applyPolicyFreqs(7, "walt", "480000", "1824000", "902400")
 
                 // 2. Cap GPU to lowest SVS level & disable boost
                 FileUtils.writeLine(GPU_MIN_PWRLEVEL_NODE, "8")
@@ -106,25 +106,10 @@ object PowerProfileController {
 
             PROFILE_BALANCED -> {
                 // Stock uncapped max frequencies + balanced hispeeds
-                FileUtils.writeLine(POLICY0_GOVERNOR, "walt")
-                FileUtils.writeLine(POLICY2_GOVERNOR, "walt")
-                FileUtils.writeLine(POLICY5_GOVERNOR, "walt")
-                FileUtils.writeLine(POLICY7_GOVERNOR, "walt")
-
-                FileUtils.writeLine(POLICY0_MIN_FREQ, "556800")
-                FileUtils.writeLine(POLICY2_MIN_FREQ, "614400")
-                FileUtils.writeLine(POLICY5_MIN_FREQ, "499200")
-                FileUtils.writeLine(POLICY7_MIN_FREQ, "672000")
-
-                FileUtils.writeLine(POLICY0_MAX_FREQ, "2265600")
-                FileUtils.writeLine(POLICY2_MAX_FREQ, "3148800")
-                FileUtils.writeLine(POLICY5_MAX_FREQ, "2956800")
-                FileUtils.writeLine(POLICY7_MAX_FREQ, "3398400")
-
-                FileUtils.writeLine(POLICY0_HISPEED, "902400")
-                FileUtils.writeLine(POLICY2_HISPEED, "1075200")
-                FileUtils.writeLine(POLICY5_HISPEED, "1075200")
-                FileUtils.writeLine(POLICY7_HISPEED, "1132800")
+                applyPolicyFreqs(0, "walt", "556800", "2265600", "902400")
+                applyPolicyFreqs(2, "walt", "614400", "3148800", "1075200")
+                applyPolicyFreqs(5, "walt", "499200", "2956800", "1075200")
+                applyPolicyFreqs(7, "walt", "672000", "3398400", "1132800")
 
                 FileUtils.writeLine(GPU_MIN_PWRLEVEL_NODE, "8")
                 FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "0") // Full dynamic GPU access
@@ -137,25 +122,10 @@ object PowerProfileController {
 
             PROFILE_PERFORMANCE -> {
                 // High min frequencies + aggressive ramp-up
-                FileUtils.writeLine(POLICY0_GOVERNOR, "walt")
-                FileUtils.writeLine(POLICY2_GOVERNOR, "walt")
-                FileUtils.writeLine(POLICY5_GOVERNOR, "walt")
-                FileUtils.writeLine(POLICY7_GOVERNOR, "walt")
-
-                FileUtils.writeLine(POLICY0_MIN_FREQ, "1459200")
-                FileUtils.writeLine(POLICY2_MIN_FREQ, "1824000")
-                FileUtils.writeLine(POLICY5_MIN_FREQ, "1824000")
-                FileUtils.writeLine(POLICY7_MIN_FREQ, "2169600")
-
-                FileUtils.writeLine(POLICY0_MAX_FREQ, "2265600")
-                FileUtils.writeLine(POLICY2_MAX_FREQ, "3148800")
-                FileUtils.writeLine(POLICY5_MAX_FREQ, "2956800")
-                FileUtils.writeLine(POLICY7_MAX_FREQ, "3398400")
-
-                FileUtils.writeLine(POLICY0_HISPEED, "1459200")
-                FileUtils.writeLine(POLICY2_HISPEED, "1824000")
-                FileUtils.writeLine(POLICY5_HISPEED, "1824000")
-                FileUtils.writeLine(POLICY7_HISPEED, "2169600")
+                applyPolicyFreqs(0, "walt", "1459200", "2265600", "1459200")
+                applyPolicyFreqs(2, "walt", "1824000", "3148800", "1824000")
+                applyPolicyFreqs(5, "walt", "1824000", "2956800", "1824000")
+                applyPolicyFreqs(7, "walt", "2169600", "3398400", "2169600")
 
                 FileUtils.writeLine(GPU_MIN_PWRLEVEL_NODE, "4")
                 FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "0")
@@ -168,25 +138,10 @@ object PowerProfileController {
 
             PROFILE_DIABLO -> {
                 // RedMagic Diablo Mode: 100% Locked Max CPU Clocks, Max GPU 1.0GHz Overclock, High Sched Boost, Fan Turbo
-                FileUtils.writeLine(POLICY0_GOVERNOR, "performance")
-                FileUtils.writeLine(POLICY2_GOVERNOR, "performance")
-                FileUtils.writeLine(POLICY5_GOVERNOR, "performance")
-                FileUtils.writeLine(POLICY7_GOVERNOR, "performance")
-
-                FileUtils.writeLine(POLICY0_MIN_FREQ, "2265600")
-                FileUtils.writeLine(POLICY2_MIN_FREQ, "3148800")
-                FileUtils.writeLine(POLICY5_MIN_FREQ, "2956800")
-                FileUtils.writeLine(POLICY7_MIN_FREQ, "3398400")
-
-                FileUtils.writeLine(POLICY0_MAX_FREQ, "2265600")
-                FileUtils.writeLine(POLICY2_MAX_FREQ, "3148800")
-                FileUtils.writeLine(POLICY5_MAX_FREQ, "2956800")
-                FileUtils.writeLine(POLICY7_MAX_FREQ, "3398400")
-
-                FileUtils.writeLine(POLICY0_HISPEED, "2265600")
-                FileUtils.writeLine(POLICY2_HISPEED, "3148800")
-                FileUtils.writeLine(POLICY5_HISPEED, "2956800")
-                FileUtils.writeLine(POLICY7_HISPEED, "3398400")
+                applyPolicyFreqs(0, "performance", "2265600", "2265600", "2265600")
+                applyPolicyFreqs(2, "performance", "3148800", "3148800", "3148800")
+                applyPolicyFreqs(5, "performance", "2956800", "2956800", "2956800")
+                applyPolicyFreqs(7, "performance", "3398400", "3398400", "3398400")
 
                 FileUtils.writeLine(GPU_MIN_PWRLEVEL_NODE, "0") // Lock GPU to 1.0 GHz Max Clock
                 FileUtils.writeLine(GPU_MAX_PWRLEVEL_NODE, "0")
