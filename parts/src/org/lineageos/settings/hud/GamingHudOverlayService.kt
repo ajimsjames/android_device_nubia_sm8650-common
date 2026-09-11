@@ -246,11 +246,13 @@ class GamingHudOverlayService : Service() {
             "⚡ X4: ${p7Freq}MHz | A720: ${p5Freq}MHz"
         } else null
 
-        // 4. GPU Busy Percentage
+        // 4. GPU Busy Percentage & Clock Frequency
         val gpuText = if (showGpu) {
             val gpuBusy = FileUtils.readOneLine("/sys/class/kgsl/kgsl-3d0/gpu_busy_percentage")?.trim() ?: "0"
+            val gpuClockMhz = FileUtils.readOneLine("/sys/class/kgsl/kgsl-3d0/clock_mhz")?.trim()
+                ?: ((FileUtils.readOneLine("/sys/class/kgsl/kgsl-3d0/gpuclk")?.toLongOrNull() ?: 0L) / 1_000_000).toString()
             val gpuPwrLevel = FileUtils.readOneLine("/sys/class/kgsl/kgsl-3d0/min_pwrlevel")?.trim() ?: "0"
-            "🎮 GPU: $gpuBusy | Level $gpuPwrLevel"
+            "🎮 GPU: ${gpuClockMhz}MHz ($gpuBusy) | Lv $gpuPwrLevel"
         } else null
 
         // 5. Fan RPM & Speed Level
