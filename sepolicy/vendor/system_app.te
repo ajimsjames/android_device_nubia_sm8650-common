@@ -1,0 +1,31 @@
+# Fan & RGB sysfs
+rw_dir_file(system_app, sysfs_fan)
+allow system_app sysfs_leds:file rw_file_perms;
+allow system_app sysfs_leds:dir r_dir_perms;
+
+# Touchscreen & Shoulder Triggers
+rw_dir_file(system_app, vendor_sysfs_touchpanel)
+
+# Trigger buttons
+rw_dir_file(system_app, proc_touchkey)
+
+# Sched WALT controls
+rw_dir_file(system_app, proc_walt)
+
+# Battery supply (temps, charge bypass, limits)
+rw_dir_file(system_app, vendor_sysfs_battery_supply)
+allow system_app sysfs_batteryinfo:file rw_file_perms;
+allow system_app sysfs_batteryinfo:dir r_dir_perms;
+
+# Thermal & CPU & GPU & Graphics
+allow system_app sysfs_thermal:file rw_file_perms;
+allow system_app sysfs_thermal:dir r_dir_perms;
+allow system_app sysfs_devices_system_cpu:file rw_file_perms;
+allow system_app sysfs_devices_system_cpu:dir r_dir_perms;
+allow system_app vendor_sysfs_kgsl:file rw_file_perms;
+allow system_app vendor_sysfs_kgsl:dir r_dir_perms;
+allow system_app vendor_sysfs_graphics:file rw_file_perms;
+allow system_app vendor_sysfs_graphics:dir r_dir_perms;
+
+# Properties
+get_prop(system_app, vendor_zte_prop)

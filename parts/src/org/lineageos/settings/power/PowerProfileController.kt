@@ -95,7 +95,7 @@ object PowerProfileController {
                 FileUtils.writeLine(POLICY0_MAX_FREQ, "2265600")
                 FileUtils.writeLine(POLICY2_MAX_FREQ, "3148800")
                 FileUtils.writeLine(POLICY5_MAX_FREQ, "2956800")
-                FileUtils.writeLine(POLICY7_MAX_FREQ, "3398400")
+                FileUtils.writeLine(POLICY7_MAX_FREQ, "3052800")
 
                 FileUtils.writeLine(POLICY0_HISPEED, "902400")
                 FileUtils.writeLine(POLICY2_HISPEED, "1075200")
@@ -117,7 +117,7 @@ object PowerProfileController {
                 FileUtils.writeLine(POLICY0_MAX_FREQ, "2265600")
                 FileUtils.writeLine(POLICY2_MAX_FREQ, "3148800")
                 FileUtils.writeLine(POLICY5_MAX_FREQ, "2956800")
-                FileUtils.writeLine(POLICY7_MAX_FREQ, "3398400")
+                FileUtils.writeLine(POLICY7_MAX_FREQ, "3052800")
 
                 FileUtils.writeLine(POLICY0_HISPEED, "1459200")
                 FileUtils.writeLine(POLICY2_HISPEED, "1824000")
@@ -134,7 +134,7 @@ object PowerProfileController {
                 FileUtils.writeLine(POLICY0_MAX_FREQ, "2265600")
                 FileUtils.writeLine(POLICY2_MAX_FREQ, "3148800")
                 FileUtils.writeLine(POLICY5_MAX_FREQ, "2956800")
-                FileUtils.writeLine(POLICY7_MAX_FREQ, "3398400")
+                FileUtils.writeLine(POLICY7_MAX_FREQ, "3052800")
 
                 FileUtils.writeLine(POLICY0_HISPEED, "1804800")
                 FileUtils.writeLine(POLICY2_HISPEED, "2438400")

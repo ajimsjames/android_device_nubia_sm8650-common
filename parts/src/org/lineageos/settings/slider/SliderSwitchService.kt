@@ -40,9 +40,9 @@ class SliderSwitchService : Service() {
     private val KEY_GREEN = 0x18f // 399
 
     private fun startSliderReader() {
-        val sliderDevice = findSliderDevice() ?: "/dev/input/event0"
-        Log.i(TAG, "Starting SliderSwitchReader on $sliderDevice")
         sliderThread = thread(start = true, name = "SliderSwitchReader") {
+            val sliderDevice = findSliderDevice() ?: "/dev/input/event0"
+            Log.i(TAG, "Starting SliderSwitchReader on $sliderDevice")
             readSliderDevice(sliderDevice)
         }
     }

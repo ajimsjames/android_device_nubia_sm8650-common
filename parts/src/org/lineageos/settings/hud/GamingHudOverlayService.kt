@@ -51,14 +51,16 @@ class GamingHudOverlayService : Service() {
     private var tvRam: TextView? = null
     private var tvProfile: TextView? = null
 
-    private val handler = Handler(Looper.getMainLooper())
+    private val mainHandler = Handler(Looper.getMainLooper())
+    private var bgThread: android.os.HandlerThread? = null
+    private var bgHandler: Handler? = null
     private var isRunning = false
 
     private val updateRunnable = object : Runnable {
         override fun run() {
             if (!isRunning) return
             updateStats()
-            handler.postDelayed(this, 1000)
+            bgHandler?.postDelayed(this, 1000)
         }
     }
 
@@ -67,13 +69,16 @@ class GamingHudOverlayService : Service() {
         windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         createHudView()
         isRunning = true
-        handler.post(updateRunnable)
+        bgThread = android.os.HandlerThread("GamingHudThread").apply { start() }
+        bgHandler = Handler(bgThread!!.looper)
+        bgHandler?.post(updateRunnable)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         isRunning = false
-        handler.removeCallbacks(updateRunnable)
+        bgHandler?.removeCallbacks(updateRunnable)
+        bgThread?.quitSafely()
         hudView?.let { windowManager?.removeView(it) }
     }
 
@@ -216,101 +221,102 @@ class GamingHudOverlayService : Service() {
         val showProfile = SettingsUtils.getInt(this, KEY_HUD_SHOW_PROFILE, 1) == 1
 
         // 1. Real-time Panel FPS
-        if (showFps) {
+        val fpsText = if (showFps) {
             val fpsRaw = FileUtils.readOneLine("/sys/class/drm/sde-crtc-0/measured_fps")?.trim()
             val fpsVal = if (!fpsRaw.isNullOrBlank()) {
                 val parts = fpsRaw.split(":")
                 if (parts.size >= 2) parts[1].trim() else fpsRaw
             } else "120.0"
-            tvFps?.text = "🎯 FPS: $fpsVal"
-            tvFps?.visibility = View.VISIBLE
-        } else {
-            tvFps?.visibility = View.GONE
-        }
+            "🎯 FPS: $fpsVal"
+        } else null
 
         // 2. SoC Temp & Battery Temp
-        if (showTemps) {
+        val tempsText = if (showTemps) {
             val socTempRaw = FileUtils.readOneLine("/sys/class/thermal/thermal_zone10/temp")?.toIntOrNull() ?: 0
             val socTemp = socTempRaw / 1000
             val battTempRaw = FileUtils.readOneLine("/sys/class/power_supply/battery/temp")?.toIntOrNull() ?: 0
             val battTemp = battTempRaw / 10.0
-            tvSocTemp?.text = "🔥 SoC: ${socTemp}°C | Batt: ${String.format("%.1f", battTemp)}°C"
-            tvSocTemp?.visibility = View.VISIBLE
-        } else {
-            tvSocTemp?.visibility = View.GONE
-        }
+            "🔥 SoC: ${socTemp}°C | Batt: ${String.format("%.1f", battTemp)}°C"
+        } else null
 
         // 3. CPU Prime Core (cpu7) & Titanium Core (cpu5)
-        if (showCpu) {
+        val cpuText = if (showCpu) {
             val p7Freq = (FileUtils.readOneLine("/sys/devices/system/cpu/cpu7/cpufreq/scaling_cur_freq")?.toIntOrNull() ?: 0) / 1000
             val p5Freq = (FileUtils.readOneLine("/sys/devices/system/cpu/cpu5/cpufreq/scaling_cur_freq")?.toIntOrNull() ?: 0) / 1000
-            tvCpuFreq?.text = "⚡ X4: ${p7Freq}MHz | A720: ${p5Freq}MHz"
-            tvCpuFreq?.visibility = View.VISIBLE
-        } else {
-            tvCpuFreq?.visibility = View.GONE
-        }
+            "⚡ X4: ${p7Freq}MHz | A720: ${p5Freq}MHz"
+        } else null
 
         // 4. GPU Busy Percentage
-        if (showGpu) {
+        val gpuText = if (showGpu) {
             val gpuBusy = FileUtils.readOneLine("/sys/class/kgsl/kgsl-3d0/gpu_busy_percentage")?.trim() ?: "0"
             val gpuPwrLevel = FileUtils.readOneLine("/sys/class/kgsl/kgsl-3d0/cur_pwrlevel")?.trim() ?: "0"
-            tvGpuLoad?.text = "🎮 GPU: $gpuBusy | Level $gpuPwrLevel"
-            tvGpuLoad?.visibility = View.VISIBLE
-        } else {
-            tvGpuLoad?.visibility = View.GONE
-        }
+            "🎮 GPU: $gpuBusy | Level $gpuPwrLevel"
+        } else null
 
         // 5. Fan RPM & Speed Level
-        if (showFan) {
+        val fanText = if (showFan) {
             val fanSpeed = FanController.getFanSpeed(this)
             val fanRpm = FanController.getFanRpm()
             val fanEnabled = FanController.isFanEnabled(this)
-            tvFanSpeed?.text = if (fanEnabled) "❄️ Fan: $fanRpm RPM (Lv $fanSpeed)" else "❄️ Fan: OFF"
-            tvFanSpeed?.visibility = View.VISIBLE
-        } else {
-            tvFanSpeed?.visibility = View.GONE
-        }
+            if (fanEnabled) "❄️ Fan: $fanRpm RPM (Lv $fanSpeed)" else "❄️ Fan: OFF"
+        } else null
 
         // 6. Live Battery Wattage & Power Draw
-        if (showPower) {
+        val powerText = if (showPower) {
             val voltUv = FileUtils.readOneLine("/sys/class/power_supply/battery/voltage_now")?.toLongOrNull() ?: 0L
             val currUa = FileUtils.readOneLine("/sys/class/power_supply/battery/current_now")?.toLongOrNull() ?: 0L
             val powerWatts = (Math.abs(voltUv * currUa)) / 1_000_000_000_000.0
             val isCharging = currUa > 0
-            val powerText = if (powerWatts < 0.1) {
+            if (powerWatts < 0.1) {
                 "⚡ Power: 0.0W (Bypass Active)"
             } else if (isCharging) {
                 "⚡ Power: +${String.format("%.1f", powerWatts)}W (Charging)"
             } else {
                 "⚡ Power: -${String.format("%.1f", powerWatts)}W (Discharge)"
             }
-            tvPower?.text = powerText
-            tvPower?.visibility = View.VISIBLE
-        } else {
-            tvPower?.visibility = View.GONE
-        }
+        } else null
 
         // 7. RAM Usage / Free Memory
-        if (showRam) {
+        val ramText = if (showRam) {
             val (usedGb, totalGb, freePct) = readRamStats()
-            tvRam?.text = "🧠 RAM: ${String.format("%.1f", usedGb)}GB / ${totalGb}GB (${freePct}% Free)"
-            tvRam?.visibility = View.VISIBLE
-        } else {
-            tvRam?.visibility = View.GONE
-        }
+            "🧠 RAM: ${String.format("%.1f", usedGb)}GB / ${totalGb}GB (${freePct}% Free)"
+        } else null
 
         // 8. Current Performance Profile
-        if (showProfile) {
+        val profileText = if (showProfile) {
             val profileName = when (PowerProfileController.getProfile(this)) {
                 PowerProfileController.PROFILE_DIABLO -> "DIABLO MAX"
                 PowerProfileController.PROFILE_PERFORMANCE -> "PERFORMANCE"
                 PowerProfileController.PROFILE_BATTERY_SAVER -> "BATTERY SAVER"
                 else -> "BALANCED"
             }
-            tvProfile?.text = "🚀 Profile: $profileName"
-            tvProfile?.visibility = View.VISIBLE
-        } else {
-            tvProfile?.visibility = View.GONE
+            "🚀 Profile: $profileName"
+        } else null
+
+        mainHandler.post {
+            tvFps?.text = fpsText
+            tvFps?.visibility = if (fpsText != null) View.VISIBLE else View.GONE
+
+            tvSocTemp?.text = tempsText
+            tvSocTemp?.visibility = if (tempsText != null) View.VISIBLE else View.GONE
+
+            tvCpuFreq?.text = cpuText
+            tvCpuFreq?.visibility = if (cpuText != null) View.VISIBLE else View.GONE
+
+            tvGpuLoad?.text = gpuText
+            tvGpuLoad?.visibility = if (gpuText != null) View.VISIBLE else View.GONE
+
+            tvFanSpeed?.text = fanText
+            tvFanSpeed?.visibility = if (fanText != null) View.VISIBLE else View.GONE
+
+            tvPower?.text = powerText
+            tvPower?.visibility = if (powerText != null) View.VISIBLE else View.GONE
+
+            tvRam?.text = ramText
+            tvRam?.visibility = if (ramText != null) View.VISIBLE else View.GONE
+
+            tvProfile?.text = profileText
+            tvProfile?.visibility = if (profileText != null) View.VISIBLE else View.GONE
         }
     }
 

@@ -12,20 +12,21 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Handler
+import android.os.HandlerThread
 import android.os.IBinder
-import android.os.Looper
 import org.lineageos.settings.power.PowerProfileController
 
 class FanThermalService : Service() {
 
-    private val handler = Handler(Looper.getMainLooper())
+    private var backgroundThread: HandlerThread? = null
+    private var backgroundHandler: Handler? = null
     private var isRunning = false
     private var lastSpeed = -1
 
     private val batteryReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == Intent.ACTION_BATTERY_CHANGED) {
-                evaluateFanSpeed()
+                backgroundHandler?.post { evaluateFanSpeed() }
             }
         }
     }
@@ -34,7 +35,7 @@ class FanThermalService : Service() {
         override fun run() {
             if (isRunning) {
                 evaluateFanSpeed()
-                handler.postDelayed(this, 2000) // Poll every 2 seconds
+                backgroundHandler?.postDelayed(this, 3000) // Poll every 3 seconds on background thread
             }
         }
     }
@@ -42,15 +43,18 @@ class FanThermalService : Service() {
     override fun onCreate() {
         super.onCreate()
         isRunning = true
+        backgroundThread = HandlerThread("FanThermalThread").apply { start() }
+        backgroundHandler = Handler(backgroundThread!!.looper)
         val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         registerReceiver(batteryReceiver, filter)
-        handler.post(pollRunnable)
+        backgroundHandler?.post(pollRunnable)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         isRunning = false
-        handler.removeCallbacks(pollRunnable)
+        backgroundHandler?.removeCallbacks(pollRunnable)
+        backgroundThread?.quitSafely()
         try {
             unregisterReceiver(batteryReceiver)
         } catch (e: Exception) {

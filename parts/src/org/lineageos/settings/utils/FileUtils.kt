@@ -15,12 +15,12 @@ object FileUtils {
 
     fun readOneLine(fileName: String): String? =
         runCatching { File(fileName).readText().trim() }
-            .onFailure { e -> Log.e(TAG, "Could not read from file $fileName", e) }
+            .onFailure { e -> Log.w(TAG, "Could not read $fileName: ${e.message}") }
             .getOrNull()
 
     fun writeLine(fileName: String, value: String): Boolean =
         runCatching { File(fileName).writeText(value) }
-            .onFailure { e -> Log.e(TAG, "Could not write to file $fileName", e) }
+            .onFailure { e -> Log.w(TAG, "Could not write $fileName: ${e.message}") }
             .isSuccess
 }
 
