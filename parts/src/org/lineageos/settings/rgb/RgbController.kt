@@ -23,6 +23,11 @@ object RgbController {
     const val AW22XXX_RGB_NODE = "/sys/class/leds/aw22xxx_led/rgb"
     const val AW22XXX_BRIGHTNESS_NODE = "/sys/class/leds/aw22xxx_led/brightness"
 
+    // PMIC PM8550 Hardware RGB Nodes
+    const val PMIC_RED_NODE = "/sys/class/leds/red/brightness"
+    const val PMIC_GREEN_NODE = "/sys/class/leds/green/brightness"
+    const val PMIC_BLUE_NODE = "/sys/class/leds/blue/brightness"
+
     // Fan RGB Fallback Nodes
     const val LED_ENABLE_NODE = "/sys/kernel/fan/led_enable"
     const val LED_BRIGHTNESS_NODE = "/sys/kernel/fan/led_brightness"
@@ -52,6 +57,15 @@ object RgbController {
         COLOR_WHITE to "0xFFFFFF"
     )
 
+    private val COLOR_RGB_VALUES = mapOf(
+        COLOR_RED to Triple(255, 0, 0),
+        COLOR_CYAN to Triple(0, 255, 255),
+        COLOR_GREEN to Triple(0, 255, 0),
+        COLOR_VIOLET to Triple(255, 0, 255),
+        COLOR_YELLOW to Triple(255, 255, 0),
+        COLOR_WHITE to Triple(255, 255, 255)
+    )
+
     private val COLOR_EFFECT_MAP = mapOf(
         COLOR_RED to 8,    // nubia_all_rgb_red.bin
         COLOR_GREEN to 9,  // nubia_all_rgb_green.bin
@@ -78,7 +92,11 @@ object RgbController {
         }
         
         FileUtils.writeLine(LED_ENABLE_NODE, if (enabled) "1" else "0")
-        if (enabled) {
+        if (!enabled) {
+            FileUtils.writeLine(PMIC_RED_NODE, "0")
+            FileUtils.writeLine(PMIC_GREEN_NODE, "0")
+            FileUtils.writeLine(PMIC_BLUE_NODE, "0")
+        } else {
             applyCurrentEffect(context)
         }
     }
@@ -114,6 +132,7 @@ object RgbController {
         if (isRgbEnabled(context)) {
             FileUtils.writeLine(AW22XXX_BRIGHTNESS_NODE, brightness.toString())
             FileUtils.writeLine(LED_BRIGHTNESS_NODE, brightness.toString())
+            applyCurrentEffect(context)
         }
     }
 
@@ -155,7 +174,17 @@ object RgbController {
             }
         }
 
-        // 2. Fallback / Synchronize with soc_fan kernel nodes
+        // 2. Control PMIC PM8550 Hardware RGB channels
+        val rgb = COLOR_RGB_VALUES[color] ?: Triple(255, 0, 0)
+        val scale = brightness / 255.0f
+        val rVal = (rgb.first * scale).toInt()
+        val gVal = (rgb.second * scale).toInt()
+        val bVal = (rgb.third * scale).toInt()
+        FileUtils.writeLine(PMIC_RED_NODE, rVal.toString())
+        FileUtils.writeLine(PMIC_GREEN_NODE, gVal.toString())
+        FileUtils.writeLine(PMIC_BLUE_NODE, bVal.toString())
+
+        // 3. Fallback / Synchronize with soc_fan kernel nodes
         FileUtils.writeLine(LED_ENABLE_NODE, "1")
         FileUtils.writeLine(LED_BRIGHTNESS_NODE, brightness.toString())
         FileUtils.writeLine(LED_ID_NODE, color.toString())
