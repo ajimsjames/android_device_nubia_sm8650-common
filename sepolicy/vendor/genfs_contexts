@@ -14,9 +14,6 @@ genfscon sysfs /devices/platform/soc/9c0000.qcom,qupv3_i2c_geni_se/98c000.i2c/i2
 # KGSL GPU sysfs
 genfscon sysfs /devices/platform/soc/3d00000.qcom,kgsl-3d0                 u:object_r:vendor_sysfs_kgsl:s0
 
-# Battery & Charging
-genfscon sysfs /devices/platform/soc/soc:qcom,pmic_glink/soc:qcom,pmic_glink:qcom,battery_charger/power_supply/battery    u:object_r:vendor_sysfs_battery_supply:s0
-
 # Trigger buttons
 genfscon proc /nubia_key                                                   u:object_r:proc_touchkey:s0
 
