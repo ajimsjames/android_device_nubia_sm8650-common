@@ -133,24 +133,24 @@ object RgbController {
                 MODE_STATIC -> {
                     val effectId = COLOR_EFFECT_MAP[color] ?: 8
                     FileUtils.writeLine(AW22XXX_EFFECT_NODE, effectId.toString())
-                    FileUtils.writeLine(AW22XXX_CFG_NODE, "1")
+                    FileUtils.writeLine(AW22XXX_CFG_NODE, "0x11")
                     val hex = COLOR_HEX_MAP[color] ?: "0xFF0000"
                     FileUtils.writeLine(AW22XXX_RGB_NODE, "0 $hex")
                 }
                 MODE_BREATHING -> {
                     // 0x70 / 0x50 breathing effect
                     FileUtils.writeLine(AW22XXX_EFFECT_NODE, "0x70")
-                    FileUtils.writeLine(AW22XXX_CFG_NODE, "1")
+                    FileUtils.writeLine(AW22XXX_CFG_NODE, "0x11")
                 }
                 MODE_RAINBOW -> {
                     // 0x80 / 0x60 rainbow effect
                     FileUtils.writeLine(AW22XXX_EFFECT_NODE, "0x80")
-                    FileUtils.writeLine(AW22XXX_CFG_NODE, "1")
+                    FileUtils.writeLine(AW22XXX_CFG_NODE, "0x11")
                 }
                 MODE_GAME_COMBAT -> {
                     // touch_game / combat pulse
                     FileUtils.writeLine(AW22XXX_EFFECT_NODE, "11")
-                    FileUtils.writeLine(AW22XXX_CFG_NODE, "1")
+                    FileUtils.writeLine(AW22XXX_CFG_NODE, "0x11")
                 }
             }
         }
