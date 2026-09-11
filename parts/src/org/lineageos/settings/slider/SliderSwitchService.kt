@@ -71,20 +71,26 @@ class SliderSwitchService : Service() {
     }
 
     private fun readSliderDevice(devicePath: String) {
-        val file = File(devicePath)
-        if (!file.exists()) {
-            Log.w(TAG, "Slider device $devicePath does not exist")
-            return
-        }
-
         val buffer = ByteArray(24)
         val byteBuffer = ByteBuffer.wrap(buffer).order(ByteOrder.LITTLE_ENDIAN)
 
-        try {
-            FileInputStream(file).use { fis ->
-                Log.i(TAG, "Listening to slider switch events on $devicePath")
+        while (isRunning && !Thread.currentThread().isInterrupted) {
+            var process: Process? = null
+            var inputStream: java.io.InputStream? = null
+            try {
+                val file = File(devicePath)
+                if (file.exists() && file.canRead()) {
+                    inputStream = FileInputStream(file)
+                    Log.i(TAG, "Opened direct stream on $devicePath")
+                } else {
+                    process = Runtime.getRuntime().exec(arrayOf("su", "-c", "cat $devicePath"))
+                    inputStream = process.inputStream
+                    Log.i(TAG, "Opened root stream on $devicePath")
+                }
+
+                val stream = inputStream ?: continue
                 while (isRunning && !Thread.currentThread().isInterrupted) {
-                    val bytesRead = fis.read(buffer)
+                    val bytesRead = stream.read(buffer)
                     if (bytesRead >= 24) {
                         byteBuffer.position(16)
                         val type = byteBuffer.short.toInt()
@@ -109,7 +115,6 @@ class SliderSwitchService : Service() {
                                 }
                             }
                         } else if (type == 5) {
-                            // SW_LID / SW_GAME switch
                             val isCompetitiveOn = value > 0
                             if (lastState != value) {
                                 lastState = value
@@ -119,9 +124,13 @@ class SliderSwitchService : Service() {
                         }
                     }
                 }
+            } catch (e: Exception) {
+                Log.e(TAG, "Exception reading slider device $devicePath, retrying in 2s...", e)
+                try { Thread.sleep(2000) } catch (ignored: Exception) {}
+            } finally {
+                try { inputStream?.close() } catch (ignored: Exception) {}
+                try { process?.destroy() } catch (ignored: Exception) {}
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "Exception reading slider device $devicePath", e)
         }
     }
 }

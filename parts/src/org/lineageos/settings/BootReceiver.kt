@@ -24,6 +24,11 @@ class BootReceiver : BroadcastReceiver() {
             val sliderState = org.lineageos.settings.utils.SettingsUtils.getInt(context, org.lineageos.settings.slider.SliderController.KEY_SLIDER_STATE, 0)
             org.lineageos.settings.slider.SliderController.onSliderToggled(context, sliderState == 1)
             org.lineageos.settings.touch.TouchEnhancer.restoreSettings(context)
+            try {
+                context.startService(Intent(context, org.lineageos.settings.slider.SliderSwitchService::class.java))
+            } catch (e: Exception) {
+                android.util.Log.e("BootReceiver", "Failed to start SliderSwitchService", e)
+            }
         }
     }
 }
