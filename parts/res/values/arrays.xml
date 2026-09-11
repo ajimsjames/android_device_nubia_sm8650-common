@@ -145,35 +145,5 @@
         <item>2</item>
         <item>3</item>
     </string-array>
-
-    <!-- Crosshair Styles -->
-    <string-array name="crosshair_style_entries">
-        <item>Classic Tactical Crosshair</item>
-        <item>Precision Center Dot</item>
-        <item>Circle + Dot Reticle</item>
-        <item>Dynamic Tactical Chevron</item>
-    </string-array>
-    <string-array name="crosshair_style_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <!-- Crosshair Colors -->
-    <string-array name="crosshair_color_entries">
-        <item>Neon Matrix Green (High Contrast)</item>
-        <item>RedMagic Crimson Red</item>
-        <item>Cyber Cyan Blue</item>
-        <item>Amber Solar Yellow</item>
-        <item>Pure White</item>
-    </string-array>
-    <string-array name="crosshair_color_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
 </resources>
 

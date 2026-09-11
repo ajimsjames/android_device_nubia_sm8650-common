@@ -15,6 +15,8 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-permission android:name="android.permission.READ_FRAME_BUFFER" />
+    <uses-permission android:name="android.permission.INTERNAL_SYSTEM_WINDOW" />
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -197,22 +199,6 @@
             android:exported="true"
             android:label="Gaming HUD"
             android:icon="@drawable/ic_power_profile"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE"/>
-            </intent-filter>
-        </service>
-
-        <!-- Crosshair Aim Assist Overlay & QS Tile -->
-        <service
-            android:name=".crosshair.CrosshairOverlayService"
-            android:exported="false" />
-
-        <service
-            android:name=".crosshair.CrosshairTileService"
-            android:exported="true"
-            android:label="Aim Assist"
-            android:icon="@drawable/ic_triggers"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE"/>
