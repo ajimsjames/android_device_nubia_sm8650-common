@@ -167,6 +167,33 @@ class GamingHudOverlayService : Service() {
         }
         hudView?.addView(tvProfile)
 
+        val btnMapTriggers = TextView(this).apply {
+            text = "🎯 Map Triggers"
+            textSize = 9.5f
+            setTextColor(Color.WHITE)
+            gravity = Gravity.CENTER
+            setPadding(12, 6, 12, 6)
+            background = GradientDrawable().apply {
+                setColor(0x99D50000.toInt())
+                cornerRadius = 10f
+                setStroke(1, 0xFFE53935.toInt())
+            }
+            val lp = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                topMargin = 10
+            }
+            layoutParams = lp
+            setOnClickListener {
+                val intent = Intent(this@GamingHudOverlayService, org.lineageos.settings.trigger.TriggerOverlayService::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                startService(intent)
+            }
+        }
+        hudView?.addView(btnMapTriggers)
+
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -186,6 +213,7 @@ class GamingHudOverlayService : Service() {
             private var initialY = 0
             private var initialTouchX = 0f
             private var initialTouchY = 0f
+            private var isDragging = false
 
             override fun onTouch(v: View, event: MotionEvent): Boolean {
                 when (event.action) {
@@ -194,13 +222,22 @@ class GamingHudOverlayService : Service() {
                         initialY = params.y
                         initialTouchX = event.rawX
                         initialTouchY = event.rawY
-                        return true
+                        isDragging = false
+                        return false
                     }
                     MotionEvent.ACTION_MOVE -> {
-                        params.x = initialX + (event.rawX - initialTouchX).toInt()
-                        params.y = initialY + (event.rawY - initialTouchY).toInt()
-                        wm.updateViewLayout(hudView, params)
-                        return true
+                        val dx = (event.rawX - initialTouchX).toInt()
+                        val dy = (event.rawY - initialTouchY).toInt()
+                        if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+                            isDragging = true
+                            params.x = initialX + dx
+                            params.y = initialY + dy
+                            wm.updateViewLayout(hudView, params)
+                            return true
+                        }
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        if (isDragging) return true
                     }
                 }
                 return false
@@ -258,7 +295,7 @@ class GamingHudOverlayService : Service() {
         // 5. Fan RPM & Speed Level
         val fanText = if (showFan) {
             val fanSpeed = FanController.getFanSpeed(this)
-            val fanRpm = FanController.getFanRpm()
+            val fanRpm = FanController.getFanRpm(this)
             val fanEnabled = FanController.isFanEnabled(this)
             if (fanEnabled) "❄️ Fan: $fanRpm RPM (Lv $fanSpeed)" else "❄️ Fan: OFF"
         } else null

@@ -78,6 +78,7 @@ object FanController {
 
     fun setFanSpeedRaw(speed: Int) {
         FileUtils.writeLine(FAN_SPEED_NODE, speed.toString())
+        FileUtils.writeLine("/sys/class/leds/fan/fan_speed_level", speed.toString())
     }
 
     fun setProfile(context: Context, profile: Int) {
@@ -89,8 +90,27 @@ object FanController {
     }
 
     fun getFanRpm(context: Context? = null): Int {
-        if (context != null && isFanEnabled(context)) {
-            val level = getFanSpeed(context)
+        // 1. Read real hardware tachometer RPM count from kernel
+        val countStr = FileUtils.readOneLine(FAN_RPM_NODE)?.trim()
+            ?: FileUtils.readOneLine("/sys/class/leds/fan/fan_speed_count")?.trim()
+        val count = countStr?.toIntOrNull()
+        if (count != null && count > 0) {
+            return count
+        }
+
+        // 2. Check if fan is active and fallback to level mapping
+        val isEnabled = if (context != null) isFanEnabled(context) else {
+            val nodeVal = FileUtils.readOneLine(FAN_ENABLE_NODE)?.trim()
+                ?: FileUtils.readOneLine("/sys/class/leds/fan/fan_enable")?.trim()
+            nodeVal == "1"
+        }
+
+        if (isEnabled) {
+            val level = if (context != null) getFanSpeed(context) else {
+                FileUtils.readOneLine(FAN_SPEED_NODE)?.trim()?.toIntOrNull()
+                    ?: FileUtils.readOneLine("/sys/class/leds/fan/fan_speed_level")?.trim()?.toIntOrNull()
+                    ?: 1
+            }
             return when (level) {
                 1 -> 4200
                 2 -> 7000

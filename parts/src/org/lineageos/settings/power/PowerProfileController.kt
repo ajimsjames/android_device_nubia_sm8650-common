@@ -100,8 +100,10 @@ object PowerProfileController {
                 // 4. Standard touch polling
                 FileUtils.writeLine(TOUCH_RATE_BOOST_NODE, "0")
 
-                // 5. Complete fan shutdown
-                FanController.setFanEnabled(context, false)
+                // 5. Complete fan shutdown for battery saving
+                FileUtils.writeLine(FanController.FAN_ENABLE_NODE, "0")
+                FileUtils.writeLine("/sys/class/leds/fan/fan_enable", "0")
+                FanController.stopThermalService(context)
             }
 
             PROFILE_BALANCED -> {
@@ -118,6 +120,9 @@ object PowerProfileController {
                 FileUtils.writeLine(SCHED_CONSERVATIVE_PL_NODE, "0")
                 FileUtils.writeLine(SCHED_EARLY_UPMIGRATE_NODE, "1")
                 FileUtils.writeLine(TOUCH_RATE_BOOST_NODE, "0")
+
+                // Restore configured fan & smart thermal state
+                FanController.restoreSettings(context)
             }
 
             PROFILE_PERFORMANCE -> {
@@ -134,6 +139,15 @@ object PowerProfileController {
                 FileUtils.writeLine(SCHED_CONSERVATIVE_PL_NODE, "0")
                 FileUtils.writeLine(SCHED_EARLY_UPMIGRATE_NODE, "1")
                 FileUtils.writeLine(TOUCH_RATE_BOOST_NODE, "1")
+
+                // Ensure cooling fan is active for sustained gaming load
+                FanController.setFanEnabled(context, true)
+                if (FanController.isAutoMode(context)) {
+                    FanController.startThermalService(context)
+                } else {
+                    val currentSpeed = FanController.getFanSpeed(context)
+                    FanController.setFanSpeedRaw(maxOf(3, currentSpeed))
+                }
             }
 
             PROFILE_DIABLO -> {
@@ -153,7 +167,7 @@ object PowerProfileController {
 
                 // Engage Level 5 Turbo Fan to maintain cooling
                 FanController.setFanEnabled(context, true)
-                FanController.setFanSpeed(context, 5)
+                FanController.setFanSpeedRaw(5)
             }
         }
     }
