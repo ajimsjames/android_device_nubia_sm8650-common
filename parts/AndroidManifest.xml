@@ -19,10 +19,10 @@
     <uses-permission android:name="android.permission.INTERNAL_SYSTEM_WINDOW" />
 
     <application
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_nubia"
         android:label="@string/device_settings_app_name"
         android:persistent="true"
-        android:theme="@style/Theme.SubSettingsBase.Expressive">
+        android:theme="@style/Theme.NubiaParts.Card">
 
         <receiver
             android:name=".BootReceiver"

@@ -8,6 +8,7 @@ package org.lineageos.settings.optimizer
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import org.lineageos.settings.utils.FileUtils
 import org.lineageos.settings.utils.SettingsUtils
 import java.io.File
 
@@ -88,8 +89,7 @@ object GameOptimizerController {
         try {
             android.provider.Settings.System.putFloat(context.contentResolver, "peak_refresh_rate", 120.0f)
             android.provider.Settings.System.putFloat(context.contentResolver, "min_refresh_rate", 120.0f)
-            android.provider.Settings.System.putInt(context.contentResolver, "user_refresh_rate", 120)
-            android.os.SystemProperties.set("persist.sys.game.fps", "120")
+            FileUtils.runRootCommand("setprop persist.sys.game.fps 120")
         } catch (e: Exception) {
             Log.e(TAG, "Error setting refresh rate", e)
         }

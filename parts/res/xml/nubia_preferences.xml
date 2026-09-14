@@ -7,35 +7,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <ListPreference
-        android:key="nubia_power_profile"
-        android:title="@string/power_profile_title"
-        android:summary="%s"
-        android:icon="@drawable/ic_power_profile"
-        android:entries="@array/power_profile_entries"
-        android:entryValues="@array/power_profile_values"
-        android:defaultValue="1" />
+    <PreferenceCategory
+        android:title="Performance &amp; Gaming">
 
-    <Preference
-        android:key="fan_settings"
-        android:title="@string/fan_control_title"
-        android:summary="@string/fan_control_summary"
-        android:icon="@drawable/ic_fan"
-        android:fragment="org.lineageos.settings.fan.FanFragment" />
+        <ListPreference
+            android:key="nubia_power_profile"
+            android:title="@string/power_profile_title"
+            android:summary="%s"
+            android:icon="@drawable/ic_power_profile"
+            android:entries="@array/power_profile_entries"
+            android:entryValues="@array/power_profile_values"
+            android:defaultValue="1" />
 
-    <Preference
-        android:key="trigger_settings"
-        android:title="@string/trigger_buttons_title"
-        android:summary="@string/trigger_buttons_summary"
-        android:icon="@drawable/ic_triggers"
-        android:fragment="org.lineageos.settings.trigger.TriggerFragment" />
+        <Preference
+            android:key="fan_settings"
+            android:title="@string/fan_control_title"
+            android:summary="@string/fan_control_summary"
+            android:icon="@drawable/ic_fan"
+            android:fragment="org.lineageos.settings.fan.FanFragment" />
 
-    <Preference
-        android:key="game_optimizer_settings"
-        android:title="@string/game_optimizer_title"
-        android:summary="@string/game_optimizer_summary"
-        android:icon="@drawable/ic_power_profile"
-        android:fragment="org.lineageos.settings.optimizer.GameOptimizerFragment" />
+        <Preference
+            android:key="trigger_settings"
+            android:title="@string/trigger_buttons_title"
+            android:summary="@string/trigger_buttons_summary"
+            android:icon="@drawable/ic_triggers"
+            android:fragment="org.lineageos.settings.trigger.TriggerFragment" />
+
+        <Preference
+            android:key="game_optimizer_settings"
+            android:title="@string/game_optimizer_title"
+            android:summary="@string/game_optimizer_summary"
+            android:icon="@drawable/ic_power_profile"
+            android:fragment="org.lineageos.settings.optimizer.GameOptimizerFragment" />
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="Hardware Controls">

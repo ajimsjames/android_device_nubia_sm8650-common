@@ -95,10 +95,14 @@ class GamingHudOverlayService : Service() {
             setStroke(2, Color.argb(140, 230, 30, 45)) // RedMagic Crimson border
         }
 
+        val density = resources.displayMetrics.density
+        val minWidthPx = (230 * density).toInt()
+
         hudView = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             background = bg
-            setPadding(22, 14, 22, 14)
+            setPadding((14 * density).toInt(), (10 * density).toInt(), (14 * density).toInt(), (10 * density).toInt())
+            minimumWidth = minWidthPx
             elevation = 16f
         }
 
@@ -112,14 +116,14 @@ class GamingHudOverlayService : Service() {
         hudView?.addView(headerTv)
 
         tvFps = TextView(this).apply {
-            textSize = 11f
+            textSize = 10.5f
             setTextColor(Color.parseColor("#00E676"))
             setShadowLayer(3f, 0f, 0f, Color.BLACK)
         }
         hudView?.addView(tvFps)
 
         tvSocTemp = TextView(this).apply {
-            textSize = 11f
+            textSize = 10.5f
             setTextColor(Color.WHITE)
             setShadowLayer(3f, 0f, 0f, Color.BLACK)
         }
@@ -169,20 +173,21 @@ class GamingHudOverlayService : Service() {
 
         val btnMapTriggers = TextView(this).apply {
             text = "🎯 Map Triggers"
-            textSize = 9.5f
+            textSize = 10f
             setTextColor(Color.WHITE)
+            typeface = android.graphics.Typeface.DEFAULT_BOLD
             gravity = Gravity.CENTER
-            setPadding(12, 6, 12, 6)
+            setPadding((10 * density).toInt(), (5 * density).toInt(), (10 * density).toInt(), (5 * density).toInt())
             background = GradientDrawable().apply {
-                setColor(0x99D50000.toInt())
-                cornerRadius = 10f
-                setStroke(1, 0xFFE53935.toInt())
+                setColor(0xB3D50000.toInt())
+                cornerRadius = 12f
+                setStroke(1, 0xFFFF5252.toInt())
             }
             val lp = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             ).apply {
-                topMargin = 10
+                topMargin = (8 * density).toInt()
             }
             layoutParams = lp
             setOnClickListener {

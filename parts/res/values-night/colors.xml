@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="card_bg_color">#FF1E1F22</color>
+    <color name="card_bg_color_stroke">#25FFFFFF</color>
+    <color name="card_icon_bg">#FF2B2D31</color>
+    <color name="card_title_color">#FFE2E2E6</color>
+    <color name="card_summary_color">#FFC4C6D0</color>
+    <color name="card_category_title_color">#FFFF5252</color>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CardPreferenceStyle" parent="@style/Preference.Material">
+        <item name="android:layout">@layout/card_preference</item>
+    </style>
+
+    <style name="CardSwitchPreferenceStyle" parent="@style/Preference.SwitchPreferenceCompat.Material">
+        <item name="android:layout">@layout/card_switch_preference</item>
+    </style>
+
+    <style name="CardPreferenceCategoryStyle" parent="@style/Preference.Category.Material">
+        <item name="android:layout">@layout/card_category_header</item>
+    </style>
+
+    <style name="Theme.NubiaParts.Card" parent="@style/Theme.Material3.DayNight.NoActionBar">
+        <item name="preferenceCategoryStyle">@style/CardPreferenceCategoryStyle</item>
+        <item name="preferenceStyle">@style/CardPreferenceStyle</item>
+        <item name="switchPreferenceCompatStyle">@style/CardSwitchPreferenceStyle</item>
+        <item name="dialogPreferenceStyle">@style/CardPreferenceStyle</item>
+    </style>
+</resources>
