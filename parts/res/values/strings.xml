@@ -13,10 +13,64 @@
     <string name="fan_enable_summary">Turn the cooling fan on or off</string>
     <string name="fan_speed_title">Fan Speed</string>
     <string name="fan_speed_summary">Adjust fan speed level</string>
+    <string name="smart_fan_enable_title">Smart Auto Fan Control</string>
+    <string name="smart_fan_enable_summary">Automatically control fan speed based on device temperature</string>
 
     <!-- Trigger buttons -->
     <string name="trigger_buttons_title">Trigger buttons</string>
     <string name="trigger_buttons_summary">Enable or disable trigger buttons</string>
     <string name="trigger_buttons_enable_title">Enable trigger buttons</string>
     <string name="trigger_buttons_enable_summary">Allow trigger buttons to function normally</string>
+
+    <!-- Telemetry Gauges -->
+    <string name="hardware_monitor_category">Hardware Telemetry</string>
+    <string name="telemetry_cpu_temp">CPU Temperature</string>
+    <string name="telemetry_gpu_temp">GPU Temperature</string>
+    <string name="telemetry_battery_temp">Battery Temperature</string>
+    <string name="telemetry_fan_rpm">Fan Speed (RPM)</string>
+
+    <!-- Smart Fan Temperature Configuration -->
+    <string name="smart_fan_settings_category">Smart Fan Temperature Triggers</string>
+    <string name="smart_fan_temp_speed_1_title">Level 1 Trigger Temp</string>
+    <string name="smart_fan_temp_speed_1_summary">Turn on fan at Level 1 when reaching this temperature</string>
+    <string name="smart_fan_temp_speed_2_title">Level 2 Trigger Temp</string>
+    <string name="smart_fan_temp_speed_2_summary">Increase to Level 2 when reaching this temperature</string>
+    <string name="smart_fan_temp_speed_3_title">Level 3 Trigger Temp</string>
+    <string name="smart_fan_temp_speed_3_summary">Increase to Level 3 when reaching this temperature</string>
+    <string name="smart_fan_temp_speed_4_title">Level 4 Trigger Temp</string>
+    <string name="smart_fan_temp_speed_4_summary">Increase to Level 4 when reaching this temperature</string>
+    <string name="smart_fan_temp_speed_5_title">Level 5 (Max) Trigger Temp</string>
+    <string name="smart_fan_temp_speed_5_summary">Boost to maximum Level 5 when reaching this temperature</string>
+
+    <!-- Power Profiles -->
+    <string name="power_profiles_title">Power Profiles</string>
+    <string name="power_profiles_summary">Select CPU performance and efficiency profile</string>
+    <string name="power_profile_power_save">Power Save</string>
+    <string name="power_profile_power_save_summary">Caps peak frequencies and maximizes battery longevity</string>
+    <string name="power_profile_balanced">Balanced</string>
+    <string name="power_profile_balanced_summary">Optimal balance of high performance and low idle heat</string>
+    <string name="power_profile_performance">Performance</string>
+    <string name="power_profile_performance_summary">Unleashed frequencies and immediate boost for gaming</string>
+    <string name="power_profile_diablo">Diablo Mode</string>
+    <string name="power_profile_diablo_summary">Extreme performance: max GPU clock (1000MHz), full CPU boost, scheduler boost, and active cooling overdrive</string>
+
+    <!-- Trigger Button Advanced Settings -->
+    <string name="trigger_touch_mapping_category">Touch Mapping &amp; In-Game Controls</string>
+    <string name="trigger_left_title">Left Trigger (L1)</string>
+    <string name="trigger_right_title">Right Trigger (R1)</string>
+    <string name="trigger_left_pos_x_title">L1 Touch Position X (%)</string>
+    <string name="trigger_left_pos_y_title">L1 Touch Position Y (%)</string>
+    <string name="trigger_right_pos_x_title">R1 Touch Position X (%)</string>
+    <string name="trigger_right_pos_y_title">R1 Touch Position Y (%)</string>
+    <string name="trigger_rapid_fire_title">Rapid Fire</string>
+    <string name="trigger_rapid_fire_left_title">L1 Rapid Fire</string>
+    <string name="trigger_rapid_fire_left_summary">Rapidly pulse taps when holding L1 trigger</string>
+    <string name="trigger_rapid_fire_right_title">R1 Rapid Fire</string>
+    <string name="trigger_rapid_fire_right_summary">Rapidly pulse taps when holding R1 trigger</string>
+    <string name="trigger_rapid_fire_rate_title">Rapid Fire Rate</string>
+    <string name="trigger_rapid_fire_rate_summary">%1$d clicks per second (CPS)</string>
+    <string name="trigger_haptic_title">Vibration Feedback</string>
+    <string name="trigger_haptic_summary">Provide haptic feedback when triggers are pressed</string>
+    <string name="trigger_calibrate_overlay_title">In-Game Visual Calibration Overlay</string>
+    <string name="trigger_calibrate_overlay_summary">Show draggable on-screen buttons (L1/R1) to align touch points with game controls</string>
 </resources>

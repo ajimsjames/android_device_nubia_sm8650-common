@@ -11,4 +11,85 @@
         android:title="@string/trigger_buttons_enable_title"
         android:summary="@string/trigger_buttons_enable_summary"
         android:defaultValue="false" />
+
+    <PreferenceCategory
+        android:key="trigger_touch_category"
+        android:title="@string/trigger_touch_mapping_category">
+
+        <Preference
+            android:key="trigger_launch_overlay"
+            android:title="@string/trigger_calibrate_overlay_title"
+            android:summary="@string/trigger_calibrate_overlay_summary" />
+
+        <PreferenceCategory
+            android:title="@string/trigger_left_title">
+            <com.android.settingslib.widget.SliderPreference
+                android:key="trigger_l1_pos_x"
+                android:title="@string/trigger_left_pos_x_title"
+                android:max="100"
+                app:min="0"
+                android:defaultValue="20"
+                app:showSeekBarValue="true" />
+
+            <com.android.settingslib.widget.SliderPreference
+                android:key="trigger_l1_pos_y"
+                android:title="@string/trigger_left_pos_y_title"
+                android:max="100"
+                app:min="0"
+                android:defaultValue="20"
+                app:showSeekBarValue="true" />
+
+            <SwitchPreferenceCompat
+                android:key="trigger_rapid_l1"
+                android:title="@string/trigger_rapid_fire_left_title"
+                android:summary="@string/trigger_rapid_fire_left_summary"
+                android:defaultValue="false" />
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/trigger_right_title">
+            <com.android.settingslib.widget.SliderPreference
+                android:key="trigger_r1_pos_x"
+                android:title="@string/trigger_right_pos_x_title"
+                android:max="100"
+                app:min="0"
+                android:defaultValue="80"
+                app:showSeekBarValue="true" />
+
+            <com.android.settingslib.widget.SliderPreference
+                android:key="trigger_r1_pos_y"
+                android:title="@string/trigger_right_pos_y_title"
+                android:max="100"
+                app:min="0"
+                android:defaultValue="20"
+                app:showSeekBarValue="true" />
+
+            <SwitchPreferenceCompat
+                android:key="trigger_rapid_r1"
+                android:title="@string/trigger_rapid_fire_right_title"
+                android:summary="@string/trigger_rapid_fire_right_summary"
+                android:defaultValue="false" />
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/trigger_rapid_fire_title">
+            <com.android.settingslib.widget.SliderPreference
+                android:key="trigger_rapid_rate"
+                android:title="@string/trigger_rapid_fire_rate_title"
+                android:max="25"
+                app:min="5"
+                android:defaultValue="10"
+                app:showSeekBarValue="true" />
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/trigger_haptic_title">
+            <SwitchPreferenceCompat
+                android:key="trigger_haptic"
+                android:title="@string/trigger_haptic_title"
+                android:summary="@string/trigger_haptic_summary"
+                android:defaultValue="true" />
+        </PreferenceCategory>
+
+    </PreferenceCategory>
 </PreferenceScreen>

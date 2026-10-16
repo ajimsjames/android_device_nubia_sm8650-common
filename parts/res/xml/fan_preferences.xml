@@ -12,9 +12,79 @@
         android:summary="@string/fan_enable_summary"
         android:defaultValue="false" />
 
+    <SwitchPreferenceCompat
+        android:key="smart_fan_enable"
+        android:title="@string/smart_fan_enable_title"
+        android:summary="@string/smart_fan_enable_summary"
+        android:defaultValue="true" />
+
     <com.android.settingslib.widget.SliderPreference
         android:key="fan_speed_level"
         android:title="@string/fan_speed_title"
         android:summary="@string/fan_speed_summary"
         android:defaultValue="3" />
+
+    <PreferenceCategory
+        android:key="smart_fan_category"
+        android:title="@string/smart_fan_settings_category">
+
+        <com.android.settingslib.widget.SliderPreference
+            android:key="smart_fan_temp_speed_1"
+            android:title="@string/smart_fan_temp_speed_1_title"
+            android:summary="@string/smart_fan_temp_speed_1_summary"
+            android:defaultValue="36" />
+
+        <com.android.settingslib.widget.SliderPreference
+            android:key="smart_fan_temp_speed_2"
+            android:title="@string/smart_fan_temp_speed_2_title"
+            android:summary="@string/smart_fan_temp_speed_2_summary"
+            android:defaultValue="40" />
+
+        <com.android.settingslib.widget.SliderPreference
+            android:key="smart_fan_temp_speed_3"
+            android:title="@string/smart_fan_temp_speed_3_title"
+            android:summary="@string/smart_fan_temp_speed_3_summary"
+            android:defaultValue="44" />
+
+        <com.android.settingslib.widget.SliderPreference
+            android:key="smart_fan_temp_speed_4"
+            android:title="@string/smart_fan_temp_speed_4_title"
+            android:summary="@string/smart_fan_temp_speed_4_summary"
+            android:defaultValue="48" />
+
+        <com.android.settingslib.widget.SliderPreference
+            android:key="smart_fan_temp_speed_5"
+            android:title="@string/smart_fan_temp_speed_5_title"
+            android:summary="@string/smart_fan_temp_speed_5_summary"
+            android:defaultValue="52" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="telemetry_category"
+        android:title="@string/hardware_monitor_category">
+
+        <Preference
+            android:key="gauge_cpu_temp"
+            android:title="@string/telemetry_cpu_temp"
+            android:summary="-- °C"
+            android:selectable="false" />
+
+        <Preference
+            android:key="gauge_gpu_temp"
+            android:title="@string/telemetry_gpu_temp"
+            android:summary="-- °C"
+            android:selectable="false" />
+
+        <Preference
+            android:key="gauge_battery_temp"
+            android:title="@string/telemetry_battery_temp"
+            android:summary="-- °C"
+            android:selectable="false" />
+
+        <Preference
+            android:key="gauge_fan_rpm"
+            android:title="@string/telemetry_fan_rpm"
+            android:summary="-- RPM"
+            android:selectable="false" />
+    </PreferenceCategory>
 </PreferenceScreen>

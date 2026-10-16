@@ -9,6 +9,8 @@
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -53,6 +55,16 @@
         </activity>
 
         <activity
+            android:name=".power.PowerProfileActivity"
+            android:label="@string/power_profiles_title"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.lineageos.settings.POWER_PROFILE_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".fan.FanActivity"
             android:label="@string/fan_control_title"
             android:exported="true">
@@ -93,5 +105,17 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE"/>
             </intent-filter>
         </service>
+
+        <service
+            android:name=".fan.SmartFanService"
+            android:exported="false" />
+
+        <service
+            android:name=".trigger.TriggerService"
+            android:exported="false" />
+
+        <service
+            android:name=".trigger.TriggerOverlayService"
+            android:exported="false" />
     </application>
 </manifest>

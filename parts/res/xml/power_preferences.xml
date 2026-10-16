@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2025-2026 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:key="power_profile_category"
+        android:title="@string/power_profiles_title">
+
+        <com.android.settingslib.widget.SelectorWithWidgetPreference
+            android:key="power_profile_power_save"
+            android:title="@string/power_profile_power_save"
+            android:summary="@string/power_profile_power_save_summary" />
+
+        <com.android.settingslib.widget.SelectorWithWidgetPreference
+            android:key="power_profile_balanced"
+            android:title="@string/power_profile_balanced"
+            android:summary="@string/power_profile_balanced_summary" />
+
+        <com.android.settingslib.widget.SelectorWithWidgetPreference
+            android:key="power_profile_performance"
+            android:title="@string/power_profile_performance"
+            android:summary="@string/power_profile_performance_summary" />
+
+        <com.android.settingslib.widget.SelectorWithWidgetPreference
+            android:key="power_profile_diablo"
+            android:title="@string/power_profile_diablo"
+            android:summary="@string/power_profile_diablo_summary" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

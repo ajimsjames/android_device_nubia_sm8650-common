@@ -1,4 +1,4 @@
-type devicesettings_app, domain;
+type devicesettings_app, domain, coredomain;
 app_domain(devicesettings_app)
 
 allow devicesettings_app {
@@ -7,3 +7,13 @@ allow devicesettings_app {
 
 rw_dir_file(devicesettings_app, sysfs_fan)
 rw_dir_file(devicesettings_app, proc_touchkey)
+rw_dir_file(devicesettings_app, sysfs_devices_system_cpu)
+r_dir_file(devicesettings_app, sysfs_thermal)
+
+# Diablo mode & input triggers
+allow devicesettings_app sysfs:file rw_file_perms;
+allow devicesettings_app vendor_sysfs_kgsl:file rw_file_perms;
+allow devicesettings_app proc:file rw_file_perms;
+allow devicesettings_app input_device:dir r_dir_perms;
+allow devicesettings_app input_device:chr_file rw_file_perms;
+
