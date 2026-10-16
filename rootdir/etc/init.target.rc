@@ -105,6 +105,7 @@ on early-boot
 
 on boot
     write /dev/cpuset/audio-app/cpus 0-1
+    write /dev/cpuset/foreground/cpus 0-6
     # Add a cpuset for the camera daemon
     # We want all cores for camera
     mkdir /dev/cpuset/camera-daemon
@@ -224,3 +225,71 @@ on property:sys.temp.level=0
 on property:sys.boot_completed=1
      # Enable PowerHAL hint processing
      setprop vendor.powerhal.init 1
+
+     # Prevent aggressive CPU frequency spikes and reduce idle/media heat
+     write /sys/devices/system/cpu/cpufreq/policy0/walt/up_rate_limit_us 2000
+     write /sys/devices/system/cpu/cpufreq/policy2/walt/up_rate_limit_us 2000
+     write /sys/devices/system/cpu/cpufreq/policy5/walt/up_rate_limit_us 2000
+     write /sys/devices/system/cpu/cpufreq/policy7/walt/up_rate_limit_us 4000
+     write /sys/devices/system/cpu/cpufreq/policy0/walt/down_rate_limit_us 5000
+     write /sys/devices/system/cpu/cpufreq/policy2/walt/down_rate_limit_us 5000
+     write /sys/devices/system/cpu/cpufreq/policy5/walt/down_rate_limit_us 5000
+     write /sys/devices/system/cpu/cpufreq/policy7/walt/down_rate_limit_us 10000
+     # Disable aggressive predicted load frequency boosts
+     write /sys/devices/system/cpu/cpufreq/policy0/walt/pl 0
+     write /sys/devices/system/cpu/cpufreq/policy2/walt/pl 0
+     write /sys/devices/system/cpu/cpufreq/policy5/walt/pl 0
+     write /sys/devices/system/cpu/cpufreq/policy7/walt/pl 0
+     # Allow system to tune cpufreq walt attributes
+     chown system system /sys/devices/system/cpu/cpufreq/policy0/walt/pl
+     chown system system /sys/devices/system/cpu/cpufreq/policy2/walt/pl
+     chown system system /sys/devices/system/cpu/cpufreq/policy5/walt/pl
+     chown system system /sys/devices/system/cpu/cpufreq/policy7/walt/pl
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy0/walt/pl
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy2/walt/pl
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy5/walt/pl
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy7/walt/pl
+
+     chown system system /sys/devices/system/cpu/cpufreq/policy0/walt/up_rate_limit_us
+     chown system system /sys/devices/system/cpu/cpufreq/policy2/walt/up_rate_limit_us
+     chown system system /sys/devices/system/cpu/cpufreq/policy5/walt/up_rate_limit_us
+     chown system system /sys/devices/system/cpu/cpufreq/policy7/walt/up_rate_limit_us
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy0/walt/up_rate_limit_us
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy2/walt/up_rate_limit_us
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy5/walt/up_rate_limit_us
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy7/walt/up_rate_limit_us
+
+     chown system system /sys/devices/system/cpu/cpufreq/policy0/walt/down_rate_limit_us
+     chown system system /sys/devices/system/cpu/cpufreq/policy2/walt/down_rate_limit_us
+     chown system system /sys/devices/system/cpu/cpufreq/policy5/walt/down_rate_limit_us
+     chown system system /sys/devices/system/cpu/cpufreq/policy7/walt/down_rate_limit_us
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy0/walt/down_rate_limit_us
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy2/walt/down_rate_limit_us
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy5/walt/down_rate_limit_us
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy7/walt/down_rate_limit_us
+
+     # Allow system to tune cpufreq governor
+     chown system system /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+     chown system system /sys/devices/system/cpu/cpufreq/policy2/scaling_governor
+     chown system system /sys/devices/system/cpu/cpufreq/policy5/scaling_governor
+     chown system system /sys/devices/system/cpu/cpufreq/policy7/scaling_governor
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy0/scaling_governor
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy2/scaling_governor
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy5/scaling_governor
+     chmod 0664 /sys/devices/system/cpu/cpufreq/policy7/scaling_governor
+
+     # Keep CPU 7 (Prime Cortex-X4) cool during media playback
+     write /sys/devices/system/cpu/cpufreq/policy7/walt/rtg_boost_freq 0
+     write /sys/devices/system/cpu/cpufreq/policy7/walt/hispeed_load 95
+
+     # Allow system to tune Diablo mode knobs (GPU min clock, kgsl min_pwrlevel)
+     chown system system /sys/kernel/gpu/gpu_min_clock
+     chmod 0664 /sys/kernel/gpu/gpu_min_clock
+     chown system system /sys/class/kgsl/kgsl-3d0/min_pwrlevel
+     chmod 0664 /sys/class/kgsl/kgsl-3d0/min_pwrlevel
+
+     # Shoulder trigger buttons and touch mapping nodes
+     chmod 0666 /dev/input/event6
+     chmod 0666 /dev/input/event7
+     chmod 0666 /dev/input/event8
+
