@@ -1,0 +1,10 @@
+cc_binary {
+    name: "trigger_daemon",
+    srcs: ["trigger_daemon.c"],
+    vendor_available: true,
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-Wno-unused-parameter",
+    ],
+}
