@@ -78,11 +78,11 @@ object PowerProfileController {
                 writeLine(POLICY5_MIN_FREQ, "499200")
                 writeLine(POLICY7_MIN_FREQ, "480000")
 
-                // Set energy-conservative governor
-                writeLine(POLICY0_GOV, "conservative")
-                writeLine(POLICY2_GOV, "conservative")
-                writeLine(POLICY5_GOV, "conservative")
-                writeLine(POLICY7_GOV, "conservative")
+                // Set energy-conservative governor (powersave locks to lowest frequency floor)
+                writeLine(POLICY0_GOV, "powersave")
+                writeLine(POLICY2_GOV, "powersave")
+                writeLine(POLICY5_GOV, "powersave")
+                writeLine(POLICY7_GOV, "powersave")
 
                 // Cap peak frequencies to energy-efficient thresholds
                 writeLine(POLICY0_MAX_FREQ, "1459200") // 1.45 GHz
